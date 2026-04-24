@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - CIMB Guardian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-100 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-center text-red-600">Admin Login</h1>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Username</label>
+                <input id="username" type="text" class="w-full border rounded-lg px-4 py-3" placeholder="Masukkan username">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Password</label>
+                <input id="password" type="password" class="w-full border rounded-lg px-4 py-3" placeholder="Masukkan password">
+            </div>
+
+            <button id="btn-login" class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700">
+                Login
+            </button>
+        </div>
+
+        <p id="login-error" class="text-red-600 text-sm mt-4 hidden"></p>
+    </div>
+
+    <script>
+        document.getElementById('btn-login').addEventListener('click', async function () {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorEl = document.getElementById('login-error');
+
+            errorEl.classList.add('hidden');
+            errorEl.textContent = '';
+
+            try {
+                const res = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.message || 'Login gagal');
+                }
+
+                window.location.href = data.redirect || '/admin/dashboard';
+            } catch (err) {
+                errorEl.textContent = err.message;
+                errorEl.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

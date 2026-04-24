@@ -1,0 +1,6 @@
+flask
+pymysql
+joblib
+numpy
+pandas
+scipy

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FraudGuard - Analitik & Whitelist</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b5000b",
+                        "primary-container": "#e30613",
+                        "on-primary": "#ffffff",
+                        "secondary": "#5d5f5f",
+                        "surface": "#fbf9f8",
+                        "surface-container-low": "#f5f3f3",
+                        "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "on-background": "#1b1c1c",
+                        "background": "#fbf9f8",
+                        "outline-variant": "#e9bcb6",
+                        "error": "#ba1a1a",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "h1": ["Work Sans", "sans-serif"],
+                        "h3": ["Work Sans", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                    },
+                    fontSize: {
+                        "h1": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h3": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                    },
+                    spacing: {
+                        "gutter": "24px", "lg": "24px", "md": "16px",
+                        "sm": "8px", "xl": "32px", "xs": "4px",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="font-body-md text-on-surface">
+
+    <aside class="w-64 h-screen border-r fixed left-0 top-0 z-40 bg-white border-slate-100 shadow-[4px_0px_20px_rgba(0,0,0,0.02)] flex flex-col py-6">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-red-600 mb-1">FraudGuard</h1>
+            <p class="text-xs text-slate-500 tracking-tight">Enterprise Monitoring</p>
+        </div>
+
+        <nav class="flex-1 space-y-1">
+            <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+                <span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_case_review') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+                <span class="material-symbols-outlined">inbox</span>
+                Laporan Masuk
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+                <span class="material-symbols-outlined">verified_user</span>
+                Whitelist
+            </a>
+
+            <a href="{{ url_for('admin_education_cms') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+                <span class="material-symbols-outlined">school</span>
+                Edukasi
+            </a>
+
+            <a href="{{ url_for('admin_analytics') }}" class="flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 font-semibold border-r-4 border-red-600 text-sm">
+                <span class="material-symbols-outlined">analytics</span>
+                Analitik
+            </a>
+        </nav>
+
+        <div class="px-6 mt-auto">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50">
+                <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6XeoFaIQKvr03Z4uxaI0M3uTHnxI0dhlBDbqGrMkr0Ucv5g4S6j-rfkDsSTeqWUMxVmvskNvqB3pUcD8xNcc0ivz-cav6kgJq14_p8FFfxoRuwRXv8Ck64OeNTb_wEwGx4_g1S5BHyjnyEswjcUb0MsAPZeyg0UZoutHYXriXfookOnpV-foBwfZQJ6HMA_fcmG6ageroTJFx__45sMQPhAFKW86aNz0Dl-HjUxglOqbTPuPLNKHu5kvppzvrgNaC-s5edD4a-iw"
+                    alt="Foto profil admin"
+                    class="w-8 h-8 rounded-full bg-slate-200"
+                />
+                <div>
+                    <p class="text-xs font-bold text-on-surface">Super Admin</p>
+                    <p class="text-[10px] text-slate-500">Tier 1 Access</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <header class="admin-main h-16 fixed top-0 right-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm flex items-center justify-between px-8">
+        <div class="flex items-center gap-4 flex-1">
+            <div class="relative w-full max-w-md">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                <input type="text" class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-full text-sm focus:ring-1 focus:ring-primary/20" placeholder="Cari data analitik atau domain..." />
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 text-xs font-medium text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                System Online
+            </div>
+            <button class="hover:bg-slate-100 rounded-full p-2 transition-colors relative">
+                <span class="material-symbols-outlined text-slate-600">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="admin-main pt-16 min-h-screen">
+        <div class="p-8 space-y-8 max-w-[1400px] mx-auto">
+
+            <div class="flex items-end justify-between">
+                <div class="space-y-1">
+                    <p class="text-xs text-primary uppercase tracking-widest font-bold">Enterprise Dashboard</p>
+                    <h2 class="text-h1 font-h1 text-on-surface">Analitik &amp; Keamanan</h2>
+                </div>
+                <div class="flex gap-2">
+                    <button class="flex items-center gap-2 px-6 py-2 bg-surface-container-lowest border border-slate-200 rounded-lg text-sm font-semibold text-on-surface hover:bg-slate-50 transition-all">
+                        <span class="material-symbols-outlined text-sm">calendar_today</span>
+                        7 Hari Terakhir
+                    </button>
+                    <button class="btn-export flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:brightness-110 shadow-sm transition-all">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                        Ekspor Laporan
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+                <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)]">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 class="text-h3 font-h3 text-on-surface">Tren Laporan Harian</h3>
+                            <p class="text-sm text-secondary">Volume deteksi scam per hari di seluruh channel</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-primary"></span>
+                                <span class="text-xs font-medium">Laporan Masuk</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-slate-300"></span>
+                                <span class="text-xs font-medium">Minggu Lalu</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative h-[280px] w-full flex items-end justify-between gap-2 pt-4">
+                        <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                            <div class="border-b border-slate-100 w-full h-0"></div>
+                            <div class="border-b border-slate-100 w-full h-0"></div>
+                            <div class="border-b border-slate-100 w-full h-0"></div>
+                            <div class="border-b border-slate-100 w-full h-0"></div>
+                            <div class="border-b border-slate-100 w-full h-0"></div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary/20 rounded-t h-[40%] transition-all group-hover:bg-primary/40"></div>
+                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">SEN</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary/20 rounded-t h-[65%] transition-all group-hover:bg-primary/40"></div>
+                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">SEL</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary h-[85%] rounded-t shadow-md relative">
+                                <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-on-surface text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">124 Laporan</div>
+                            </div>
+                            <div class="mt-2 text-[10px] text-center font-bold text-on-surface">RAB</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary/20 rounded-t h-[55%] transition-all group-hover:bg-primary/40"></div>
+                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">KAM</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary/20 rounded-t h-[70%] transition-all group-hover:bg-primary/40"></div>
+                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">JUM</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary/20 rounded-t h-[45%] transition-all group-hover:bg-primary/40"></div>
+                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">SAB</div>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-end group">
+                            <div class="w-full bg-primary/20 rounded-t h-[30%] transition-all group-hover:bg-primary/40"></div>
+                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">MIN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col">
+                    <h3 class="text-h3 font-h3 text-on-surface mb-8">Jenis Scam Terpopuler</h3>
+                    <div class="flex-1 space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span>Phishing Link</span>
+                                <span class="text-primary">42%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full" style="width: 42%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span>Social Engineering</span>
+                                <span class="text-primary">28%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary/70 h-full" style="width: 28%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span>Impersonasi Bank</span>
+                                <span class="text-primary">18%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary/50 h-full" style="width: 18%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span>Carding / APK</span>
+                                <span class="text-primary">12%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary/30 h-full" style="width: 12%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
+                        <p class="text-xs text-secondary italic">*Data diperbarui 5 menit lalu</p>
+                        <button class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
+                            Lihat Detail <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary">language</span>
+                            </div>
+                            <div>
+                                <h3 class="text-h3 font-h3 text-on-surface">Domain Resmi</h3>
+                                <p class="text-sm text-secondary">Akses yang diizinkan sistem</p>
+                            </div>
+                        </div>
+                        <button class="btn-add-whitelist bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all" data-type="domain">
+                            <span class="material-symbols-outlined text-sm">add</span> Tambah
+                        </button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
+                            <div class="flex items-center gap-4">
+                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-GyEzG7ubapxQmqUJ9LJjZYvuUtAioQdNfhKP4N3yR-lMhqQ4FpOSMo6MvyddhoqRjrCiO1T_7KC5oC7_v_eDGe2KeMDBeUVGNuXyfVhIadr92wFJN98Evi3ijWKo4_3IT4f-dG04oLDTJtIId9eCBbZr-TXZGarXYV9Ue3TOf_6ceY9YFbvmt-hpHktqUp75MUgZMRfig5lPnwkADEAcT1YUroXWDJkpf-zmz_3IEDtzvKQ28m1L1F1ezHs-rMaHW_4ZBVQzYgU" alt="Logo bank" class="w-8 h-8 rounded-full border border-slate-100" />
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">www.cimbniaga.co.id</p>
+                                    <p class="text-xs text-slate-400">Ditambahkan oleh: Admin Utama</p>
+                                </div>
+                            </div>
+                            <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+
+                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
+                            <div class="flex items-center gap-4">
+                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCahshS9eOnhB6s9x4KFn3N4hmMzCdAZ5FL5-ZkC_Kxz18x9972EWLh00uACDjhS0EUkwFFZPDmHBWqPaBTxr63KbhYD1fX0xgmZKvfAZXZ6T5rXukOwIuxlq7LnRcOxTW4b7HuI93xhYZAf5rhJ92weUDxKKqKQ4UhdEmlxeSnbTE5cHHUg2B7rlGfBDsxQGN99n95_4p5Co4rm356FA047Rrxc5ElTOgwjgt6Dxia6NLspwIX7QOvx9gDNgB5pyLGfvSiJCNUMOI" alt="Logo portal" class="w-8 h-8 rounded-full border border-slate-100" />
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">octomobile.cimbniaga.co.id</p>
+                                    <p class="text-xs text-slate-400">Ditambahkan oleh: Admin Utama</p>
+                                </div>
+                            </div>
+                            <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+
+                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
+                            <div class="flex items-center gap-4">
+                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyGJD-SpfPdqvLo21aqUMH1arOGanZcANxAQb4MhEPw8aTJKzBqM4veQpw8rZVr-fyvANDrC_v25pYVZa2Qspcsz7iUZVwXHe5eUF0htY9tt5IayIxV38H1IEXRJpAlbpcffvvB0fOpi2deEoeJkt5Qq6s4g0AHf-Sczp1qktK_i2sWzoLFcx7ttrcL1fBLXxVFGszaTpT2zWmQx2xfOfoGOpk15fqKJvLVYcRp2rB8-O8AIt0ejb6uNRugsycAz2eOihImYDFMCVw" alt="Logo blog" class="w-8 h-8 rounded-full border border-slate-100" />
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">blog.cimbniaga.co.id</p>
+                                    <p class="text-xs text-slate-400">Ditambahkan oleh: System Auto</p>
+                                </div>
+                            </div>
+                            <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary">call</span>
+                            </div>
+                            <div>
+                                <h3 class="text-h3 font-h3 text-on-surface">Nomor Resmi Bank</h3>
+                                <p class="text-sm text-secondary">Kontak sah yang diverifikasi</p>
+                            </div>
+                        </div>
+                        <button class="btn-add-whitelist bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all" data-type="nomor telepon">
+                            <span class="material-symbols-outlined text-sm">add</span> Tambah
+                        </button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                    <span class="material-symbols-outlined text-sm text-slate-400">support_agent</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">14041</p>
+                                    <p class="text-xs text-slate-400">Layanan Contact Center Utama</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded uppercase">Verified</span>
+                                <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                    <span class="material-symbols-outlined text-sm text-slate-400">message</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">CIMB NIAGA (WA)</p>
+                                    <p class="text-xs text-slate-400">WhatsApp Business Resmi</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded uppercase">Verified</span>
+                                <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
+                            <div class="flex items-center gap-4">
+                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+                                    <span class="material-symbols-outlined text-sm text-slate-400">campaign</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">+62 811-123-4567</p>
+                                    <p class="text-xs text-slate-400">Telemarketing Resmi (Outbound)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase">Standard</span>
+                                <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-8 right-8 bg-on-surface text-white p-6 rounded-2xl shadow-2xl flex items-center gap-6 z-50 border border-white/10">
+        <div class="relative w-16 h-16">
+            <svg class="w-full h-full transform -rotate-90">
+                <circle cx="32" cy="32" fill="none" r="28" stroke="rgba(255,255,255,0.1)" stroke-width="4" />
+                <circle cx="32" cy="32" fill="none" r="28" stroke="#E30613" stroke-dasharray="175.9" stroke-dashoffset="26.4" stroke-width="4" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-xs font-bold">85%</span>
+            </div>
+        </div>
+        <div>
+            <p class="text-xs font-semibold text-slate-400">Protection Strength</p>
+            <h4 class="text-lg font-bold">OPTIMAL</h4>
+            <div class="flex items-center gap-2 text-[10px] mt-1 text-emerald-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                Semua sistem aktif
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+</body>
+</html>

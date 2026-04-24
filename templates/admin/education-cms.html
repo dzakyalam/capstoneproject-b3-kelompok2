@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FraudGuard - Manajemen Edukasi</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b5000b",
+                        "primary-container": "#e30613",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#ffdad5",
+                        "secondary": "#5d5f5f",
+                        "surface": "#fbf9f8",
+                        "surface-container-low": "#f5f3f3",
+                        "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "on-background": "#1b1c1c",
+                        "background": "#fbf9f8",
+                        "outline-variant": "#e9bcb6",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "h1": ["Work Sans", "sans-serif"],
+                        "h2": ["Work Sans", "sans-serif"],
+                        "h3": ["Work Sans", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                    },
+                    fontSize: {
+                        "h1": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h2": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h3": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                    },
+                    spacing: {
+                        "gutter": "24px", "lg": "24px", "md": "16px",
+                        "sm": "8px", "xl": "32px", "2xl": "48px", "xs": "4px",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="font-body-md text-on-background selection:bg-primary-fixed">
+
+    <aside class="w-64 h-screen border-r fixed left-0 top-0 z-40 bg-white border-slate-100 shadow-[4px_0px_20px_rgba(0,0,0,0.02)] flex flex-col py-6 text-sm">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-red-600 mb-1">FraudGuard</h1>
+            <p class="text-xs text-slate-400 font-medium tracking-widest uppercase">Enterprise Monitoring</p>
+        </div>
+
+        <nav class="flex-1 space-y-1">
+            <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all">
+                <span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_case_review') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all">
+                <span class="material-symbols-outlined">inbox</span>
+                Laporan Masuk
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all">
+                <span class="material-symbols-outlined">verified_user</span>
+                Whitelist
+            </a>
+
+            <a href="{{ url_for('admin_education_cms') }}" class="flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 font-semibold border-r-4 border-red-600">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+                Edukasi
+            </a>
+
+            <a href="{{ url_for('admin_analytics') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all">
+                <span class="material-symbols-outlined">analytics</span>
+                Analitik
+            </a>
+        </nav>
+
+        <div class="px-4 mt-auto pt-6 border-t border-slate-50">
+            <div class="flex items-center gap-3 px-2">
+                <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+                    <img
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCXUj8eP9DGs3Cj14XJAJQhWg_kCjNOfKCcMxaqKqZ2FIoYy05WDF437nuEGLnsfN0SltgTNqKtHPRCrk2x4aB789fk-6ZT9DHOmseMG4XGsur3NTEkSdXBUGtZ6SrdnFXXityB8WaHbjRsWuZ0SNV6Ft8kSBMQmNcKSU_JCcgc2mPm2ZyfH5-nE1GBJLh1wlO2Orc6FuFB4lYlBVAF5J92ytt7X-tBGFttUXBRwJMlwcSnjZN8yy9oV4xeh3fHZ6PTpUx4JQH5Bs"
+                        alt="Foto profil admin"
+                        class="w-full h-full object-cover"
+                    />
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-slate-800 block">Admin Panel</span>
+                    <span class="text-[10px] text-slate-400">Content Manager</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <header class="admin-main h-16 fixed top-0 right-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm flex items-center justify-between px-8">
+        <div class="flex items-center flex-1">
+            <div class="relative w-full max-w-md">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                <input type="text" class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-full text-sm focus:ring-2 focus:ring-red-600/20 transition-all" placeholder="Cari materi edukasi..." />
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-xs font-semibold text-emerald-700">System Online</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="hover:bg-slate-100 rounded-full p-2 transition-colors relative">
+                    <span class="material-symbols-outlined text-slate-600">notifications</span>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full border-2 border-white"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main pt-16 min-h-screen">
+        <div class="max-w-[1280px] mx-auto px-6 py-8">
+
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <nav class="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                        <span>Portal Admin</span>
+                        <span class="material-symbols-outlined text-xs">chevron_right</span>
+                        <span class="text-primary font-semibold">Manajemen Edukasi</span>
+                    </nav>
+                    <h2 class="text-h1 font-h1 text-on-surface">Konten Edukasi Keamanan</h2>
+                    <p class="text-sm text-secondary mt-2">Kelola artikel kesadaran keamanan siber untuk seluruh nasabah perusahaan.</p>
+                </div>
+                <button id="btn-tambah-artikel" class="flex items-center gap-2 bg-primary-container text-white px-8 py-4 rounded-xl text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-red-600/20">
+                    <span class="material-symbols-outlined">add</span>
+                    Tambah Materi Baru
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-blue-50 text-blue-600 rounded-lg material-symbols-outlined">article</span>
+                        <span class="text-xs font-semibold text-blue-600">+12% Bulan ini</span>
+                    </div>
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Artikel</p>
+                    <h4 class="text-2xl font-semibold mt-1">42</h4>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-emerald-50 text-emerald-600 rounded-lg material-symbols-outlined">check_circle</span>
+                        <span class="text-xs font-semibold text-emerald-600">Aktif</span>
+                    </div>
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Publikasi</p>
+                    <h4 class="text-2xl font-semibold mt-1">38</h4>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-amber-50 text-amber-600 rounded-lg material-symbols-outlined">pending</span>
+                        <span class="text-xs font-semibold text-amber-600">Review</span>
+                    </div>
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Draft</p>
+                    <h4 class="text-2xl font-semibold mt-1">4</h4>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-purple-50 text-purple-600 rounded-lg material-symbols-outlined">visibility</span>
+                        <span class="text-xs font-semibold text-purple-600">8.2k Views</span>
+                    </div>
+                    <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Interaksi User</p>
+                    <h4 class="text-2xl font-semibold mt-1">12.5k</h4>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 overflow-hidden">
+                <div class="p-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
+                    <div class="flex items-center gap-4">
+                        <button class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 hover:bg-slate-50 transition-colors">
+                            <span class="material-symbols-outlined text-lg">filter_list</span>
+                            Filter
+                        </button>
+                        <div class="h-6 w-px bg-slate-200"></div>
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 rounded-lg text-xs font-semibold bg-red-50 text-red-600">Semua</button>
+                            <button class="px-4 py-2 rounded-lg text-xs font-medium text-slate-500 hover:bg-slate-100">Dipublikasi</button>
+                            <button class="px-4 py-2 rounded-lg text-xs font-medium text-slate-500 hover:bg-slate-100">Draft</button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400">Menampilkan 1-4 dari 42 artikel</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50/30 text-xs text-slate-400 uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold">Materi &amp; Judul Artikel</th>
+                                <th class="px-6 py-4 font-semibold">Status</th>
+                                <th class="px-6 py-4 font-semibold">Update Terakhir</th>
+                                <th class="px-6 py-4 font-semibold text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50 text-sm">
+                            <tr class="hover:bg-slate-50/50 transition-colors group">
+                                <td class="px-6 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-16 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPtAi3wjrDMzdhrzJEWZ9pR8Dr1pTxPejZeS5LmBaJ7ZQXLy31g_KxYX5DNlNTgMwtiPg1g7pv64lHSP_HmGenIJZ-Ul4r_Q6ao93nrE6RDhNEaSvm7A_oK5C0oPkUTUhTJFMDgjAYIw-rcK5bDbJvdG1Vmvcjw7_oWZBULw4C72Di0Pqolpglnsv8lbaD-pHFaIQ1VDWY94-1AX5V7Dgzny7W7E1gJZt3CBFXLISR--gfyX31ZWonCS4Vv2vKCj6jcFzGAWUF9Bk" alt="Artikel keamanan" class="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-on-surface group-hover:text-primary transition-colors">Waspada Phishing: Kenali Tanda-Tandanya</h5>
+                                            <p class="text-xs text-slate-400 mt-1">Keamanan Transaksi • 5 mnt baca</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Published</span>
+                                </td>
+                                <td class="px-6 py-6 text-slate-500">24 Okt 2026, 14:30</td>
+                                <td class="px-6 py-6 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button class="btn-edit-article p-2 text-slate-400 hover:text-primary hover:bg-red-50 rounded-lg transition-all" title="Edit">
+                                            <span class="material-symbols-outlined text-xl">edit</span>
+                                        </button>
+                                        <button class="btn-delete-article p-2 text-slate-400 hover:text-error hover:bg-error-container rounded-lg transition-all" title="Hapus">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50/50 transition-colors group">
+                                <td class="px-6 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-16 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd3fLrWu_j2W7aTHO2M9FUxQmbKyPlpA3RTWzUQmgGqTfw-nq-55TOB23LoL9UCrzGy0UPr3JKiLusM9dGp67PheLqkriYBj8bnTmnfceSgut5FksSGy2pGw1b_llnhsYNP-J9u4fQg5uZKQNeGgtmc-7S5exndjmQqSniDPs8iHFwar7CbM2P8xhygscR1nzije7bfHNSLHBT4lPt6tNQamj66kR4f_kPezZWK_d2KUJ5FjG-RfHyeiJ7pEb4YcUI7mlsF_6Hneg" alt="Cybersecurity" class="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-on-surface group-hover:text-primary transition-colors">Cara Aman Menggunakan Wi-Fi Publik</h5>
+                                            <p class="text-xs text-slate-400 mt-1">Tips &amp; Trik • 3 mnt baca</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Draft</span>
+                                </td>
+                                <td class="px-6 py-6 text-slate-500">21 Okt 2026, 09:12</td>
+                                <td class="px-6 py-6 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button class="btn-edit-article p-2 text-slate-400 hover:text-primary hover:bg-red-50 rounded-lg transition-all" title="Edit">
+                                            <span class="material-symbols-outlined text-xl">edit</span>
+                                        </button>
+                                        <button class="btn-delete-article p-2 text-slate-400 hover:text-error hover:bg-error-container rounded-lg transition-all" title="Hapus">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50/50 transition-colors group">
+                                <td class="px-6 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-16 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv7xDbBlpbUBvIUGx7r_a5J5M4JzLH1OOvpIyQiykoYf1VuoKCl2nSK2DKh5uQWn2uvTi8WuluSQwsuURdUvDfqvy5C64uxXjbOFEy3L1Ha8y_unyBs28D30rQpuPCuIuR-mAW7s4scWjQH1f0EXGYmt9k24fVn_6WoeoJRPDIner9VcoVgChZ0oMfBBYxmoYd1IlIgQ_zwyYCAyebUaW2k1qfwbUcaGJ_AOt-lKanVUKozkHSkDsOQvs1lf8ReXQcaIHOW7NOKvM" alt="Proteksi identitas" class="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-on-surface group-hover:text-primary transition-colors">Pentingnya Otentikasi Dua Faktor (2FA)</h5>
+                                            <p class="text-xs text-slate-400 mt-1">Keamanan Akun • 7 mnt baca</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Published</span>
+                                </td>
+                                <td class="px-6 py-6 text-slate-500">15 Okt 2026, 11:45</td>
+                                <td class="px-6 py-6 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button class="btn-edit-article p-2 text-slate-400 hover:text-primary hover:bg-red-50 rounded-lg transition-all" title="Edit">
+                                            <span class="material-symbols-outlined text-xl">edit</span>
+                                        </button>
+                                        <button class="btn-delete-article p-2 text-slate-400 hover:text-error hover:bg-error-container rounded-lg transition-all" title="Hapus">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50/50 transition-colors group">
+                                <td class="px-6 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-16 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlqwvnOfx5EKyO_djfzcVgLS77MjYXy5Ud55znTWIStx74ZbZHGA_iUqslunzOhEk8T8qSjeKnT86l7hglSFw92kU8M7jiq-BOAYg3sD2xBvj4uWc7-F7pC-HZaD8qPoNjmMTm1Jjiy-UfjcIo8cKaK1oylYjpoHdVD9rViwmhhM9JO4nbqBNRFp0ThDUxTRETVqIaSHQVkxM9Y0uGUpArR1yi1VI6Fq6Nm97yPYVlvRcI7vq3C6wKmnOZjWBn22G0LKh2QFiq2eY" alt="Keamanan mobile" class="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h5 class="font-semibold text-on-surface group-hover:text-primary transition-colors">Mengamankan Aplikasi Mobile Banking Anda</h5>
+                                            <p class="text-xs text-slate-400 mt-1">Mobile Security • 4 mnt baca</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-6">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Published</span>
+                                </td>
+                                <td class="px-6 py-6 text-slate-500">12 Okt 2026, 16:20</td>
+                                <td class="px-6 py-6 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button class="btn-edit-article p-2 text-slate-400 hover:text-primary hover:bg-red-50 rounded-lg transition-all" title="Edit">
+                                            <span class="material-symbols-outlined text-xl">edit</span>
+                                        </button>
+                                        <button class="btn-delete-article p-2 text-slate-400 hover:text-error hover:bg-error-container rounded-lg transition-all" title="Hapus">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="px-6 py-4 border-t border-slate-50 flex items-center justify-between">
+                    <button class="text-xs font-semibold text-slate-300 flex items-center gap-1" disabled>
+                        <span class="material-symbols-outlined text-lg">keyboard_arrow_left</span>
+                        Sebelumnya
+                    </button>
+                    <div class="flex items-center gap-1">
+                        <button class="w-8 h-8 rounded-lg bg-primary text-white text-xs font-semibold">1</button>
+                        <button class="w-8 h-8 rounded-lg text-slate-500 hover:bg-slate-100 text-xs font-semibold">2</button>
+                        <button class="w-8 h-8 rounded-lg text-slate-500 hover:bg-slate-100 text-xs font-semibold">3</button>
+                        <span class="px-2 text-slate-400">...</span>
+                        <button class="w-8 h-8 rounded-lg text-slate-500 hover:bg-slate-100 text-xs font-semibold">5</button>
+                    </div>
+                    <button class="text-xs font-semibold text-slate-500 hover:text-primary flex items-center gap-1">
+                        Selanjutnya
+                        <span class="material-symbols-outlined text-lg">keyboard_arrow_right</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-red-600 rounded-2xl p-8 flex items-center justify-between text-white overflow-hidden relative">
+                <div class="relative z-10">
+                    <h3 class="text-xl font-semibold mb-2">Butuh Bantuan Menulis Konten?</h3>
+                    <p class="text-sm opacity-90 max-w-lg">Gunakan template konten kami atau lihat panduan gaya komunikasi untuk memastikan pesan keamanan sampai dengan baik kepada nasabah.</p>
+                    <div class="mt-6 flex gap-4">
+                        <button class="bg-white text-red-600 px-6 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors">Lihat Panduan Gaya</button>
+                        <button class="border border-white/30 bg-white/10 text-white px-6 py-2 rounded-lg text-sm font-semibold hover:bg-white/20 transition-colors">Buka Template</button>
+                    </div>
+                </div>
+                <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-white/10 to-transparent pointer-events-none"></div>
+                <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[200px] text-white/5 rotate-12">auto_awesome</span>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+</body>
+</html>
