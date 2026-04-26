@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='user/css/style.css') }}" />
 
     <script>
         tailwind.config = {
@@ -45,14 +45,13 @@
 </head>
 <body class="bg-background text-on-background" style="font-family: 'Inter', sans-serif;">
 
-    <!-- ====== HEADER ====== -->
     <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
         <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
-            <a href="index.html" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">CIMB Guardian</a>
+            <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">CIMB Guardian</a>
             <nav class="hidden md:flex items-center gap-8 font-display text-sm font-medium tracking-tight">
-                <a href="index.html" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
-                <a href="track.html" class="text-slate-600 hover:text-red-500 transition-colors">Lacak Tiket</a>
-                <a href="education.html" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Edukasi</a>
+                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
+                <a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Lacak Tiket</a>
+                <a href="{{ url_for('education_page') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Edukasi</a>
                 <a href="#" class="text-slate-600 hover:text-red-500 transition-colors">Bantuan</a>
             </nav>
             <button class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-surface-tint active:scale-[0.98] transition-all">
@@ -63,7 +62,6 @@
 
     <main class="max-w-7xl mx-auto px-6 py-16">
 
-        <!-- ====== HERO ====== -->
         <section class="mb-16 text-center">
             <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-primary rounded-full mb-6 text-sm font-semibold">
                 <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">verified_user</span>
@@ -75,108 +73,10 @@
             </p>
         </section>
 
-        <!-- ====== BENTO GRID ARTIKEL ====== -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-
-            <!-- Artikel Utama: Tren Terbaru -->
-            <div class="md:col-span-8 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col md:flex-row gap-6 relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform pointer-events-none"></div>
-                <div class="flex-1 z-10">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center text-primary flex-shrink-0">
-                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
-                        </div>
-                        <span class="text-sm font-semibold text-primary">Edukasi Utama</span>
-                    </div>
-                    <h2 class="text-2xl font-semibold mb-4 font-h2">Tren penipuan terbaru</h2>
-                    <p class="text-secondary mb-8">
-                        Penipu terus memperbarui taktik mereka. Pelajari tentang skema "Quishing" (QR Code Phishing) dan penipuan berbasis AI yang sedang marak terjadi saat ini.
-                    </p>
-                    <button class="inline-flex items-center gap-2 text-sm font-semibold bg-primary text-white px-8 py-4 rounded-lg hover:bg-surface-tint transition-colors">
-                        Baca Selengkapnya
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                    </button>
-                </div>
-                <div class="md:w-1/3 rounded-lg overflow-hidden flex-shrink-0">
-                    <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5_3lQdbwHlMbZ6ev87pwhsEtLI926_FTB_9wga3wAj88jy0_ehxAvIpVEMZgXCQosVTQ-j3D_tuHd8Jc2gGiQf9ugFBYqthzZA-Za1D0XuQFmCrRr9RoB2sXAeHV1aRXMpfjXpxd7h-jBD_PRIeSMI_p7N1_EsPCPtAsLJXpJhM-c1ug1H5uWOEErYm_k4hKx0BiytODkThxdPz_a-QkAPnIHD0e77dk265r05ZffmHxGQiO8Fq1L0ezSKlN7m1tAC-r7InilK_A"
-                        alt="Antarmuka digital modern dengan ikon keamanan dan seseorang menggunakan smartphone"
-                        class="w-full h-full object-cover"
-                    />
-                </div>
-            </div>
-
-            <!-- Artikel: Phishing -->
-            <div class="md:col-span-4 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col justify-between hover:-translate-y-1 transition-all">
-                <div>
-                    <div class="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary mb-6">
-                        <span class="material-symbols-outlined">anchor</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 font-h3">Apa itu phishing?</h3>
-                    <p class="text-sm text-secondary mb-8">
-                        Mengenali upaya penipuan melalui email atau pesan teks yang menyamar sebagai institusi resmi untuk mencuri kredensial Anda.
-                    </p>
-                </div>
-                <button class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-                    Baca Selengkapnya
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                </button>
-            </div>
-
-            <!-- Artikel: OTP -->
-            <div class="md:col-span-4 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col justify-between hover:-translate-y-1 transition-all">
-                <div>
-                    <div class="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary mb-6">
-                        <span class="material-symbols-outlined">password</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 font-h3">Jangan pernah bagikan OTP</h3>
-                    <p class="text-sm text-secondary mb-8">
-                        Kode OTP adalah kunci akses terakhir Anda. Pihak Bank tidak akan pernah meminta kode ini melalui media apapun.
-                    </p>
-                </div>
-                <button class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-                    Baca Selengkapnya
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                </button>
-            </div>
-
-            <!-- Artikel: CS Palsu -->
-            <div class="md:col-span-4 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col justify-between hover:-translate-y-1 transition-all">
-                <div>
-                    <div class="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary mb-6">
-                        <span class="material-symbols-outlined">headset_mic</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 font-h3">Peringatan layanan pelanggan palsu</h3>
-                    <p class="text-sm text-secondary mb-8">
-                        Waspadai akun media sosial atau nomor WhatsApp tidak resmi yang mengaku sebagai Customer Service CIMB.
-                    </p>
-                </div>
-                <button class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-                    Baca Selengkapnya
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                </button>
-            </div>
-
-            <!-- Artikel: Identifikasi Link -->
-            <div class="md:col-span-4 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col justify-between hover:-translate-y-1 transition-all">
-                <div>
-                    <div class="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary mb-6">
-                        <span class="material-symbols-outlined">link_off</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2 font-h3">Cara mengidentifikasi tautan penipuan</h3>
-                    <p class="text-sm text-secondary mb-8">
-                        Langkah praktis untuk membedakan URL resmi CIMB Niaga dengan link phishing yang berbahaya sebelum Anda klik.
-                    </p>
-                </div>
-                <button class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-                    Baca Selengkapnya
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                </button>
-            </div>
-
+        <div id="education-user-content">
+            <div class="text-center text-slate-400 py-12">Memuat materi edukasi...</div>
         </div>
 
-        <!-- ====== CTA BAWAH ====== -->
         <section class="mt-16 bg-on-surface text-white rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="flex-1">
                 <h2 class="text-2xl font-semibold mb-2 text-white font-h2">Apakah Anda merasa ragu dengan transaksi tertentu?</h2>
@@ -193,7 +93,7 @@
                     </div>
                     <span class="text-xs text-slate-500 uppercase tracking-widest font-bold">Skor Edukasi</span>
                 </div>
-                <a href="index.html" class="bg-white text-on-surface px-8 py-4 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors">
+                <a href="{{ url_for('home') }}" class="bg-white text-on-surface px-8 py-4 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors">
                     Mulai Analisa Pesan
                 </a>
             </div>
@@ -201,7 +101,6 @@
 
     </main>
 
-    <!-- ====== FOOTER ====== -->
     <footer class="bg-slate-50 border-t border-slate-200 mt-12">
         <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-4">
             <div class="flex flex-col items-center md:items-start gap-1">
@@ -217,6 +116,172 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <div id="education-detail-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999] p-4">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+                <div>
+                    <p id="modal-category" class="text-sm font-semibold text-primary"></p>
+                    <h2 id="modal-title" class="text-2xl font-bold text-slate-900 mt-1"></h2>
+                </div>
+                <button id="btn-close-modal" class="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center transition">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="px-6 py-5 max-h-[70vh] overflow-y-auto">
+                <p id="modal-summary" class="text-slate-600 mb-4 text-base"></p>
+                <div id="modal-content" class="text-slate-800 leading-7 whitespace-pre-line"></div>
+            </div>
+
+            <div class="px-6 py-4 border-t border-slate-100 flex justify-end">
+                <button id="btn-close-modal-footer" class="bg-primary text-white px-6 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let educationArticles = [];
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getEducationImage(imageUrl) {
+            return imageUrl && imageUrl.trim()
+                ? imageUrl
+                : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPtAi3wjrDMzdhrzJEWZ9pR8Dr1pTxPejZeS5LmBaJ7ZQXLy31g_KxYX5DNlNTgMwtiPg1g7pv64lHSP_HmGenIJZ-Ul4r_Q6ao93nrE6RDhNEaSvm7A_oK5C0oPkUTUhTJFMDgjAYIw-rcK5bDbJvdG1Vmvcjw7_oWZBULw4C72Di0Pqolpglnsv8lbaD-pHFaIQ1VDWY94-1AX5V7Dgzny7W7E1gJZt3CBFXLISR--gfyX31ZWonCS4Vv2vKCj6jcFzGAWUF9Bk';
+        }
+
+        function openEducationDetail(articleId) {
+            const article = educationArticles.find(item => Number(item.id) === Number(articleId));
+            if (!article) return;
+
+            document.getElementById('modal-category').textContent = article.category || 'Artikel';
+            document.getElementById('modal-title').textContent = article.title || '-';
+            document.getElementById('modal-summary').textContent = article.summary || '';
+            document.getElementById('modal-content').textContent = article.content || 'Konten belum tersedia.';
+
+            const modal = document.getElementById('education-detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeEducationDetail() {
+            const modal = document.getElementById('education-detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function bindEducationModal() {
+            const btnClose = document.getElementById('btn-close-modal');
+            const btnCloseFooter = document.getElementById('btn-close-modal-footer');
+            const modal = document.getElementById('education-detail-modal');
+
+            if (btnClose) btnClose.addEventListener('click', closeEducationDetail);
+            if (btnCloseFooter) btnCloseFooter.addEventListener('click', closeEducationDetail);
+
+            if (modal) {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) {
+                        closeEducationDetail();
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeEducationDetail();
+                }
+            });
+        }
+
+        async function loadUserEducationArticles() {
+            const container = document.getElementById('education-user-content');
+            if (!container) return;
+
+            try {
+                const res = await fetch('/api/education/articles');
+                const data = await res.json();
+
+                if (!Array.isArray(data) || !data.length) {
+                    container.innerHTML = '<div class="text-center text-slate-400 py-12">Belum ada materi edukasi yang dipublikasikan.</div>';
+                    return;
+                }
+
+                educationArticles = data;
+
+                const featured = data[0];
+                const others = data.slice(1, 4);
+
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                        <div class="md:col-span-8 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col md:flex-row gap-6 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform pointer-events-none"></div>
+                            <div class="flex-1 z-10">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <div class="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center text-primary flex-shrink-0">
+                                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-primary">${escapeHtml(featured.category)}</span>
+                                </div>
+                                <h2 class="text-2xl font-semibold mb-4 font-h2">${escapeHtml(featured.title)}</h2>
+                                <p class="text-secondary mb-8">${escapeHtml(featured.summary)}</p>
+                                <button onclick="openEducationDetail(${featured.id})" class="inline-flex items-center gap-2 text-sm font-semibold bg-primary text-white px-8 py-4 rounded-lg hover:bg-surface-tint transition-colors">
+                                    Baca Selengkapnya
+                                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                </button>
+                            </div>
+                            <div class="md:w-1/3 rounded-lg overflow-hidden flex-shrink-0">
+                                <img
+                                    src="${escapeHtml(getEducationImage(featured.image_url))}"
+                                    alt="Artikel edukasi"
+                                    class="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        ${others.map((item, idx) => {
+                            const icons = ['anchor', 'password', 'headset_mic', 'link_off'];
+                            const icon = icons[idx % icons.length];
+                            return `
+                                <div class="md:col-span-4 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col justify-between hover:-translate-y-1 transition-all">
+                                    <div>
+                                        <div class="w-12 h-12 rounded-lg bg-slate-50 flex items-center justify-center text-primary mb-6">
+                                            <span class="material-symbols-outlined">${icon}</span>
+                                        </div>
+                                        <h3 class="text-xl font-semibold mb-2 font-h3">${escapeHtml(item.title)}</h3>
+                                        <p class="text-sm text-secondary mb-8">${escapeHtml(item.summary)}</p>
+                                    </div>
+                                    <button onclick="openEducationDetail(${item.id})" class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
+                                        Baca Selengkapnya
+                                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                                    </button>
+                                </div>
+                            `;
+                        }).join('')}
+
+                    </div>
+                `;
+            } catch (err) {
+                console.error('Gagal load education:', err);
+                container.innerHTML = '<div class="text-center text-red-500 py-12">Gagal memuat materi edukasi.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            bindEducationModal();
+            loadUserEducationArticles();
+        });
+    </script>
 </body>
 </html>

@@ -111,7 +111,7 @@
         <div class="flex items-center gap-4 flex-1">
             <div class="relative w-full max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                <input type="text" class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-full text-sm focus:ring-1 focus:ring-primary/20" placeholder="Cari data analitik atau domain..." />
+                <input id="analytics-search" type="text" class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-full text-sm focus:ring-1 focus:ring-primary/20" placeholder="Cari data analitik atau domain..." />
             </div>
         </div>
         <div class="flex items-center gap-6">
@@ -135,9 +135,9 @@
                     <h2 class="text-h1 font-h1 text-on-surface">Analitik &amp; Keamanan</h2>
                 </div>
                 <div class="flex gap-2">
-                    <button class="flex items-center gap-2 px-6 py-2 bg-surface-container-lowest border border-slate-200 rounded-lg text-sm font-semibold text-on-surface hover:bg-slate-50 transition-all">
-                        <span class="material-symbols-outlined text-sm">calendar_today</span>
-                        7 Hari Terakhir
+                    <button id="btn-refresh-analytics" class="flex items-center gap-2 px-6 py-2 bg-surface-container-lowest border border-slate-200 rounded-lg text-sm font-semibold text-on-surface hover:bg-slate-50 transition-all">
+                        <span class="material-symbols-outlined text-sm">refresh</span>
+                        Refresh
                     </button>
                     <button class="btn-export flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:brightness-110 shadow-sm transition-all">
                         <span class="material-symbols-outlined text-sm">download</span>
@@ -165,7 +165,7 @@
                         </div>
                     </div>
 
-                    <div class="relative h-[280px] w-full flex items-end justify-between gap-2 pt-4">
+                    <div id="trend-chart" class="relative h-[280px] w-full flex items-end justify-between gap-2 pt-4">
                         <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
                             <div class="border-b border-slate-100 w-full h-0"></div>
                             <div class="border-b border-slate-100 w-full h-0"></div>
@@ -173,81 +173,17 @@
                             <div class="border-b border-slate-100 w-full h-0"></div>
                             <div class="border-b border-slate-100 w-full h-0"></div>
                         </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary/20 rounded-t h-[40%] transition-all group-hover:bg-primary/40"></div>
-                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">SEN</div>
-                        </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary/20 rounded-t h-[65%] transition-all group-hover:bg-primary/40"></div>
-                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">SEL</div>
-                        </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary h-[85%] rounded-t shadow-md relative">
-                                <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-on-surface text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">124 Laporan</div>
-                            </div>
-                            <div class="mt-2 text-[10px] text-center font-bold text-on-surface">RAB</div>
-                        </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary/20 rounded-t h-[55%] transition-all group-hover:bg-primary/40"></div>
-                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">KAM</div>
-                        </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary/20 rounded-t h-[70%] transition-all group-hover:bg-primary/40"></div>
-                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">JUM</div>
-                        </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary/20 rounded-t h-[45%] transition-all group-hover:bg-primary/40"></div>
-                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">SAB</div>
-                        </div>
-                        <div class="flex-1 flex flex-col justify-end group">
-                            <div class="w-full bg-primary/20 rounded-t h-[30%] transition-all group-hover:bg-primary/40"></div>
-                            <div class="mt-2 text-[10px] text-center font-medium text-slate-400">MIN</div>
-                        </div>
+                        <div class="text-sm text-slate-400">Memuat tren...</div>
                     </div>
                 </div>
 
                 <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col">
                     <h3 class="text-h3 font-h3 text-on-surface mb-8">Jenis Scam Terpopuler</h3>
-                    <div class="flex-1 space-y-6">
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm font-medium">
-                                <span>Phishing Link</span>
-                                <span class="text-primary">42%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                <div class="bg-primary h-full" style="width: 42%"></div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm font-medium">
-                                <span>Social Engineering</span>
-                                <span class="text-primary">28%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                <div class="bg-primary/70 h-full" style="width: 28%"></div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm font-medium">
-                                <span>Impersonasi Bank</span>
-                                <span class="text-primary">18%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                <div class="bg-primary/50 h-full" style="width: 18%"></div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm font-medium">
-                                <span>Carding / APK</span>
-                                <span class="text-primary">12%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                                <div class="bg-primary/30 h-full" style="width: 12%"></div>
-                            </div>
-                        </div>
+                    <div id="scam-type-list" class="flex-1 space-y-6">
+                        <div class="text-sm text-slate-400">Memuat data...</div>
                     </div>
                     <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
-                        <p class="text-xs text-secondary italic">*Data diperbarui 5 menit lalu</p>
+                        <p class="text-xs text-secondary italic">*Data diperbarui dari laporan terbaru</p>
                         <button class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
                             Lihat Detail <span class="material-symbols-outlined text-sm">chevron_right</span>
                         </button>
@@ -268,50 +204,13 @@
                                 <p class="text-sm text-secondary">Akses yang diizinkan sistem</p>
                             </div>
                         </div>
-                        <button class="btn-add-whitelist bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all" data-type="domain">
+                        <button id="btn-add-domain" class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all">
                             <span class="material-symbols-outlined text-sm">add</span> Tambah
                         </button>
                     </div>
 
-                    <div class="space-y-3">
-                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
-                            <div class="flex items-center gap-4">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-GyEzG7ubapxQmqUJ9LJjZYvuUtAioQdNfhKP4N3yR-lMhqQ4FpOSMo6MvyddhoqRjrCiO1T_7KC5oC7_v_eDGe2KeMDBeUVGNuXyfVhIadr92wFJN98Evi3ijWKo4_3IT4f-dG04oLDTJtIId9eCBbZr-TXZGarXYV9Ue3TOf_6ceY9YFbvmt-hpHktqUp75MUgZMRfig5lPnwkADEAcT1YUroXWDJkpf-zmz_3IEDtzvKQ28m1L1F1ezHs-rMaHW_4ZBVQzYgU" alt="Logo bank" class="w-8 h-8 rounded-full border border-slate-100" />
-                                <div>
-                                    <p class="text-sm font-bold text-on-surface">www.cimbniaga.co.id</p>
-                                    <p class="text-xs text-slate-400">Ditambahkan oleh: Admin Utama</p>
-                                </div>
-                            </div>
-                            <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-
-                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
-                            <div class="flex items-center gap-4">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCahshS9eOnhB6s9x4KFn3N4hmMzCdAZ5FL5-ZkC_Kxz18x9972EWLh00uACDjhS0EUkwFFZPDmHBWqPaBTxr63KbhYD1fX0xgmZKvfAZXZ6T5rXukOwIuxlq7LnRcOxTW4b7HuI93xhYZAf5rhJ92weUDxKKqKQ4UhdEmlxeSnbTE5cHHUg2B7rlGfBDsxQGN99n95_4p5Co4rm356FA047Rrxc5ElTOgwjgt6Dxia6NLspwIX7QOvx9gDNgB5pyLGfvSiJCNUMOI" alt="Logo portal" class="w-8 h-8 rounded-full border border-slate-100" />
-                                <div>
-                                    <p class="text-sm font-bold text-on-surface">octomobile.cimbniaga.co.id</p>
-                                    <p class="text-xs text-slate-400">Ditambahkan oleh: Admin Utama</p>
-                                </div>
-                            </div>
-                            <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-
-                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
-                            <div class="flex items-center gap-4">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyGJD-SpfPdqvLo21aqUMH1arOGanZcANxAQb4MhEPw8aTJKzBqM4veQpw8rZVr-fyvANDrC_v25pYVZa2Qspcsz7iUZVwXHe5eUF0htY9tt5IayIxV38H1IEXRJpAlbpcffvvB0fOpi2deEoeJkt5Qq6s4g0AHf-Sczp1qktK_i2sWzoLFcx7ttrcL1fBLXxVFGszaTpT2zWmQx2xfOfoGOpk15fqKJvLVYcRp2rB8-O8AIt0ejb6uNRugsycAz2eOihImYDFMCVw" alt="Logo blog" class="w-8 h-8 rounded-full border border-slate-100" />
-                                <div>
-                                    <p class="text-sm font-bold text-on-surface">blog.cimbniaga.co.id</p>
-                                    <p class="text-xs text-slate-400">Ditambahkan oleh: System Auto</p>
-                                </div>
-                            </div>
-                            <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
+                    <div id="domain-whitelist-list" class="space-y-3">
+                        <div class="text-sm text-slate-400">Memuat domain...</div>
                     </div>
                 </div>
 
@@ -326,65 +225,13 @@
                                 <p class="text-sm text-secondary">Kontak sah yang diverifikasi</p>
                             </div>
                         </div>
-                        <button class="btn-add-whitelist bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all" data-type="nomor telepon">
+                        <button id="btn-add-phone" class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-black transition-all">
                             <span class="material-symbols-outlined text-sm">add</span> Tambah
                         </button>
                     </div>
 
-                    <div class="space-y-3">
-                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
-                                    <span class="material-symbols-outlined text-sm text-slate-400">support_agent</span>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-on-surface">14041</p>
-                                    <p class="text-xs text-slate-400">Layanan Contact Center Utama</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded uppercase">Verified</span>
-                                <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
-                                    <span class="material-symbols-outlined text-sm text-slate-400">message</span>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-on-surface">CIMB NIAGA (WA)</p>
-                                    <p class="text-xs text-slate-400">WhatsApp Business Resmi</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded uppercase">Verified</span>
-                                <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="whitelist-row flex items-center justify-between p-3 border border-slate-100 rounded-lg hover:border-primary/20 transition-all group" data-whitelist-row>
-                            <div class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
-                                    <span class="material-symbols-outlined text-sm text-slate-400">campaign</span>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-on-surface">+62 811-123-4567</p>
-                                    <p class="text-xs text-slate-400">Telemarketing Resmi (Outbound)</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase">Standard</span>
-                                <button class="btn-delete-whitelist p-2 text-slate-300 hover:text-error transition-colors opacity-0 group-hover:opacity-100">
-                                    <span class="material-symbols-outlined">delete</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div id="phone-whitelist-list" class="space-y-3">
+                        <div class="text-sm text-slate-400">Memuat nomor...</div>
                     </div>
                 </div>
             </div>

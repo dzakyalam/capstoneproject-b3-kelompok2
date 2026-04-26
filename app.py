@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session, Response
 import os
 import re
 import csv
@@ -7,7 +7,7 @@ import joblib
 import pymysql
 import numpy as np
 import hashlib
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import urlparse
 from scipy.sparse import hstack, csr_matrix
 from pymysql.cursors import DictCursor
@@ -30,12 +30,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # =========================================================
 # KONFIGURASI DATABASE MYSQL
 # =========================================================
-# Sesuaikan dengan MySQL XAMPP kamu:
-# - host = 127.0.0.1
-# - port = 3307
-# - user = root
-# - password = kosong
-# - database = cimb_guardian
+
 DB_CONFIG = {
     "host": "127.0.0.1",
     "port": 3307,
@@ -94,14 +89,17 @@ def hash_password(password: str) -> str:
 # - mengubah 08xxxx menjadi +628xxxx
 # - mengubah 62xxxx menjadi +62xxxx
 def normalize_phone(phone: str) -> str:
-    phone = re.sub(r"[^\d+]", "", str(phone).strip())
+    raw_phone = str(phone).strip()
 
-    if not phone:
+    if not raw_phone:
         return ""
 
-    # jika nomor dalam format scientific notation dari Excel, abaikan
-    # nanti bisa diperbaiki manual di CSV
-    if "e+" in phone.lower():
+    if "e+" in raw_phone.lower():
+        return ""
+
+    phone = re.sub(r"[^\d+]", "", raw_phone)
+
+    if not phone:
         return ""
 
     if phone.startswith("08"):
@@ -109,7 +107,6 @@ def normalize_phone(phone: str) -> str:
     if phone.startswith("62"):
         return "+" + phone
     return phone
-
 
 # =========================================================
 # IMPORT WHITELIST DARI FILE CSV
@@ -240,6 +237,22 @@ def init_db():
                 )
             """)
 
+            # Tabel artikel edukasi
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS education_articles (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    category VARCHAR(100) NOT NULL,
+                    summary TEXT NOT NULL,
+                    content TEXT NOT NULL,
+                    status VARCHAR(30) NOT NULL DEFAULT 'Draft',
+                    read_time VARCHAR(30) NOT NULL DEFAULT '5 mnt baca',
+                    image_url TEXT NULL,
+                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )
+            """)
+
             # Tambah kolom reporter_email jika project lama belum punya
             try:
                 cur.execute("SHOW COLUMNS FROM reports LIKE 'reporter_email'")
@@ -283,9 +296,68 @@ def init_db():
                     (phone,)
                 )
 
+            # Seed artikel edukasi default
+            cur.execute("SELECT COUNT(*) AS total FROM education_articles")
+            article_count = cur.fetchone()["total"]
+
+            if article_count == 0:
+                default_articles = [
+                    (
+                        "Tren penipuan terbaru",
+                        "Edukasi Utama",
+                        "Penipu terus memperbarui taktik mereka. Pelajari tentang skema Quishing dan penipuan berbasis AI yang sedang marak terjadi saat ini.",
+                        "Materi ini membahas tren penipuan digital terbaru, termasuk phishing berbasis QR, social engineering, dan penyamaran layanan resmi.",
+                        "Published",
+                        "6 mnt baca",
+                        "https://lh3.googleusercontent.com/aida-public/AB6AXuC5_3lQdbwHlMbZ6ev87pwhsEtLI926_FTB_9wga3wAj88jy0_ehxAvIpVEMZgXCQosVTQ-j3D_tuHd8Jc2gGiQf9ugFBYqthzZA-Za1D0XuQFmCrRr9RoB2sXAeHV1aRXMpfjXpxd7h-jBD_PRIeSMI_p7N1_EsPCPtAsLJXpJhM-c1ug1H5uWOEErYm_k4hKx0BiytODkThxdPz_a-QkAPnIHD0e77dk265r05ZffmHxGQiO8Fq1L0ezSKlN7m1tAC-r7InilK_A"
+                    ),
+                    (
+                        "Apa itu phishing?",
+                        "Keamanan Dasar",
+                        "Mengenali upaya penipuan melalui email atau pesan teks yang menyamar sebagai institusi resmi untuk mencuri kredensial Anda.",
+                        "Phishing adalah metode penipuan digital yang bertujuan mencuri informasi sensitif seperti username, password, OTP, atau data rekening dengan menyamar sebagai pihak resmi.",
+                        "Published",
+                        "4 mnt baca",
+                        ""
+                    ),
+                    (
+                        "Jangan pernah bagikan OTP",
+                        "Keamanan Akun",
+                        "Kode OTP adalah kunci akses terakhir Anda. Pihak bank tidak akan pernah meminta kode ini melalui media apapun.",
+                        "OTP bersifat rahasia dan hanya digunakan untuk verifikasi transaksi oleh pemilik akun. Jangan pernah membagikannya kepada siapa pun.",
+                        "Published",
+                        "3 mnt baca",
+                        ""
+                    ),
+                    (
+                        "Peringatan layanan pelanggan palsu",
+                        "Waspada Penipuan",
+                        "Waspadai akun media sosial atau nomor WhatsApp tidak resmi yang mengaku sebagai Customer Service CIMB.",
+                        "Pastikan Anda hanya menghubungi kanal resmi dan memverifikasi nomor atau akun layanan pelanggan sebelum berinteraksi lebih lanjut.",
+                        "Published",
+                        "4 mnt baca",
+                        ""
+                    ),
+                    (
+                        "Cara mengidentifikasi tautan penipuan",
+                        "Tips & Trik",
+                        "Langkah praktis untuk membedakan URL resmi dengan link phishing yang berbahaya sebelum Anda klik.",
+                        "Periksa domain, protokol, ejaan, dan tujuan akhir tautan sebelum membuka link, terutama jika dikirim melalui pesan yang mendesak.",
+                        "Published",
+                        "5 mnt baca",
+                        ""
+                    ),
+                ]
+
+                for article in default_articles:
+                    cur.execute("""
+                        INSERT INTO education_articles
+                        (title, category, summary, content, status, read_time, image_url)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    """, article)
+
     # Import whitelist dari CSV
     import_whitelist_from_csv()
-
 
 # =========================================================
 # GENERATE TICKET ID
@@ -546,10 +618,12 @@ def analyze_message(text: str):
     if phone_flag:
         score += 30
     score += int(nlp_prob * 40)
-    score = min(score, 100)
+
+    # Maksimal skor dibuat 95, bukan 100
+    score = min(score, 95)
 
     if ai_score >= 60 and score < 70:
-        score = min(100, score + 10)
+        score = min(95, score + 10)
 
     if score >= 70:
         risk_level = "High Risk"
@@ -647,6 +721,9 @@ def track_page():
 def education_page():
     return render_template("user/education.html")
 
+@app.route("/bantuan.html")
+def help_page():
+    return render_template("user/bantuan.html")
 
 # =========================================================
 # ADMIN LOGIN
@@ -724,13 +801,20 @@ def admin_case_review():
     return render_template("admin/case-review.html")
 
 
+@app.route("/admin/whitelist")
+@app.route("/admin/whitelist.html")
+def admin_whitelist():
+    if not require_admin():
+        return redirect(url_for("admin_login"))
+    return render_template("admin/whitelist.html")
+
+
 @app.route("/admin/education-cms")
 @app.route("/admin/education-cms.html")
 def admin_education_cms():
     if not require_admin():
         return redirect(url_for("admin_login"))
     return render_template("admin/education-cms.html")
-
 
 # =========================================================
 # USER API
@@ -937,7 +1021,404 @@ def admin_summary():
 def admin_logs_alias():
     return admin_reports()
 
+# =========================================================
+# ADMIN ANALYTICS API
+# =========================================================
 
+@app.route("/admin/analytics/summary", methods=["GET"])
+def admin_analytics_summary():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    today = datetime.now().date()
+    start_date = today - timedelta(days=6)
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT DATE(created_at) AS report_date, COUNT(*) AS total
+                FROM reports
+                WHERE DATE(created_at) >= %s
+                GROUP BY DATE(created_at)
+                ORDER BY DATE(created_at) ASC
+            """, (start_date,))
+            trend_rows = cur.fetchall()
+
+            cur.execute("SELECT COUNT(*) AS total_reports FROM reports")
+            total_reports = cur.fetchone()["total_reports"]
+
+            cur.execute("SELECT COUNT(*) AS total FROM whitelist_domains")
+            total_domains = cur.fetchone()["total"]
+
+            cur.execute("SELECT COUNT(*) AS total FROM whitelist_phones")
+            total_phones = cur.fetchone()["total"]
+
+    trend_map = {str(row["report_date"]): row["total"] for row in trend_rows}
+    trend = []
+
+    for i in range(7):
+        day = start_date + timedelta(days=i)
+        trend.append({
+            "date": str(day),
+            "label": day.strftime("%a").upper(),
+            "total": trend_map.get(str(day), 0)
+        })
+
+    return jsonify({
+        "total_reports": total_reports,
+        "total_domains": total_domains,
+        "total_phones": total_phones,
+        "trend": trend
+    }), 200
+
+
+@app.route("/admin/analytics/scam-types", methods=["GET"])
+def admin_scam_types():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT ticket_id, message_text, extracted_urls, extracted_phones, risk_level, risk_score
+                FROM reports
+                ORDER BY created_at DESC
+            """)
+            rows = cur.fetchall()
+
+    counters = {
+        "Phishing Link": 0,
+        "Social Engineering": 0,
+        "Impersonasi Bank": 0,
+        "Carding / APK": 0,
+    }
+
+    for row in rows:
+        msg = (row.get("message_text") or "").lower()
+        urls = (row.get("extracted_urls") or "").strip()
+
+        if urls:
+            counters["Phishing Link"] += 1
+
+        if any(word in msg for word in [
+            "hadiah", "bonus", "segera", "urgent", "hubungi",
+            "transfer", "biaya", "daftar ulang"
+        ]):
+            counters["Social Engineering"] += 1
+
+        if any(word in msg for word in [
+            "bank", "rekening", "akun", "otp", "pin", "verifikasi"
+        ]):
+            counters["Impersonasi Bank"] += 1
+
+        if any(word in msg for word in [
+            "apk", "install", "download aplikasi", "carding"
+        ]):
+            counters["Carding / APK"] += 1
+
+    total = sum(counters.values()) or 1
+
+    result = []
+    for name, count in counters.items():
+        result.append({
+            "name": name,
+            "count": count,
+            "percentage": round((count / total) * 100)
+        })
+
+    result.sort(key=lambda x: x["count"], reverse=True)
+    return jsonify(result), 200
+
+
+# =========================================================
+# ADMIN WHITELIST API
+# =========================================================
+
+@app.route("/admin/whitelist/domains", methods=["GET"])
+def admin_get_domains():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, domain, created_at
+                FROM whitelist_domains
+                ORDER BY domain ASC
+            """)
+            rows = cur.fetchall()
+
+    return jsonify(rows), 200
+
+
+@app.route("/admin/whitelist/phones", methods=["GET"])
+def admin_get_phones():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, phone, created_at
+                FROM whitelist_phones
+                ORDER BY phone ASC
+            """)
+            rows = cur.fetchall()
+
+    return jsonify(rows), 200
+
+
+@app.route("/admin/whitelist/domain", methods=["POST"])
+def admin_add_domain():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+    domain = str(data.get("domain") or "").strip().lower()
+
+    if not domain:
+        return jsonify({"message": "Domain wajib diisi"}), 400
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT IGNORE INTO whitelist_domains(domain) VALUES (%s)",
+                (domain,)
+            )
+
+    return jsonify({"message": "Domain berhasil ditambahkan"}), 200
+
+
+@app.route("/admin/whitelist/phone", methods=["POST"])
+def admin_add_phone():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+    phone = normalize_phone(str(data.get("phone") or "").strip())
+
+    if not phone:
+        return jsonify({"message": "Nomor wajib diisi"}), 400
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "INSERT IGNORE INTO whitelist_phones(phone) VALUES (%s)",
+                (phone,)
+            )
+
+    return jsonify({"message": "Nomor berhasil ditambahkan"}), 200
+
+
+@app.route("/admin/whitelist/domain/<int:item_id>", methods=["DELETE"])
+def admin_delete_domain(item_id):
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM whitelist_domains WHERE id=%s", (item_id,))
+
+    return jsonify({"message": "Domain berhasil dihapus"}), 200
+
+
+@app.route("/admin/whitelist/phone/<int:item_id>", methods=["DELETE"])
+def admin_delete_phone(item_id):
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM whitelist_phones WHERE id=%s", (item_id,))
+
+    return jsonify({"message": "Nomor berhasil dihapus"}), 200
+    
+# =========================================================
+# ADMIN EXPORT API
+# =========================================================
+
+@app.route("/admin/export/reports", methods=["GET"])
+def admin_export_reports():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT
+                    ticket_id,
+                    reporter_email,
+                    message_text,
+                    extracted_urls,
+                    extracted_phones,
+                    url_flag,
+                    phone_flag,
+                    nlp_prob,
+                    ai_extra_score,
+                    risk_score,
+                    risk_level,
+                    admin_status,
+                    admin_note,
+                    created_at,
+                    updated_at
+                FROM reports
+                ORDER BY created_at DESC
+            """)
+            rows = cur.fetchall()
+
+    output = []
+    header = [
+        "ticket_id",
+        "reporter_email",
+        "message_text",
+        "extracted_urls",
+        "extracted_phones",
+        "url_flag",
+        "phone_flag",
+        "nlp_prob",
+        "ai_extra_score",
+        "risk_score",
+        "risk_level",
+        "admin_status",
+        "admin_note",
+        "created_at",
+        "updated_at",
+    ]
+    output.append(",".join(header))
+
+    for row in rows:
+        values = []
+        for col in header:
+            val = row.get(col, "")
+            val = "" if val is None else str(val)
+            val = val.replace('"', '""')
+            values.append(f'"{val}"')
+        output.append(",".join(values))
+
+    csv_data = "\n".join(output)
+    filename = f"fraudguard_reports_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+
+    return Response(
+        csv_data,
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+ # =========================================================
+# EDUCATION API
+# =========================================================
+
+@app.route("/admin/education/articles", methods=["GET"])
+def admin_get_education_articles():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, title, category, summary, content, status, read_time, image_url, created_at, updated_at
+                FROM education_articles
+                ORDER BY updated_at DESC, created_at DESC
+            """)
+            rows = cur.fetchall()
+
+    return jsonify(rows), 200
+
+
+@app.route("/admin/education/article", methods=["POST"])
+def admin_add_education_article():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+
+    title = str(data.get("title") or "").strip()
+    category = str(data.get("category") or "").strip()
+    summary = str(data.get("summary") or "").strip()
+    content = str(data.get("content") or "").strip()
+    status = str(data.get("status") or "Draft").strip()
+    read_time = str(data.get("read_time") or "5 mnt baca").strip()
+    image_url = str(data.get("image_url") or "").strip()
+
+    if not title or not category or not summary or not content:
+        return jsonify({"message": "Semua field wajib diisi"}), 400
+
+    if status not in ["Draft", "Published"]:
+        return jsonify({"message": "Status tidak valid"}), 400
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO education_articles
+                (title, category, summary, content, status, read_time, image_url)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (title, category, summary, content, status, read_time, image_url))
+
+    return jsonify({"message": "Materi edukasi berhasil ditambahkan"}), 200
+
+
+@app.route("/admin/education/article/<int:article_id>", methods=["PUT"])
+def admin_update_education_article(article_id):
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or {}
+
+    title = str(data.get("title") or "").strip()
+    category = str(data.get("category") or "").strip()
+    summary = str(data.get("summary") or "").strip()
+    content = str(data.get("content") or "").strip()
+    status = str(data.get("status") or "Draft").strip()
+    read_time = str(data.get("read_time") or "5 mnt baca").strip()
+    image_url = str(data.get("image_url") or "").strip()
+
+    if not title or not category or not summary or not content:
+        return jsonify({"message": "Semua field wajib diisi"}), 400
+
+    if status not in ["Draft", "Published"]:
+        return jsonify({"message": "Status tidak valid"}), 400
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                UPDATE education_articles
+                SET title=%s, category=%s, summary=%s, content=%s, status=%s, read_time=%s, image_url=%s
+                WHERE id=%s
+            """, (title, category, summary, content, status, read_time, image_url, article_id))
+
+            if cur.rowcount == 0:
+                return jsonify({"message": "Artikel tidak ditemukan"}), 404
+
+    return jsonify({"message": "Artikel berhasil diperbarui"}), 200
+
+
+@app.route("/admin/education/article/<int:article_id>", methods=["DELETE"])
+def admin_delete_education_article(article_id):
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM education_articles WHERE id=%s", (article_id,))
+            if cur.rowcount == 0:
+                return jsonify({"message": "Artikel tidak ditemukan"}), 404
+
+    return jsonify({"message": "Artikel berhasil dihapus"}), 200
+
+
+@app.route("/api/education/articles", methods=["GET"])
+def user_get_education_articles():
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, title, category, summary, content, read_time, image_url, created_at
+                FROM education_articles
+                WHERE status='Published'
+                ORDER BY updated_at DESC, created_at DESC
+            """)
+            rows = cur.fetchall()
+
+    return jsonify(rows), 200
 # =========================================================
 # HEALTH CHECK
 # =========================================================

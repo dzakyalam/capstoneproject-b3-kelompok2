@@ -79,10 +79,10 @@
                 Laporan Masuk
             </a>
 
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
-                <span class="material-symbols-outlined">verified_user</span>
-                Whitelist
-            </a>
+            <a href="{{ url_for('admin_whitelist') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+    <span class="material-symbols-outlined">verified_user</span>
+    Whitelist
+</a>
 
             <a href="{{ url_for('admin_education_cms') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
                 <span class="material-symbols-outlined">school</span>

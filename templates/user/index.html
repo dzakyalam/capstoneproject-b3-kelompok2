@@ -61,14 +61,21 @@
                         "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }],
                     },
                     spacing: {
-                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
-                        "xl": "32px", "2xl": "48px", "3xl": "64px", "gutter": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "2xl": "48px",
+                        "3xl": "64px",
+                        "gutter": "24px",
                     },
                 },
             },
         };
     </script>
 </head>
+
 <body class="bg-background text-on-background font-body-md min-h-screen">
 
     <!-- ====== HEADER ====== -->
@@ -79,10 +86,21 @@
             </a>
 
             <nav class="hidden md:flex items-center gap-8 font-display text-sm font-medium tracking-tight">
-                <a href="{{ url_for('home') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Beranda</a>
-                <a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Lacak Tiket</a>
-                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Edukasi</a>
-                <a href="#" class="text-slate-600 hover:text-red-500 transition-colors">Bantuan</a>
+                <a href="{{ url_for('home') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">
+                    Beranda
+                </a>
+
+                <a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">
+                    Lacak Tiket
+                </a>
+
+                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">
+                    Edukasi
+                </a>
+
+                <a href="{{ url_for('help_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">
+                    Bantuan
+                </a>
             </nav>
 
             <a
@@ -101,7 +119,7 @@
             <div class="grid lg:grid-cols-2 gap-16 items-start">
 
                 <!-- Teks & Form Kiri -->
-                <div class="space-y-8">
+                <div class="space-y-8 animate-hero-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-primary rounded-full text-label-md font-semibold text-sm">
                         <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">shield</span>
                         Perlindungan Digital Real-Time
@@ -116,9 +134,12 @@
                     </p>
 
                     <!-- Form Analyzer -->
-                    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container-high space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container-high space-y-6 animate-up delay-300">
                         <div class="space-y-2">
-                            <label for="input-pesan" class="text-label-md font-semibold text-on-surface text-sm block">Analisa Pesan</label>
+                            <label for="input-pesan" class="text-label-md font-semibold text-on-surface text-sm block">
+                                Analisa Pesan
+                            </label>
+
                             <textarea
                                 id="input-pesan"
                                 class="w-full h-40 bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none text-body-md text-sm"
@@ -128,7 +149,10 @@
 
                         <div class="grid md:grid-cols-2 gap-4 items-end">
                             <div class="space-y-2">
-                                <label for="input-email" class="text-label-md font-semibold text-on-surface text-sm block">Alamat Email</label>
+                                <label for="input-email" class="text-label-md font-semibold text-on-surface text-sm block">
+                                    Alamat Email
+                                </label>
+
                                 <input
                                     id="input-email"
                                     type="email"
@@ -156,29 +180,78 @@
                 <!-- Dashboard Preview Kanan -->
                 <div class="relative hidden lg:block">
                     <div class="absolute -top-12 -right-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-                    <div class="bg-white rounded-xl border border-surface-container-high shadow-2xl overflow-hidden relative z-10">
+
+                    <div class="scanner-card-animated bg-white rounded-xl border border-surface-container-high shadow-2xl overflow-hidden relative z-10">
                         <div class="p-6 border-b border-surface-container-high flex justify-between items-center bg-surface-container-lowest">
                             <div class="flex items-center gap-3">
-                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                                <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                                <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                                <div class="window-dot w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="window-dot w-3 h-3 rounded-full bg-amber-400"></div>
+                                <div class="window-dot w-3 h-3 rounded-full bg-emerald-400"></div>
                             </div>
+
                             <span class="text-xs text-secondary font-medium">SCANNER STATUS: ACTIVE</span>
                         </div>
 
                         <div class="p-6 space-y-6">
                             <div class="flex items-center justify-center py-12">
-                                <div class="relative w-48 h-48">
-                                    <svg class="w-full h-full transform -rotate-90">
-                                        <circle class="text-surface-container-high" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-width="12" />
-                                        <circle class="text-primary" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502" stroke-dashoffset="120" stroke-width="12" />
-                                    </svg>
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                        <span class="text-4xl font-bold font-display">85%</span>
-                                        <span class="text-xs text-secondary uppercase tracking-widest">Aman</span>
-                                    </div>
-                                </div>
-                            </div>
+    <div
+        id="security-score-card"
+        class="security-score-card relative w-52 h-52 cursor-pointer"
+        data-score="85"
+    >
+        <svg class="w-full h-full transform -rotate-90">
+            <circle
+                class="text-surface-container-high"
+                cx="104"
+                cy="104"
+                fill="transparent"
+                r="84"
+                stroke="currentColor"
+                stroke-width="12"
+            />
+
+            <circle
+                id="security-score-ring"
+                class="security-score-ring text-primary"
+                cx="104"
+                cy="104"
+                fill="transparent"
+                r="84"
+                stroke="currentColor"
+                stroke-dasharray="528"
+                stroke-dashoffset="528"
+                stroke-width="12"
+                stroke-linecap="round"
+            />
+        </svg>
+
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+            <div class="relative">
+                <span
+                    id="security-score-number"
+                    class="text-5xl font-bold font-display text-slate-900"
+                >
+                    0
+                </span>
+                <span class="text-2xl font-bold text-slate-900">%</span>
+            </div>
+
+            <span
+                id="security-score-label"
+                class="text-xs text-secondary uppercase tracking-widest mt-1"
+            >
+                Memindai
+            </span>
+        </div>
+
+        <div class="security-score-tooltip absolute left-1/2 -translate-x-1/2 -bottom-6 w-64 bg-slate-900 text-white text-xs rounded-xl p-4 shadow-xl opacity-0 pointer-events-none transition-all">
+            <p class="font-bold mb-1">Protection Strength</p>
+            <p class="text-slate-300">
+                Sistem aktif memeriksa pola phishing, URL mencurigakan, dan nomor tidak resmi.
+            </p>
+        </div>
+    </div>
+</div>
 
                             <div class="space-y-3">
                                 <div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg">
@@ -186,7 +259,8 @@
                                         <span class="material-symbols-outlined text-emerald-600">verified_user</span>
                                         <span class="text-sm font-medium">Enkripsi Database</span>
                                     </div>
-                                    <span class="text-xs text-emerald-600 font-bold">AKTIF</span>
+
+                                    <span class="text-xs text-emerald-600 font-bold status-blink">AKTIF</span>
                                 </div>
 
                                 <div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg">
@@ -194,7 +268,8 @@
                                         <span class="material-symbols-outlined text-primary">gpp_maybe</span>
                                         <span class="text-sm font-medium">Deteksi Phishing</span>
                                     </div>
-                                    <span class="text-xs text-primary font-bold">1 PERINGATAN</span>
+
+                                    <span class="text-xs text-primary font-bold status-blink">1 PERINGATAN</span>
                                 </div>
                             </div>
                         </div>
@@ -203,75 +278,101 @@
             </div>
         </section>
 
+        <!-- ====== STATS ====== -->
         <section class="max-w-7xl mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between">
+                <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between hover-lift">
                     <h3 class="font-semibold text-secondary text-lg">Serangan Phishing 2023</h3>
+
                     <div class="mt-8">
                         <div class="text-5xl font-bold text-primary font-display">+142%</div>
-                        <p class="text-sm text-secondary mt-2">Peningkatan upaya penipuan digital di Asia Tenggara dalam 12 bulan terakhir.</p>
+                        <p class="text-sm text-secondary mt-2">
+                            Peningkatan upaya penipuan digital di Asia Tenggara dalam 12 bulan terakhir.
+                        </p>
                     </div>
                 </div>
 
-                <div class="bg-primary text-on-primary p-6 rounded-xl flex flex-col justify-between">
+                <div class="bg-primary text-on-primary p-6 rounded-xl flex flex-col justify-between hover-lift">
                     <span class="material-symbols-outlined text-3xl">trending_up</span>
+
                     <div class="mt-8">
                         <div class="text-5xl font-bold font-display">Rp 5.2T</div>
-                        <p class="text-sm opacity-80 mt-2">Estimasi kerugian nasabah akibat kejahatan siber di Indonesia per tahun.</p>
+                        <p class="text-sm opacity-80 mt-2">
+                            Estimasi kerugian nasabah akibat kejahatan siber di Indonesia per tahun.
+                        </p>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between">
+                <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between hover-lift">
                     <h3 class="font-semibold text-secondary text-lg">Waktu Deteksi</h3>
+
                     <div class="mt-8">
                         <div class="text-5xl font-bold text-on-surface font-display">&lt;2s</div>
-                        <p class="text-sm text-secondary mt-2">Kecepatan CIMB Guardian dalam menganalisa ancaman setelah Anda menekan tombol analisa.</p>
+                        <p class="text-sm text-secondary mt-2">
+                            Kecepatan CIMB Guardian dalam menganalisa ancaman setelah Anda menekan tombol analisa.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ====== WHY US ====== -->
         <section class="max-w-7xl mx-auto px-6 py-12">
             <div class="text-center mb-16 space-y-4">
                 <h2 class="text-h1 font-h1 font-semibold text-3xl">Mengapa menggunakan CIMB Guardian?</h2>
-                <p class="text-body-lg text-secondary max-w-2xl mx-auto">Sistem kami dibangun di atas infrastruktur keamanan perbankan global untuk memberikan kepastian hukum dan teknis.</p>
+                <p class="text-body-lg text-secondary max-w-2xl mx-auto">
+                    Sistem kami dibangun di atas infrastruktur keamanan perbankan global untuk memberikan kepastian hukum dan teknis.
+                </p>
             </div>
 
             <div class="grid md:grid-cols-4 gap-8">
-                <div class="space-y-4 group">
+                <div class="space-y-4 group hover-lift p-2 rounded-xl">
                     <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">security</span>
                     </div>
+
                     <h4 class="font-semibold text-lg">Keamanan Perbankan</h4>
-                    <p class="text-sm text-secondary leading-relaxed">Analisis dilakukan menggunakan standar keamanan data finansial internasional.</p>
+                    <p class="text-sm text-secondary leading-relaxed">
+                        Analisis dilakukan menggunakan standar keamanan data finansial internasional.
+                    </p>
                 </div>
 
-                <div class="space-y-4 group">
+                <div class="space-y-4 group hover-lift p-2 rounded-xl">
                     <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">psychology</span>
                     </div>
+
                     <h4 class="font-semibold text-lg">Kecerdasan Buatan</h4>
-                    <p class="text-sm text-secondary leading-relaxed">Model AI kami terus belajar dari jutaan pola serangan phishing terbaru setiap hari.</p>
+                    <p class="text-sm text-secondary leading-relaxed">
+                        Model AI kami terus belajar dari jutaan pola serangan phishing terbaru setiap hari.
+                    </p>
                 </div>
 
-                <div class="space-y-4 group">
+                <div class="space-y-4 group hover-lift p-2 rounded-xl">
                     <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">description</span>
                     </div>
+
                     <h4 class="font-semibold text-lg">Tiket Laporan Otomatis</h4>
-                    <p class="text-sm text-secondary leading-relaxed">Dapatkan bukti pelaporan digital yang sah untuk keperluan klaim atau investigasi.</p>
+                    <p class="text-sm text-secondary leading-relaxed">
+                        Dapatkan bukti pelaporan digital yang sah untuk keperluan klaim atau investigasi.
+                    </p>
                 </div>
 
-                <div class="space-y-4 group">
+                <div class="space-y-4 group hover-lift p-2 rounded-xl">
                     <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">support_agent</span>
                     </div>
+
                     <h4 class="font-semibold text-lg">Dukungan Prioritas</h4>
-                    <p class="text-sm text-secondary leading-relaxed">Analisis berisiko tinggi akan diteruskan langsung ke tim Fraud Response kami.</p>
+                    <p class="text-sm text-secondary leading-relaxed">
+                        Analisis berisiko tinggi akan diteruskan langsung ke tim Fraud Response kami.
+                    </p>
                 </div>
             </div>
         </section>
 
+        <!-- ====== TIPS ====== -->
         <section class="max-w-7xl mx-auto px-6 py-16">
             <div class="bg-surface-container rounded-3xl overflow-hidden flex flex-col lg:flex-row">
                 <div class="lg:w-1/3 relative min-h-[300px]">
@@ -290,28 +391,36 @@
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
                             <span class="text-primary font-bold text-2xl font-display">01.</span>
                             <h5 class="font-semibold text-lg">Cek URL dan Pengirim</h5>
-                            <p class="text-sm text-secondary">Jangan pernah mengeklik tautan dari pengirim yang tidak dikenal atau memiliki domain mencurigakan.</p>
+                            <p class="text-sm text-secondary">
+                                Jangan pernah mengeklik tautan dari pengirim yang tidak dikenal atau memiliki domain mencurigakan.
+                            </p>
                         </div>
 
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
                             <span class="text-primary font-bold text-2xl font-display">02.</span>
                             <h5 class="font-semibold text-lg">Jangan Bagikan OTP</h5>
-                            <p class="text-sm text-secondary">Bank tidak akan pernah meminta One-Time Password (OTP) Anda melalui telepon, SMS, atau media sosial.</p>
+                            <p class="text-sm text-secondary">
+                                Bank tidak akan pernah meminta One-Time Password (OTP) Anda melalui telepon, SMS, atau media sosial.
+                            </p>
                         </div>
 
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
                             <span class="text-primary font-bold text-2xl font-display">03.</span>
                             <h5 class="font-semibold text-lg">Gunakan 2FA</h5>
-                            <p class="text-sm text-secondary">Aktifkan Otentikasi Dua Faktor pada semua akun email dan aplikasi mobile banking Anda.</p>
+                            <p class="text-sm text-secondary">
+                                Aktifkan Otentikasi Dua Faktor pada semua akun email dan aplikasi mobile banking Anda.
+                            </p>
                         </div>
 
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
                             <span class="text-primary font-bold text-2xl font-display">04.</span>
                             <h5 class="font-semibold text-lg">Lapor Segera</h5>
-                            <p class="text-sm text-secondary">Jika Anda terlanjur memberikan data, segera hubungi call center resmi bank di 14041.</p>
+                            <p class="text-sm text-secondary">
+                                Jika Anda terlanjur memberikan data, segera hubungi call center resmi bank di 14041.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -320,30 +429,100 @@
 
     </main>
 
+    <!-- ====== FOOTER ====== -->
     <footer class="bg-slate-50 border-t border-slate-200 mt-12">
         <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-8">
-            <div class="space-y-2">
+            <div class="space-y-2 text-center md:text-left">
                 <div class="text-lg font-bold text-slate-900">CIMB Guardian</div>
                 <p class="text-xs text-slate-500">© 2026 CIMB Guardian. Hak Cipta Dilindungi.</p>
             </div>
 
             <nav class="flex flex-wrap justify-center gap-6 text-xs">
-                <a href="#" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Kebijakan Keamanan</a>
-                <a href="#" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Syarat Layanan</a>
-                <a href="#" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Pusat Privasi</a>
-                <a href="#" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Hubungi Dukungan</a>
+                <button
+                    type="button"
+                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                    data-footer="security"
+                >
+                    Kebijakan Keamanan
+                </button>
+
+                <button
+                    type="button"
+                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                    data-footer="terms"
+                >
+                    Syarat Layanan
+                </button>
+
+                <button
+                    type="button"
+                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                    data-footer="privacy"
+                >
+                    Pusat Privasi
+                </button>
+
+                <button
+                    type="button"
+                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                    data-footer="support"
+                >
+                    Hubungi Dukungan
+                </button>
             </nav>
 
             <div class="flex gap-4">
-                <a href="#" class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all">
+                <button
+                    type="button"
+                    id="btn-language"
+                    class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                    title="Ganti Bahasa"
+                >
                     <span class="material-symbols-outlined text-lg">public</span>
-                </a>
-                <a href="#" class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all">
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-official-channel"
+                    class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                    title="Kanal Resmi CIMB"
+                >
                     <span class="material-symbols-outlined text-lg">shield</span>
-                </a>
+                </button>
             </div>
         </div>
     </footer>
+
+    <!-- ====== FOOTER MODAL ====== -->
+    <div id="footer-modal" class="fixed inset-0 z-[9999] hidden">
+        <div id="footer-modal-overlay" class="absolute inset-0 bg-black/40"></div>
+
+        <div class="relative bg-white w-[92%] max-w-xl mx-auto mt-24 rounded-2xl shadow-2xl overflow-hidden">
+            <div class="flex items-start justify-between gap-4 p-6 border-b border-slate-100">
+                <div>
+                    <h3 id="footer-modal-title" class="text-xl font-bold text-slate-900">
+                        Judul
+                    </h3>
+
+                    <p id="footer-modal-subtitle" class="text-sm text-slate-500 mt-1">
+                        Informasi CIMB Guardian
+                    </p>
+                </div>
+
+                <button
+                    id="footer-modal-close"
+                    type="button"
+                    class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500"
+                >
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div id="footer-modal-content" class="p-6 text-sm text-slate-600 leading-relaxed">
+                Konten modal.
+            </div>
+        </div>
+    </div>
 
     <script src="{{ url_for('static', filename='user/js/main.js') }}"></script>
 </body>
