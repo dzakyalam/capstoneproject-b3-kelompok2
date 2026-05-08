@@ -53,18 +53,30 @@
             </a>
 
             <nav class="hidden md:flex items-center gap-8 font-display text-sm font-medium tracking-tight">
-                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
-                <a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Lacak Tiket</a>
-                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Edukasi</a>
-                <a href="{{ url_for('help_page') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Bantuan</a>
-            </nav>
+    <a href="{{ url_for('home') }}" data-i18n="nav_home" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
+    <a href="{{ url_for('track_page') }}" data-i18n="nav_track" class="text-slate-600 hover:text-red-500 transition-colors">Lacak Tiket</a>
+    <a href="{{ url_for('education_page') }}" data-i18n="nav_education" class="text-slate-600 hover:text-red-500 transition-colors">Edukasi</a>
+    <a href="{{ url_for('help_page') }}" data-i18n="nav_help" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Bantuan</a>
+</nav>
 
-            <a
-                href="{{ url_for('admin_login') }}"
-                class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-medium hover:bg-primary transition-all active:scale-[0.98] text-sm inline-flex items-center justify-center"
-            >
-                Masuk
-            </a>
+<div class="flex items-center gap-3">
+    <button
+        type="button"
+        id="btn-language"
+        class="px-3 h-9 rounded-lg bg-slate-100 text-slate-700 hover:bg-red-600 hover:text-white transition-all text-xs font-bold"
+        title="Ganti Bahasa"
+    >
+        EN
+    </button>
+
+    <a
+        href="{{ url_for('admin_login') }}"
+        data-i18n="nav_login"
+        class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-medium hover:bg-primary transition-all active:scale-[0.98] text-sm inline-flex items-center justify-center"
+    >
+        Masuk
+    </a>
+</div>
         </div>
     </header>
 
@@ -75,17 +87,18 @@
             <div class="max-w-7xl mx-auto px-6 py-16 md:py-20">
                 <div class="max-w-3xl">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-primary rounded-full text-sm font-semibold">
-                        <span class="material-symbols-outlined text-lg">support_agent</span>
-                        Pusat Bantuan
-                    </div>
+    <span class="material-symbols-outlined text-lg">support_agent</span>
+    <span data-i18n="help_badge">Pusat Bantuan</span>
+</div>
 
-                    <h1 class="mt-6 text-4xl md:text-5xl font-bold font-display text-slate-900 leading-tight">
-                        Butuh bantuan menggunakan <span class="text-primary">CIMB Guardian?</span>
-                    </h1>
+<h1 class="mt-6 text-4xl md:text-5xl font-bold font-display text-slate-900 leading-tight">
+    <span data-i18n="help_title_1">Butuh bantuan menggunakan</span>
+    <span class="text-primary">CIMB Guardian?</span>
+</h1>
 
-                    <p class="mt-5 text-slate-600 text-lg leading-relaxed max-w-2xl">
-                        Temukan panduan penggunaan, cara melacak tiket, informasi keamanan, dan kontak bantuan jika Anda mengalami kendala atau menemukan pesan mencurigakan.
-                    </p>
+<p data-i18n="help_desc" class="mt-5 text-slate-600 text-lg leading-relaxed max-w-2xl">
+    Temukan panduan penggunaan, cara melacak tiket, informasi keamanan, dan kontak bantuan jika Anda mengalami kendala atau menemukan pesan mencurigakan.
+</p>
                 </div>
             </div>
         </section>
@@ -97,30 +110,30 @@
                     <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">analytics</span>
                     </div>
-                    <h3 class="mt-5 font-bold text-lg text-slate-900">Analisa Pesan</h3>
-                    <p class="mt-2 text-sm text-slate-500 leading-relaxed">
-                        Tempelkan SMS, WhatsApp, atau email mencurigakan untuk mengetahui potensi phishing.
-                    </p>
+                    <h3 data-i18n="help_card_analyze_title" class="mt-5 font-bold text-lg text-slate-900">Analisa Pesan</h3>
+<p data-i18n="help_card_analyze_desc" class="mt-2 text-sm text-slate-500 leading-relaxed">
+    Tempelkan SMS, WhatsApp, atau email mencurigakan untuk mengetahui potensi phishing.
+</p>
                 </a>
 
                 <a href="{{ url_for('track_page') }}" class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:border-red-100 transition-all group">
                     <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">confirmation_number</span>
                     </div>
-                    <h3 class="mt-5 font-bold text-lg text-slate-900">Lacak Tiket</h3>
-                    <p class="mt-2 text-sm text-slate-500 leading-relaxed">
-                        Masukkan ID tiket dan email untuk melihat status laporan yang sudah dikirim.
-                    </p>
+                    <h3 data-i18n="help_card_track_title" class="mt-5 font-bold text-lg text-slate-900">Lacak Tiket</h3>
+<p data-i18n="help_card_track_desc" class="mt-2 text-sm text-slate-500 leading-relaxed">
+    Masukkan ID tiket dan email untuk melihat status laporan yang sudah dikirim.
+</p>
                 </a>
 
                 <a href="{{ url_for('education_page') }}" class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md hover:border-red-100 transition-all group">
                     <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                         <span class="material-symbols-outlined">school</span>
                     </div>
-                    <h3 class="mt-5 font-bold text-lg text-slate-900">Edukasi Keamanan</h3>
-                    <p class="mt-2 text-sm text-slate-500 leading-relaxed">
-                        Pelajari ciri-ciri penipuan digital dan cara melindungi data pribadi Anda.
-                    </p>
+                    <h3 data-i18n="help_card_edu_title" class="mt-5 font-bold text-lg text-slate-900">Edukasi Keamanan</h3>
+<p data-i18n="help_card_edu_desc" class="mt-2 text-sm text-slate-500 leading-relaxed">
+    Pelajari ciri-ciri penipuan digital dan cara melindungi data pribadi Anda.
+</p>
                 </a>
             </div>
         </section>
@@ -132,60 +145,65 @@
                 <!-- FAQ -->
                 <div class="lg:col-span-2 space-y-6">
                     <div>
-                        <p class="text-xs uppercase tracking-widest font-bold text-primary">FAQ</p>
-                        <h2 class="text-3xl font-bold text-slate-900 mt-2">Pertanyaan yang Sering Diajukan</h2>
+                        <p data-i18n="help_faq_label" class="text-xs uppercase tracking-widest font-bold text-primary">FAQ</p>
+<h2 data-i18n="help_faq_title" class="text-3xl font-bold text-slate-900 mt-2">Pertanyaan yang Sering Diajukan</h2>
                     </div>
 
                     <div class="space-y-4">
                         <details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
-                                Bagaimana cara menggunakan fitur Analisa Pesan?
-                                <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
-                            </summary>
-                            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                                Buka halaman Beranda, tempelkan isi pesan yang mencurigakan, masukkan email jika ingin menerima pembaruan, lalu tekan tombol Analisa Pesan. Sistem akan menampilkan hasil risiko dan rekomendasi tindakan.
-                            </p>
+    <span data-i18n="help_faq_1_q">Bagaimana cara menggunakan fitur Analisa Pesan?</span>
+    <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+
+<p data-i18n="help_faq_1_a" class="mt-4 text-sm text-slate-600 leading-relaxed">
+    Buka halaman Beranda, tempelkan isi pesan yang mencurigakan, masukkan email jika ingin menerima pembaruan, lalu tekan tombol Analisa Pesan. Sistem akan menampilkan hasil risiko dan rekomendasi tindakan.
+</p>
                         </details>
 
-                        <details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
-                            <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
-                                Apa fungsi ID tiket?
-                                <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
-                            </summary>
-                            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                                ID tiket digunakan untuk melacak status laporan Anda. Simpan ID tiket setelah mengirim laporan agar Anda dapat memeriksa pembaruan melalui halaman Lacak Tiket.
-                            </p>
-                        </details>
+                       <details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+    <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
+        <span data-i18n="help_faq_2_q">Apa fungsi ID tiket?</span>
+        <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+    </summary>
 
-                        <details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
-                            <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
-                                Apakah saya boleh memasukkan OTP atau PIN?
-                                <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
-                            </summary>
-                            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                                Tidak. Jangan pernah memasukkan OTP, PIN, password, CVV, atau nomor kartu lengkap ke dalam sistem. CIMB Guardian hanya membutuhkan isi pesan mencurigakan untuk membantu proses analisis.
-                            </p>
-                        </details>
+    <p data-i18n="help_faq_2_a" class="mt-4 text-sm text-slate-600 leading-relaxed">
+        ID tiket digunakan untuk melacak status laporan Anda. Simpan ID tiket setelah mengirim laporan agar Anda dapat memeriksa pembaruan melalui halaman Lacak Tiket.
+    </p>
+</details>
 
-                        <details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
-                            <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
-                                Apa yang harus dilakukan jika sudah terlanjur memberikan data?
-                                <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
-                            </summary>
-                            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                                Segera hubungi call center resmi bank di 14041, ubah password akun terkait, aktifkan autentikasi dua faktor, dan laporkan pesan tersebut melalui CIMB Guardian.
-                            </p>
-                        </details>
+<details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+    <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
+        <span data-i18n="help_faq_3_q">Apakah saya boleh memasukkan OTP atau PIN?</span>
+        <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+    </summary>
 
-                        <details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
-                            <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
-                                Apakah hasil analisis pasti benar?
-                                <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
-                            </summary>
-                            <p class="mt-4 text-sm text-slate-600 leading-relaxed">
-                                Hasil analisis bersifat indikatif sebagai deteksi awal. Untuk kasus berisiko tinggi atau transaksi mencurigakan, tetap lakukan verifikasi melalui kanal resmi bank.
-                            </p>
-                        </details>
+    <p data-i18n="help_faq_3_a" class="mt-4 text-sm text-slate-600 leading-relaxed">
+        Tidak. Jangan pernah memasukkan OTP, PIN, password, CVV, atau nomor kartu lengkap ke dalam sistem. CIMB Guardian hanya membutuhkan isi pesan mencurigakan untuk membantu proses analisis.
+    </p>
+</details>
+
+<details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+    <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
+        <span data-i18n="help_faq_4_q">Apa yang harus dilakukan jika sudah terlanjur memberikan data?</span>
+        <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+    </summary>
+
+    <p data-i18n="help_faq_4_a" class="mt-4 text-sm text-slate-600 leading-relaxed">
+        Segera hubungi call center resmi bank di 14041, ubah password akun terkait, aktifkan autentikasi dua faktor, dan laporkan pesan tersebut melalui CIMB Guardian.
+    </p>
+</details>
+
+<details class="group bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+    <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-900">
+        <span data-i18n="help_faq_5_q">Apakah hasil analisis pasti benar?</span>
+        <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+    </summary>
+
+    <p data-i18n="help_faq_5_a" class="mt-4 text-sm text-slate-600 leading-relaxed">
+        Hasil analisis bersifat indikatif sebagai deteksi awal. Untuk kasus berisiko tinggi atau transaksi mencurigakan, tetap lakukan verifikasi melalui kanal resmi bank.
+    </p>
+</details>
                     </div>
                 </div>
 
@@ -196,10 +214,11 @@
                             <span class="material-symbols-outlined text-3xl">call</span>
                         </div>
 
-                        <h3 class="mt-5 text-xl font-bold">Butuh Bantuan Cepat?</h3>
-                        <p class="mt-2 text-sm text-slate-300 leading-relaxed">
-                            Jika Anda merasa menjadi korban penipuan, segera hubungi kanal resmi.
-                        </p>
+                        <h3 data-i18n="help_fast_title" class="mt-5 text-xl font-bold">Butuh Bantuan Cepat?</h3>
+
+<p data-i18n="help_fast_desc" class="mt-2 text-sm text-slate-300 leading-relaxed">
+    Jika Anda merasa menjadi korban penipuan, segera hubungi kanal resmi.
+</p>
 
                         <div class="mt-6 space-y-3">
                             <a href="tel:14041" class="flex items-center gap-3 bg-white text-slate-900 rounded-xl px-4 py-3 font-bold hover:bg-red-50 transition-colors">
@@ -208,32 +227,32 @@
                             </a>
 
                             <a href="mailto:support@cimbguardian.local" class="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3 font-semibold hover:bg-white/15 transition-colors">
-                                <span class="material-symbols-outlined">mail</span>
-                                Email Dukungan
-                            </a>
+    <span class="material-symbols-outlined">mail</span>
+    <span data-i18n="help_email_support">Email Dukungan</span>
+</a>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
                         <h3 class="font-bold text-slate-900 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">verified_user</span>
-                            Kanal Resmi
-                        </h3>
+    <span class="material-symbols-outlined text-primary">verified_user</span>
+    <span data-i18n="help_official_channel">Kanal Resmi</span>
+</h3>
 
                         <div class="mt-5 space-y-3">
                             <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
                                 <p class="text-sm font-bold text-slate-800">cimbniaga.co.id</p>
-                                <p class="text-xs text-slate-500 mt-1">Domain utama resmi</p>
+                                <p data-i18n="help_main_domain" class="text-xs text-slate-500 mt-1">Domain utama resmi</p>
                             </div>
 
                             <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
                                 <p class="text-sm font-bold text-slate-800">octo.cimbniaga.co.id</p>
-                                <p class="text-xs text-slate-500 mt-1">Portal OCTO</p>
+                                <p data-i18n="help_octo_portal" class="text-xs text-slate-500 mt-1">Portal OCTO</p>
                             </div>
 
                             <div class="p-3 rounded-xl bg-red-50 border border-red-100">
                                 <p class="text-sm font-bold text-red-700">14041</p>
-                                <p class="text-xs text-slate-500 mt-1">Call center resmi</p>
+                                <p data-i18n="help_call_center" class="text-xs text-slate-500 mt-1">Call center resmi</p>
                             </div>
                         </div>
                     </div>
@@ -248,14 +267,16 @@
         <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-10 max-w-7xl mx-auto gap-8">
             <div class="space-y-2 text-center md:text-left">
                 <div class="text-lg font-bold text-slate-900">CIMB Guardian</div>
-                <p class="text-xs text-slate-500">© 2026 CIMB Guardian. Hak Cipta Dilindungi.</p>
+                <p data-i18n="footer_copyright_2026" class="text-xs text-slate-500">
+    © 2026 CIMB Guardian. Hak Cipta Dilindungi.
+</p>
             </div>
 
             <nav class="flex flex-wrap justify-center gap-6 text-xs">
-                <a href="{{ url_for('home') }}" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Beranda</a>
-                <a href="{{ url_for('track_page') }}" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Lacak Tiket</a>
-                <a href="{{ url_for('education_page') }}" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Edukasi</a>
-                <a href="{{ url_for('help_page') }}" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Bantuan</a>
+                <a href="{{ url_for('home') }}" data-i18n="nav_home" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Beranda</a>
+<a href="{{ url_for('track_page') }}" data-i18n="nav_track" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Lacak Tiket</a>
+<a href="{{ url_for('education_page') }}" data-i18n="nav_education" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Edukasi</a>
+<a href="{{ url_for('help_page') }}" data-i18n="nav_help" class="text-slate-500 hover:text-red-600 hover:underline transition-colors">Bantuan</a>
             </nav>
         </div>
     </footer>

@@ -48,35 +48,59 @@
 <body class="bg-background text-on-surface" style="font-family: 'Inter', sans-serif;">
 
     <!-- ====== HEADER ====== -->
-    <header class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-50">
-        <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
-            <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">
-                CIMB Guardian
+<header class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-50">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+        <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">
+            CIMB Guardian
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 font-display text-sm font-medium tracking-tight">
+            <a href="{{ url_for('home') }}" data-i18n="nav_home" class="text-slate-600 hover:text-red-500 transition-colors">
+                Beranda
             </a>
-            <nav class="hidden md:flex items-center gap-8 font-display text-sm font-medium tracking-tight">
-                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
-                <a href="{{ url_for('track_page') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Lacak Tiket</a>
-                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Edukasi</a>
-                <a href="#" class="text-slate-600 hover:text-red-500 transition-colors">Bantuan</a>
-            </nav>
-            <button class="bg-primary-container text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary transition-all active:scale-[0.98]">
-                Masuk
-            </button>
-        </div>
-    </header>
+
+            <a href="{{ url_for('track_page') }}" data-i18n="nav_track" class="text-slate-600 hover:text-red-500 transition-colors">
+                Lacak Tiket
+            </a>
+
+            <a href="{{ url_for('education_page') }}" data-i18n="nav_education" class="text-slate-600 hover:text-red-500 transition-colors">
+                Edukasi
+            </a>
+
+            <a href="{{ url_for('help_page') }}" data-i18n="nav_help" class="text-slate-600 hover:text-red-500 transition-colors">
+                Bantuan
+            </a>
+        </nav>
+
+        <a
+            href="{{ url_for('admin_login') }}"
+            data-i18n="nav_login"
+            class="bg-primary-container text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary transition-all active:scale-[0.98] inline-flex items-center justify-center"
+        >
+            Masuk
+        </a>
+    </div>
+</header>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
 
         <div class="mb-12">
-            <h1 class="text-3xl font-semibold text-on-surface mb-2 font-h1">Hasil Analisis Keamanan</h1>
-            <p class="text-secondary">Laporan deteksi potensi ancaman siber untuk pesan yang Anda kirimkan.</p>
+            <h1 data-i18n="result_title" class="text-3xl font-semibold text-on-surface mb-2 font-h1">
+    Hasil Analisis Keamanan
+</h1>
+
+<p data-i18n="result_desc" class="text-secondary">
+    Laporan deteksi potensi ancaman siber untuk pesan yang Anda kirimkan.
+</p>
         </div>
 
         <div class="grid grid-cols-12 gap-6">
 
             <!-- ====== SKOR RISIKO ====== -->
             <div class="col-span-12 lg:col-span-5 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center text-center">
-                <h3 class="text-xl font-semibold mb-6">Skor Risiko</h3>
+                <h3 data-i18n="result_risk_score_title" class="text-xl font-semibold mb-6">
+    Skor Risiko
+</h3>
 
                 <div class="gauge-container mb-4">
                     <div class="gauge-body"></div>
@@ -102,7 +126,9 @@
             <div class="col-span-12 lg:col-span-7 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)]">
                 <div class="flex items-center gap-2 mb-6">
                     <span class="material-symbols-outlined text-primary">analytics</span>
-                    <h3 class="text-xl font-semibold">Indikator Ancaman</h3>
+                    <h3 data-i18n="result_indicators_title" class="text-xl font-semibold">
+    Indikator Ancaman
+</h3>
                 </div>
 
                 <div id="indicators-list" class="space-y-4">
@@ -114,7 +140,9 @@
             <div class="col-span-12 bg-white rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)]">
                 <div class="flex items-center gap-2 mb-6 border-b border-surface-variant pb-4">
                     <span class="material-symbols-outlined text-primary">security</span>
-                    <h3 class="text-xl font-semibold">Rekomendasi Keamanan</h3>
+                    <h3 data-i18n="result_recommendations_title" class="text-xl font-semibold">
+    Rekomendasi Keamanan
+</h3>
                 </div>
 
                 <div id="recommendations-list" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -129,18 +157,29 @@
                         <span class="material-symbols-outlined">info</span>
                     </div>
                     <div>
-                        <p class="text-sm font-semibold">Siap mengambil tindakan?</p>
-                        <p class="text-sm text-secondary">Konfirmasi tiket akan dikirim ke email Anda segera setelah laporan diproses.</p>
+                        <p data-i18n="result_action_title" class="text-sm font-semibold">
+    Siap mengambil tindakan?
+</p>
+
+<p data-i18n="result_action_desc" class="text-sm text-secondary">
+    Konfirmasi tiket akan dikirim ke email Anda segera setelah laporan diproses.
+</p>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-4 w-full md:w-auto">
-                    <button id="btn-analisa-lain" class="flex-1 md:flex-none border border-primary text-primary px-8 py-3 rounded-lg text-sm font-semibold hover:bg-red-50 transition-colors">
-                        Analisa Pesan Lain
-                    </button>
-                    <button id="btn-kirim-laporan" class="flex-1 md:flex-none bg-primary-container text-on-primary px-8 py-3 rounded-lg text-sm font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-lg">send</span>
-                        Kirim Laporan Penipuan
-                    </button>
+                    <button
+    id="btn-analisa-lain"
+    class="flex-1 md:flex-none border border-primary text-primary px-8 py-3 rounded-lg text-sm font-semibold hover:bg-red-50 transition-colors"
+>
+    <span data-i18n="result_analyze_another">Analisa Pesan Lain</span>
+</button>
+                    <button
+    id="btn-kirim-laporan"
+    class="flex-1 md:flex-none bg-primary-container text-on-primary px-8 py-3 rounded-lg text-sm font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2"
+>
+    <span class="material-symbols-outlined text-lg">send</span>
+    <span data-i18n="result_send_report">Kirim Laporan Penipuan</span>
+</button>
                 </div>
             </div>
 
@@ -148,18 +187,46 @@
     </main>
 
     <!-- ====== FOOTER ====== -->
-    <footer class="bg-slate-50 border-t border-slate-200 mt-12">
-        <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-4">
-            <div class="text-lg font-bold text-slate-900">CIMB Guardian</div>
-            <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Kebijakan Keamanan</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Syarat Layanan</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Pusat Privasi</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Hubungi Dukungan</a>
-            </div>
-            <p class="text-xs text-slate-500">© 2024 CIMB Guardian. Hak Cipta Dilindungi.</p>
+<footer class="bg-slate-50 border-t border-slate-200 mt-12">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-4">
+        <div class="text-lg font-bold text-slate-900">
+            CIMB Guardian
         </div>
-    </footer>
+
+        <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
+            <a href="#" data-i18n="footer_security" class="hover:text-red-600 hover:underline transition-colors">
+                Kebijakan Keamanan
+            </a>
+
+            <a href="#" data-i18n="footer_terms" class="hover:text-red-600 hover:underline transition-colors">
+                Syarat Layanan
+            </a>
+
+            <a href="#" data-i18n="footer_privacy" class="hover:text-red-600 hover:underline transition-colors">
+                Pusat Privasi
+            </a>
+
+            <a href="#" data-i18n="footer_support" class="hover:text-red-600 hover:underline transition-colors">
+                Hubungi Dukungan
+            </a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button
+                type="button"
+                id="btn-language"
+                class="px-3 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all text-xs font-bold"
+                title="Ganti Bahasa"
+            >
+                EN
+            </button>
+
+            <p data-i18n="footer_copyright" class="text-xs text-slate-500">
+                © 2024 CIMB Guardian. Hak Cipta Dilindungi.
+            </p>
+        </div>
+    </div>
+</footer>
 
     <script src="{{ url_for('static', filename='user/js/main.js') }}"></script>
 </body>

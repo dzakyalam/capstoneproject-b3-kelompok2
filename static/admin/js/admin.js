@@ -203,7 +203,6 @@ function bindReviewButtons() {
     document.querySelectorAll('.btn-review').forEach(function (btn) {
         btn.addEventListener('click', function () {
             const ticketId = btn.getAttribute('data-ticket') || '';
-            sessionStorage.setItem('activeTicket', ticketId);
             window.location.href = `/admin/case-review.html?ticket_id=${encodeURIComponent(ticketId)}`;
         });
     });
@@ -213,7 +212,6 @@ function bindRiskItems() {
     document.querySelectorAll('.risk-item').forEach(function (item) {
         item.addEventListener('click', function () {
             const ticketId = item.getAttribute('data-ticket') || '';
-            sessionStorage.setItem('activeTicket', ticketId);
             window.location.href = `/admin/case-review.html?ticket_id=${encodeURIComponent(ticketId)}`;
         });
     });
@@ -259,12 +257,70 @@ function bindSearch(allData) {
 
 function getCurrentTicketId() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('ticket_id') || sessionStorage.getItem('activeTicket') || '';
+    return params.get('ticket_id') || '';
+}
+
+function clearCaseReviewPage() {
+    const textFields = [
+        'breadcrumb-ticket',
+        'page-title-ticket',
+        'report-id-small',
+        'detail-email',
+        'detail-created-at',
+        'detail-status',
+        'detail-urls',
+        'detail-phones',
+        'detail-confidence',
+        'detail-risk-label',
+        'detail-risk-level',
+        'analysis-url',
+        'analysis-phone'
+    ];
+
+    textFields.forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '-';
+    });
+
+    const reportedMsg = document.getElementById('reported-msg');
+    if (reportedMsg) {
+        reportedMsg.textContent = 'Pilih laporan dari Dashboard atau tabel Laporan Masuk untuk melihat detail review.';
+    }
+
+    const adminNote = document.getElementById('admin-note');
+    if (adminNote) {
+        adminNote.value = '';
+        adminNote.disabled = true;
+        adminNote.placeholder = 'Pilih tiket terlebih dahulu untuk menambahkan catatan.';
+    }
+
+    const riskBar = document.getElementById('detail-risk-bar');
+    if (riskBar) {
+        riskBar.style.width = '0%';
+    }
+
+    const priorityBadge = document.getElementById('priority-badge');
+    if (priorityBadge) {
+        priorityBadge.classList.add('hidden');
+    }
+
+    ['btn-phishing', 'btn-eskalasi', 'btn-aman', 'btn-save-note'].forEach(function (id) {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    });
 }
 
 async function loadCaseReviewDetail() {
     const ticketId = getCurrentTicketId();
-    if (!ticketId) return;
+
+    if (!ticketId) {
+        sessionStorage.removeItem('activeTicket');
+        clearCaseReviewPage();
+        return;
+    }
 
     try {
         const res = await fetch(`/admin/report/${encodeURIComponent(ticketId)}`);
@@ -319,7 +375,6 @@ async function loadCaseReviewDetail() {
         if (analysisUrl) analysisUrl.textContent = urlsText || 'Tidak ada URL terdeteksi';
         if (analysisPhone) analysisPhone.textContent = phonesText || 'Tidak ada nomor terdeteksi';
 
-        sessionStorage.setItem('activeTicket', ticketText);
     } catch (err) {
         console.error('loadCaseReviewDetail:', err);
         showToast(err.message, 'error');

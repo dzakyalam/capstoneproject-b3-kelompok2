@@ -7,10 +7,13 @@ import joblib
 import pymysql
 import numpy as np
 import hashlib
+import smtplib
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
 from scipy.sparse import hstack, csr_matrix
 from pymysql.cursors import DictCursor
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 # =========================================================
@@ -26,6 +29,16 @@ app.secret_key = os.getenv("SECRET_KEY", "cimb-guardian-secret-key")
 # bisa dibaca dengan path yang stabil.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# =========================================================
+# KONFIGURASI GMAIL SMTP
+# =========================================================
+# Jangan hardcode email/password asli di app.py.
+# Gunakan environment variable supaya aman saat push ke GitHub.
+MAIL_USERNAME = os.getenv("MAIL_USERNAME", "")
+MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "")
+MAIL_SENDER_NAME = os.getenv("MAIL_SENDER_NAME", "CIMB Guardian")
+MAIL_SMTP_HOST = os.getenv("MAIL_SMTP_HOST", "smtp.gmail.com")
+MAIL_SMTP_PORT = int(os.getenv("MAIL_SMTP_PORT", "587"))
 
 # =========================================================
 # KONFIGURASI DATABASE MYSQL
@@ -80,7 +93,117 @@ def get_conn(with_db: bool = True):
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
 
+# =========================================================
+# KIRIM EMAIL NOTIFIKASI
+# =========================================================
+def send_email_notification(to_email: str, subject: str, html_body: str, text_body: str = "") -> bool:
+    to_email = str(to_email or "").strip()
 
+    if not to_email:
+        print("[EMAIL] Email tujuan kosong. Notifikasi tidak dikirim.")
+        return False
+
+    if not MAIL_USERNAME or not MAIL_PASSWORD:
+        print("[EMAIL] MAIL_USERNAME atau MAIL_PASSWORD belum dikonfigurasi.")
+        return False
+
+    try:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = f"{MAIL_SENDER_NAME} <{MAIL_USERNAME}>"
+        msg["To"] = to_email
+
+        if not text_body:
+            text_body = re.sub(r"<[^>]+>", "", html_body)
+
+        msg.attach(MIMEText(text_body, "plain", "utf-8"))
+        msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+        with smtplib.SMTP(MAIL_SMTP_HOST, MAIL_SMTP_PORT) as server:
+            server.starttls()
+            server.login(MAIL_USERNAME, MAIL_PASSWORD)
+            server.sendmail(MAIL_USERNAME, [to_email], msg.as_string())
+
+        print(f"[EMAIL] Notifikasi berhasil dikirim ke {to_email}")
+        return True
+
+    except Exception as e:
+        print("[EMAIL] Gagal mengirim email:", e)
+        return False
+
+
+def build_ticket_created_email(ticket_id: str, risk_score: int, risk_level: str):
+    subject = f"CIMB Guardian - Laporan diterima ({ticket_id})"
+
+    html = f"""
+    <div style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.6;">
+        <h2 style="color: #b5000b;">CIMB Guardian</h2>
+
+        <p>Laporan Anda telah diterima dan sedang menunggu verifikasi admin.</p>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin: 16px 0;">
+            <p><strong>ID Tiket:</strong> {ticket_id}</p>
+            <p><strong>Skor Risiko:</strong> {risk_score}%</p>
+            <p><strong>Level Risiko:</strong> {risk_level}</p>
+            <p><strong>Status:</strong> Pending</p>
+        </div>
+
+        <p>Gunakan ID tiket ini untuk melacak status laporan Anda di halaman Lacak Tiket.</p>
+
+        <p style="font-size: 12px; color: #64748b;">
+            Jangan pernah membagikan OTP, PIN, password, CVV, atau data rahasia kepada siapa pun.
+        </p>
+    </div>
+    """
+
+    text = f"""
+CIMB Guardian
+
+Laporan Anda telah diterima.
+
+ID Tiket: {ticket_id}
+Skor Risiko: {risk_score}%
+Level Risiko: {risk_level}
+Status: Pending
+
+Gunakan ID tiket ini untuk melacak status laporan Anda di halaman Lacak Tiket.
+"""
+
+    return subject, html, text
+
+
+def build_status_updated_email(ticket_id: str, status: str, note: str):
+    subject = f"CIMB Guardian - Status tiket {ticket_id} diperbarui"
+
+    html = f"""
+    <div style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.6;">
+        <h2 style="color: #b5000b;">CIMB Guardian</h2>
+
+        <p>Status laporan Anda telah diperbarui oleh admin.</p>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin: 16px 0;">
+            <p><strong>ID Tiket:</strong> {ticket_id}</p>
+            <p><strong>Status Baru:</strong> {status}</p>
+            <p><strong>Catatan Admin:</strong> {note or "-"}</p>
+        </div>
+
+        <p>Silakan cek halaman Lacak Tiket untuk melihat detail pembaruan.</p>
+    </div>
+    """
+
+    text = f"""
+CIMB Guardian
+
+Status laporan Anda telah diperbarui.
+
+ID Tiket: {ticket_id}
+Status Baru: {status}
+Catatan Admin: {note or "-"}
+
+Silakan cek halaman Lacak Tiket untuk melihat detail pembaruan.
+"""
+
+    return subject, html, text
 # =========================================================
 # NORMALISASI NOMOR TELEPON
 # =========================================================
@@ -816,6 +939,29 @@ def admin_education_cms():
         return redirect(url_for("admin_login"))
     return render_template("admin/education-cms.html")
 
+
+@app.route("/admin/reports-queue")
+@app.route("/admin/reports-queue.html")
+def admin_reports_queue():
+    if not require_admin():
+        return redirect(url_for("admin_login"))
+    return render_template("admin/reports-queue.html")
+
+
+@app.route("/admin/ticket-management")
+@app.route("/admin/ticket-management.html")
+def admin_ticket_management():
+    if not require_admin():
+        return redirect(url_for("admin_login"))
+    return render_template("admin/ticket-management.html")
+
+
+@app.route("/admin/settings")
+@app.route("/admin/settings.html")
+def admin_settings():
+    if not require_admin():
+        return redirect(url_for("admin_login"))
+    return render_template("admin/settings.html")
 # =========================================================
 # USER API
 # =========================================================
@@ -876,6 +1022,14 @@ def api_report():
                     ),
                 )
 
+        if reporter_email:
+            subject, html, text_email = build_ticket_created_email(
+                ticket_id,
+                analysis["risk_score"],
+                analysis["risk_level"]
+            )
+            send_email_notification(reporter_email, subject, html, text_email)
+
         return jsonify({
             "message": "Laporan berhasil dikirim",
             "ticket_id": ticket_id,
@@ -885,7 +1039,6 @@ def api_report():
 
     except Exception as e:
         return jsonify({"message": f"Terjadi error: {str(e)}"}), 500
-
 
 # API untuk tracking tiket user berdasarkan ticket_id.
 @app.route("/api/ticket/<ticket_id>", methods=["GET"])
@@ -969,15 +1122,33 @@ def admin_update_report(ticket_id):
     if admin_status not in allowed_status:
         return jsonify({"message": "Status admin tidak valid"}), 400
 
+    reporter_email = None
+
     with get_conn() as conn:
         with conn.cursor() as cur:
+            cur.execute(
+                "SELECT reporter_email FROM reports WHERE ticket_id=%s LIMIT 1",
+                (ticket_id,)
+            )
+            existing_report = cur.fetchone()
+
+            if not existing_report:
+                return jsonify({"message": "Ticket tidak ditemukan"}), 404
+
+            reporter_email = existing_report.get("reporter_email")
+
             cur.execute(
                 "UPDATE reports SET admin_status=%s, admin_note=%s WHERE ticket_id=%s",
                 (admin_status, admin_note, ticket_id),
             )
 
-            if cur.rowcount == 0:
-                return jsonify({"message": "Ticket tidak ditemukan"}), 404
+    if reporter_email:
+        subject, html, text_email = build_status_updated_email(
+            ticket_id,
+            admin_status,
+            admin_note
+        )
+        send_email_notification(reporter_email, subject, html, text_email)
 
     return jsonify({
         "message": "Perubahan berhasil disimpan. Status laporan dan catatan admin telah diperbarui."

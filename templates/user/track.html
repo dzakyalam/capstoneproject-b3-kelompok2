@@ -48,76 +48,130 @@
 
     <!-- ====== HEADER ====== -->
     <nav class="bg-white shadow-sm border-b border-slate-100 sticky top-0 z-50">
-        <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
-            <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">CIMB Guardian</a>
-            <div class="hidden md:flex gap-8 items-center font-display text-sm font-medium tracking-tight">
-                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
-                <a href="{{ url_for('track_page') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Lacak Tiket</a>
-                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Edukasi</a>
-                <a href="#" class="text-slate-600 hover:text-red-500 transition-colors">Bantuan</a>
-            </div>
-            <button class="bg-white border border-slate-200 text-slate-700 px-5 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all active:scale-95">
-                Masuk
-            </button>
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+        <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">
+            CIMB Guardian
+        </a>
+
+        <div class="hidden md:flex gap-8 items-center font-display text-sm font-medium tracking-tight">
+            <a href="{{ url_for('home') }}" data-i18n="nav_home" class="text-slate-600 hover:text-red-500 transition-colors">
+                Beranda
+            </a>
+
+            <a href="{{ url_for('track_page') }}" data-i18n="nav_track" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">
+                Lacak Tiket
+            </a>
+
+            <a href="{{ url_for('education_page') }}" data-i18n="nav_education" class="text-slate-600 hover:text-red-500 transition-colors">
+                Edukasi
+            </a>
+
+            <a href="{{ url_for('help_page') }}" data-i18n="nav_help" class="text-slate-600 hover:text-red-500 transition-colors">
+                Bantuan
+            </a>
         </div>
-    </nav>
+
+        <a
+            href="{{ url_for('admin_login') }}"
+            data-i18n="nav_login"
+            class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-medium hover:bg-primary transition-all active:scale-[0.98] text-sm inline-flex items-center justify-center"
+        >
+            Masuk
+        </a>
+    </div>
+</nav>
 
     <main class="flex-grow max-w-7xl mx-auto w-full px-6 py-16">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-            <!-- ====== KOLOM KIRI: FORM CARI ====== -->
-            <div class="lg:col-span-5 space-y-6">
-                <div class="space-y-2">
-                    <h1 class="text-3xl font-semibold text-on-background font-h1">Lacak Status Tiket Anda</h1>
-                    <p class="text-secondary max-w-md">Periksa perkembangan terbaru laporan keamanan Anda dengan memasukkan detail di bawah ini secara akurat.</p>
-                </div>
+           <!-- ====== KOLOM KIRI: FORM CARI ====== -->
+<div class="lg:col-span-5 space-y-6">
+    <div class="space-y-2">
+        <h1 data-i18n="track_title" class="text-3xl font-semibold text-on-background font-h1">
+            Lacak Status Tiket Anda
+        </h1>
 
-                <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container">
-                    <div class="space-y-4">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-sm font-semibold text-secondary" for="ticket-id">Masukkan ID Tiket</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-xl">confirmation_number</span>
-                                <input
-                                    id="ticket-id"
-                                    type="text"
-                                    class="w-full pl-10 pr-4 py-3 rounded-lg border border-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm"
-                                    placeholder="Contoh: CG-2026-00124"
-                                />
-                            </div>
-                        </div>
+        <p data-i18n="track_desc" class="text-secondary max-w-md">
+            Periksa perkembangan terbaru laporan keamanan Anda dengan memasukkan detail di bawah ini secara akurat.
+        </p>
+    </div>
 
-                        <div class="flex flex-col gap-1">
-                            <label class="text-sm font-semibold text-secondary" for="email">Masukkan Alamat Email</label>
-                            <div class="relative">
-                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-xl">mail</span>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    class="w-full pl-10 pr-4 py-3 rounded-lg border border-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm"
-                                    placeholder="email@anda.com"
-                                />
-                            </div>
-                        </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container">
+        <div class="space-y-4">
+            <div class="flex flex-col gap-1">
+                <label
+                    for="ticket-id"
+                    data-i18n="track_ticket_label"
+                    class="text-sm font-semibold text-secondary"
+                >
+                    Masukkan ID Tiket
+                </label>
 
-                        <button
-                            id="btn-cek-status"
-                            class="w-full bg-primary-container text-on-primary py-3.5 rounded-lg text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                        >
-                            <span class="material-symbols-outlined">search</span>
-                            Cek Status
-                        </button>
-                    </div>
-                </div>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-xl">
+                        confirmation_number
+                    </span>
 
-                <div class="bg-surface-container-low p-4 rounded-lg flex gap-4 items-start">
-                    <span class="material-symbols-outlined text-primary flex-shrink-0">info</span>
-                    <div>
-                        <p class="text-sm font-semibold text-on-background">Butuh Bantuan Segera?</p>
-                        <p class="text-sm text-secondary">Jika laporan Anda bersifat mendesak, hubungi pusat panggilan 24/7 kami di 14041.</p>
-                    </div>
+                    <input
+                        id="ticket-id"
+                        type="text"
+                        data-i18n-placeholder="track_ticket_placeholder"
+                        class="w-full pl-10 pr-4 py-3 rounded-lg border border-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm"
+                        placeholder="Contoh: CG-2026-00124"
+                    />
                 </div>
             </div>
+
+            <div class="flex flex-col gap-1">
+                <label
+                    for="email"
+                    data-i18n="track_email_label"
+                    class="text-sm font-semibold text-secondary"
+                >
+                    Masukkan Alamat Email
+                </label>
+
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-xl">
+                        mail
+                    </span>
+
+                    <input
+                        id="email"
+                        type="email"
+                        data-i18n-placeholder="track_email_placeholder"
+                        class="w-full pl-10 pr-4 py-3 rounded-lg border border-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm"
+                        placeholder="email@anda.com"
+                    />
+                </div>
+            </div>
+
+            <button
+                id="btn-cek-status"
+                class="w-full bg-primary-container text-on-primary py-3.5 rounded-lg text-sm font-semibold hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            >
+                <span class="material-symbols-outlined">search</span>
+                <span data-i18n="track_button">Cek Status</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-surface-container-low p-4 rounded-lg flex gap-4 items-start">
+        <span class="material-symbols-outlined text-primary flex-shrink-0">
+            info
+        </span>
+
+        <div>
+            <p data-i18n="track_help_title" class="text-sm font-semibold text-on-background">
+                Butuh Bantuan Segera?
+            </p>
+
+            <p data-i18n="track_help_desc" class="text-sm text-secondary">
+                Jika laporan Anda bersifat mendesak, hubungi pusat panggilan 24/7 kami di 14041.
+            </p>
+        </div>
+    </div>
+</div>
 
             <!-- ====== KOLOM KANAN: HASIL ====== -->
             <div class="lg:col-span-7">
@@ -126,7 +180,9 @@
                     <!-- Header Card -->
                     <div class="p-6 border-b border-surface-container flex justify-between items-center bg-surface-container-lowest">
                         <div>
-                            <p class="text-xs text-secondary uppercase tracking-widest font-medium">Detail Laporan</p>
+                            <p data-i18n="track_detail_label" class="text-xs text-secondary uppercase tracking-widest font-medium">
+    Detail Laporan
+</p>
                             <h2 id="track-ticket-id" class="text-2xl font-semibold text-on-background font-h2">-</h2>
                         </div>
                         <div class="flex flex-col items-end">
@@ -140,48 +196,65 @@
 
                     <div class="p-6 space-y-8">
 
-                        <!-- Ringkasan yang tetap mirip kartu timeline -->
-                        <div class="relative">
-                            <div class="absolute left-[11px] top-0 bottom-0 w-[2px] bg-surface-container"></div>
-                            <div class="space-y-6">
+                       <!-- Ringkasan Timeline -->
+<div class="relative">
+    <div class="absolute left-[11px] top-0 bottom-0 w-[2px] bg-surface-container"></div>
 
-                                <div class="relative pl-10">
-                                    <div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-primary border-4 border-white ring-1 ring-primary flex items-center justify-center z-10">
-                                        <span class="material-symbols-outlined text-white text-xs">check</span>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-semibold text-on-background">Laporan Diterima</p>
-                                        <p class="text-sm text-secondary">Tiket Anda telah berhasil didaftarkan ke sistem.</p>
-                                        <p id="track-created" class="text-xs text-tertiary-container font-medium mt-1">-</p>
-                                    </div>
-                                </div>
+    <div class="space-y-6">
+        <div class="relative pl-10">
+            <div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-primary border-4 border-white ring-1 ring-primary flex items-center justify-center z-10">
+                <span class="material-symbols-outlined text-white text-xs">check</span>
+            </div>
 
-                                <div class="relative pl-10">
-                                    <div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-4 border-primary z-10"></div>
-                                    <div>
-                                        <p class="text-sm font-semibold text-primary">Status Saat Ini</p>
-                                        <p class="text-sm text-on-background">Status laporan akan ditampilkan berdasarkan update terbaru dari sistem.</p>
-                                        <p id="track-updated-copy" class="text-xs text-tertiary-container font-medium mt-1">-</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div>
+                <p data-i18n="track_received_title" class="text-sm font-semibold text-on-background">
+                    Laporan Diterima
+                </p>
 
+                <p data-i18n="track_received_desc" class="text-sm text-secondary">
+                    Tiket Anda telah berhasil didaftarkan ke sistem.
+                </p>
+
+                <p id="track-created" class="text-xs text-tertiary-container font-medium mt-1">
+                    -
+                </p>
+            </div>
+        </div>
+
+        <div class="relative pl-10">
+            <div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-4 border-primary z-10"></div>
+
+            <div>
+                <p data-i18n="track_current_status_title" class="text-sm font-semibold text-primary">
+                    Status Saat Ini
+                </p>
+
+                <p data-i18n="track_current_status_desc" class="text-sm text-on-background">
+                    Status laporan akan ditampilkan berdasarkan update terbaru dari sistem.
+                </p>
+
+                <p id="track-updated-copy" class="text-xs text-tertiary-container font-medium mt-1">
+                    -
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
                         <!-- Detail data -->
                         <div class="grid md:grid-cols-2 gap-4">
                             <div class="bg-surface-container-low rounded-lg p-6 border border-surface-container">
                                 <h3 class="text-base font-semibold text-on-background flex items-center gap-2 mb-2">
-                                    <span class="material-symbols-outlined text-xl">link</span>
-                                    URL Terdeteksi
-                                </h3>
+    <span class="material-symbols-outlined text-xl">link</span>
+    <span data-i18n="track_url_title">URL Terdeteksi</span>
+</h3>
                                 <p id="track-urls" class="text-secondary leading-relaxed text-sm break-words">-</p>
                             </div>
 
                             <div class="bg-surface-container-low rounded-lg p-6 border border-surface-container">
                                 <h3 class="text-base font-semibold text-on-background flex items-center gap-2 mb-2">
-                                    <span class="material-symbols-outlined text-xl">call</span>
-                                    Nomor Terdeteksi
-                                </h3>
+    <span class="material-symbols-outlined text-xl">call</span>
+    <span data-i18n="track_phone_title">Nomor Terdeteksi</span>
+</h3>
                                 <p id="track-phones" class="text-secondary leading-relaxed text-sm break-words">-</p>
                             </div>
                         </div>
@@ -189,22 +262,10 @@
                         <!-- Catatan Admin -->
                         <div class="bg-surface-container-low rounded-lg p-6 border border-surface-container">
                             <h3 class="text-base font-semibold text-on-background flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-xl">notes</span>
-                                Catatan Admin
-                            </h3>
+    <span class="material-symbols-outlined text-xl">notes</span>
+    <span data-i18n="track_admin_note_title">Catatan Admin</span>
+</h3>
                             <p id="track-note" class="text-secondary leading-relaxed text-sm">-</p>
-                        </div>
-
-                        <!-- Tombol -->
-                        <div class="flex gap-4">
-                            <button class="flex-1 border border-surface-container text-on-surface py-2.5 rounded-lg text-sm font-semibold hover:bg-surface-container-low transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-xl">download</span>
-                                Unduh Ringkasan
-                            </button>
-                            <button class="flex-1 border border-surface-container text-on-surface py-2.5 rounded-lg text-sm font-semibold hover:bg-surface-container-low transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-xl">chat</span>
-                                Tambah Komentar
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -213,13 +274,21 @@
                 <div class="mt-6 grid grid-cols-2 gap-4">
                     <div class="bg-surface-container-highest/30 rounded-xl p-4 border border-surface-container flex flex-col items-center justify-center text-center">
                         <span class="material-symbols-outlined text-primary text-3xl mb-2">verified_user</span>
-                        <p class="text-sm font-semibold text-on-background">Koneksi Terenkripsi</p>
-                        <p class="text-xs text-secondary">SSL 256-bit diaktifkan</p>
+                        <p data-i18n="track_secure_connection" class="text-sm font-semibold text-on-background">
+    Koneksi Terenkripsi
+</p>
+<p data-i18n="track_ssl_active" class="text-xs text-secondary">
+    SSL 256-bit diaktifkan
+</p>
                     </div>
                     <div class="bg-surface-container-highest/30 rounded-xl p-4 border border-surface-container flex flex-col items-center justify-center text-center">
                         <span class="material-symbols-outlined text-primary text-3xl mb-2">security</span>
-                        <p class="text-sm font-semibold text-on-background">Sistem Aman</p>
-                        <p class="text-xs text-secondary">Dipantau secara real-time</p>
+                        <p data-i18n="track_system_safe" class="text-sm font-semibold text-on-background">
+    Sistem Aman
+</p>
+<p data-i18n="track_realtime_monitoring" class="text-xs text-secondary">
+    Dipantau secara real-time
+</p>
                     </div>
                 </div>
             </div>
@@ -227,22 +296,105 @@
         </div>
     </main>
 
-    <!-- ====== FOOTER ====== -->
-    <footer class="bg-slate-50 border-t border-slate-200 mt-12">
-        <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-4">
-            <div class="flex flex-col items-center md:items-start gap-2">
-                <div class="text-lg font-bold text-slate-900 font-display">CIMB Guardian</div>
-                <p class="text-xs text-slate-500">© 2024 CIMB Guardian. Hak Cipta Dilindungi.</p>
+   <!-- ====== FOOTER ====== -->
+<footer class="bg-slate-50 border-t border-slate-200 mt-12">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-8">
+        <div class="space-y-2 text-center md:text-left">
+            <div class="text-lg font-bold text-slate-900 font-display">
+                CIMB Guardian
             </div>
-            <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Kebijakan Keamanan</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Syarat Layanan</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Pusat Privasi</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Hubungi Dukungan</a>
-            </div>
-        </div>
-    </footer>
 
+            <p data-i18n="footer_copyright_2026" class="text-xs text-slate-500">
+                © 2026 CIMB Guardian. Hak Cipta Dilindungi.
+            </p>
+        </div>
+
+        <nav class="flex flex-wrap justify-center gap-6 text-xs">
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="security"
+            >
+                Kebijakan Keamanan
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="terms"
+            >
+                Syarat Layanan
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="privacy"
+            >
+                Pusat Privasi
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="support"
+            >
+                Hubungi Dukungan
+            </button>
+        </nav>
+
+        <div class="flex gap-4">
+            <button
+                type="button"
+                id="btn-language"
+                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                title="Ganti Bahasa"
+            >
+                <span class="material-symbols-outlined text-lg">public</span>
+            </button>
+
+            <button
+                type="button"
+                id="btn-official-channel"
+                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                title="Kanal Resmi CIMB"
+            >
+                <span class="material-symbols-outlined text-lg">shield</span>
+            </button>
+        </div>
+    </div>
+</footer>
+
+<!-- ====== FOOTER MODAL ====== -->
+<div id="footer-modal" class="fixed inset-0 z-[9999] hidden">
+    <div id="footer-modal-overlay" class="absolute inset-0 bg-black/40"></div>
+
+    <div class="relative bg-white w-[92%] max-w-xl mx-auto mt-24 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="flex items-start justify-between gap-4 p-6 border-b border-slate-100">
+            <div>
+                <h3 id="footer-modal-title" class="text-xl font-bold text-slate-900">
+                    Judul
+                </h3>
+
+                <p id="footer-modal-subtitle" class="text-sm text-slate-500 mt-1">
+                    Informasi CIMB Guardian
+                </p>
+            </div>
+
+            <button
+                id="footer-modal-close"
+                type="button"
+                class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500"
+            >
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="footer-modal-content" class="p-6 text-sm text-slate-600 leading-relaxed">
+            Konten modal.
+        </div>
+    </div>
+</div>
     <script src="{{ url_for('static', filename='user/js/main.js') }}"></script>
 </body>
 </html>

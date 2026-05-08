@@ -43,20 +43,39 @@
 </head>
 <body class="bg-background text-on-surface" style="font-family: 'Inter', sans-serif;">
 
-    <header class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-50">
-        <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
-            <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">CIMB Guardian</a>
-            <nav class="hidden md:flex gap-8 items-center font-display text-sm font-medium tracking-tight">
-                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-500 transition-colors">Beranda</a>
-                <a href="{{ url_for('track_page') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">Lacak Tiket</a>
-                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">Edukasi</a>
-                <a href="#" class="text-slate-600 hover:text-red-500 transition-colors">Bantuan</a>
-            </nav>
-            <button class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary-container transition-all active:scale-[0.98]">
-                Masuk
-            </button>
-        </div>
-    </header>
+   <header class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-50">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+        <a href="{{ url_for('home') }}" class="text-xl font-bold tracking-tighter text-red-600 uppercase font-display">
+            CIMB Guardian
+        </a>
+
+        <nav class="hidden md:flex gap-8 items-center font-display text-sm font-medium tracking-tight">
+            <a href="{{ url_for('home') }}" data-i18n="nav_home" class="text-slate-600 hover:text-red-500 transition-colors">
+                Beranda
+            </a>
+
+            <a href="{{ url_for('track_page') }}" data-i18n="nav_track" class="text-slate-600 hover:text-red-500 transition-colors">
+                Lacak Tiket
+            </a>
+
+            <a href="{{ url_for('education_page') }}" data-i18n="nav_education" class="text-slate-600 hover:text-red-500 transition-colors">
+                Edukasi
+            </a>
+
+            <a href="{{ url_for('help_page') }}" data-i18n="nav_help" class="text-slate-600 hover:text-red-500 transition-colors">
+                Bantuan
+            </a>
+        </nav>
+
+        <a
+            href="{{ url_for('admin_login') }}"
+            data-i18n="nav_login"
+            class="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary-container transition-all active:scale-[0.98] inline-flex items-center justify-center"
+        >
+            Masuk
+        </a>
+    </div>
+</header>
 
     <main class="relative min-h-[calc(100vh-180px)] flex items-center justify-center py-12 overflow-hidden">
         <div class="absolute inset-0 security-pattern pointer-events-none"></div>
@@ -71,68 +90,113 @@
                         <span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
                     </div>
 
-                    <h1 class="text-3xl font-semibold text-on-surface mb-2 font-h1">Laporan Berhasil Dikirim</h1>
-                    <p class="text-secondary mb-8">Terima kasih atas laporan Anda. Tim keamanan kami akan segera meninjau detail yang diberikan.</p>
+                    <h1 data-i18n="success_title" class="text-3xl font-semibold text-on-surface mb-2 font-h1">
+    Laporan Berhasil Dikirim
+</h1>
+
+<p data-i18n="success_desc" class="text-secondary mb-8">
+    Terima kasih atas laporan Anda. Tim keamanan kami akan segera meninjau detail yang diberikan.
+</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-8">
                         <div class="p-4 rounded-lg bg-surface-container-low border border-surface-container-high">
-                            <span class="text-xs text-secondary block mb-1 uppercase tracking-wider font-medium">ID TIKET</span>
+                            <span data-i18n="success_ticket_id" class="text-xs text-secondary block mb-1 uppercase tracking-wider font-medium">
+    ID TIKET
+</span>
                             <span id="ticket-id-display" class="text-xl font-bold text-primary tracking-tight">-</span>
                         </div>
                         <div class="p-4 rounded-lg bg-surface-container-low border border-surface-container-high">
-                            <span class="text-xs text-secondary block mb-1 uppercase tracking-wider font-medium">EMAIL KONFIRMASI</span>
+                            <span data-i18n="success_confirmation_email" class="text-xs text-secondary block mb-1 uppercase tracking-wider font-medium">
+    EMAIL KONFIRMASI
+</span>
                             <span class="text-base font-medium text-on-surface truncate block" id="display-email">-</span>
                         </div>
                     </div>
 
                     <div class="flex items-start gap-4 p-4 bg-secondary-container/30 rounded-lg text-left mb-16">
                         <span class="material-symbols-outlined text-secondary flex-shrink-0">info</span>
-                        <p class="text-sm text-on-secondary-fixed-variant">
-                            Simpan ID Tiket Anda dan periksa kotak masuk untuk pembaruan secara berkala. Kami akan mengirimkan notifikasi untuk setiap perubahan status.
-                        </p>
+                        <p data-i18n="success_info" class="text-sm text-on-secondary-fixed-variant">
+    Simpan ID Tiket Anda dan periksa kotak masuk untuk pembaruan secara berkala. Kami akan mengirimkan notifikasi untuk setiap perubahan status.
+</p>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-4">
-                        <button id="btn-cek-tiket" class="flex-1 bg-primary text-on-primary py-4 px-6 rounded-lg text-sm font-semibold hover:bg-primary-container transition-all shadow-md flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined text-xl">manage_search</span>
-                            Cek Status Tiket
-                        </button>
-                        <button id="btn-kembali-beranda" class="flex-1 bg-white text-secondary border border-outline-variant py-4 px-6 rounded-lg text-sm font-semibold hover:bg-surface-container-low transition-all flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined text-xl">home</span>
-                            Kembali ke Beranda
-                        </button>
+                        <button
+    id="btn-cek-tiket"
+    class="flex-1 bg-primary text-on-primary py-4 px-6 rounded-lg text-sm font-semibold hover:bg-primary-container transition-all shadow-md flex items-center justify-center gap-2"
+>
+    <span class="material-symbols-outlined text-xl">manage_search</span>
+    <span data-i18n="success_check_ticket">Cek Status Tiket</span>
+</button>
+                       <button
+    id="btn-kembali-beranda"
+    class="flex-1 bg-white text-secondary border border-outline-variant py-4 px-6 rounded-lg text-sm font-semibold hover:bg-surface-container-low transition-all flex items-center justify-center gap-2"
+>
+    <span class="material-symbols-outlined text-xl">home</span>
+    <span data-i18n="success_back_home">Kembali ke Beranda</span>
+</button>
                     </div>
                 </div>
 
                 <div class="bg-surface-container-low px-6 py-4 flex items-center justify-center gap-4 border-t border-surface-container-high">
                     <span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">lock</span>
-                    <span class="text-xs text-secondary uppercase tracking-widest font-medium">Enkripsi Tingkat Perbankan</span>
+                    <span data-i18n="success_encryption" class="text-xs text-secondary uppercase tracking-widest font-medium">
+    Enkripsi Tingkat Perbankan
+</span>
                 </div>
             </div>
 
             <div class="mt-8 text-center">
                 <p class="text-sm text-secondary">
-                    Butuh bantuan segera?
-                    <a href="#" class="text-primary font-semibold hover:underline">Hubungi Dukungan 24/7</a>
-                </p>
+    <span data-i18n="success_need_help">Butuh bantuan segera?</span>
+    <a href="{{ url_for('help_page') }}" data-i18n="success_contact_support" class="text-primary font-semibold hover:underline">
+        Hubungi Dukungan 24/7
+    </a>
+</p>
             </div>
         </div>
     </main>
 
     <footer class="bg-slate-50 border-t border-slate-200 mt-12">
-        <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-4">
-            <div class="flex flex-col gap-2">
-                <div class="text-lg font-bold text-slate-900 font-display">CIMB Guardian</div>
-                <div class="text-xs text-slate-500">© 2024 CIMB Guardian. Hak Cipta Dilindungi.</div>
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-4">
+        <div class="flex flex-col gap-2">
+            <div class="text-lg font-bold text-slate-900 font-display">
+                CIMB Guardian
             </div>
-            <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Kebijakan Keamanan</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Syarat Layanan</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Pusat Privasi</a>
-                <a href="#" class="hover:text-red-600 hover:underline transition-colors">Hubungi Dukungan</a>
+
+            <div data-i18n="footer_copyright" class="text-xs text-slate-500">
+                © 2024 CIMB Guardian. Hak Cipta Dilindungi.
             </div>
         </div>
-    </footer>
+
+        <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
+            <a href="#" data-i18n="footer_security" class="hover:text-red-600 hover:underline transition-colors">
+                Kebijakan Keamanan
+            </a>
+
+            <a href="#" data-i18n="footer_terms" class="hover:text-red-600 hover:underline transition-colors">
+                Syarat Layanan
+            </a>
+
+            <a href="#" data-i18n="footer_privacy" class="hover:text-red-600 hover:underline transition-colors">
+                Pusat Privasi
+            </a>
+
+            <a href="{{ url_for('help_page') }}" data-i18n="footer_support" class="hover:text-red-600 hover:underline transition-colors">
+                Hubungi Dukungan
+            </a>
+        </div>
+
+        <button
+            type="button"
+            id="btn-language"
+            class="px-3 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all text-xs font-bold"
+            title="Ganti Bahasa"
+        >
+            EN
+        </button>
+    </div>
+</footer>
 
     <script src="{{ url_for('static', filename='user/js/main.js') }}"></script>
 </body>

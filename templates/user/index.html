@@ -86,29 +86,30 @@
             </a>
 
             <nav class="hidden md:flex items-center gap-8 font-display text-sm font-medium tracking-tight">
-                <a href="{{ url_for('home') }}" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">
-                    Beranda
-                </a>
+                <a href="{{ url_for('home') }}" data-i18n="nav_home" class="text-red-600 border-b-2 border-red-600 pb-1 font-semibold">
+    Beranda
+</a>
 
-                <a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">
-                    Lacak Tiket
-                </a>
+<a href="{{ url_for('track_page') }}" data-i18n="nav_track" class="text-slate-600 hover:text-red-500 transition-colors">
+    Lacak Tiket
+</a>
 
-                <a href="{{ url_for('education_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">
-                    Edukasi
-                </a>
+<a href="{{ url_for('education_page') }}" data-i18n="nav_education" class="text-slate-600 hover:text-red-500 transition-colors">
+    Edukasi
+</a>
 
-                <a href="{{ url_for('help_page') }}" class="text-slate-600 hover:text-red-500 transition-colors">
-                    Bantuan
-                </a>
+<a href="{{ url_for('help_page') }}" data-i18n="nav_help" class="text-slate-600 hover:text-red-500 transition-colors">
+    Bantuan
+</a>
             </nav>
 
             <a
-                href="{{ url_for('admin_login') }}"
-                class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-medium hover:bg-primary transition-all active:scale-[0.98] text-sm inline-flex items-center justify-center"
-            >
-                Masuk
-            </a>
+    href="{{ url_for('admin_login') }}"
+    data-i18n="nav_login"
+    class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-medium hover:bg-primary transition-all active:scale-[0.98] text-sm inline-flex items-center justify-center"
+>
+    Masuk
+</a>
         </div>
     </header>
 
@@ -121,58 +122,61 @@
                 <!-- Teks & Form Kiri -->
                 <div class="space-y-8 animate-hero-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-primary rounded-full text-label-md font-semibold text-sm">
-                        <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">shield</span>
-                        Perlindungan Digital Real-Time
-                    </div>
+    <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">shield</span>
+    <span data-i18n="hero_badge">Perlindungan Digital Real-Time</span>
+</div>
 
-                    <h1 class="font-display text-display text-on-surface leading-tight">
-                        Lindungi Diri Anda dari <span class="text-primary">Penipuan Digital</span>
-                    </h1>
+<h1 class="font-display text-display text-on-surface leading-tight">
+    <span data-i18n="hero_title_1">Lindungi Diri Anda dari</span>
+    <span data-i18n="hero_title_2" class="text-primary">Penipuan Digital</span>
+</h1>
 
-                    <p class="text-body-lg text-secondary max-w-lg">
-                        Tempelkan pesan SMS, WhatsApp, atau email yang mencurigakan untuk analisis phishing instan oleh sistem keamanan cerdas kami.
-                    </p>
+<p data-i18n="hero_desc" class="text-body-lg text-secondary max-w-lg">
+    Tempelkan pesan SMS, WhatsApp, atau email yang mencurigakan untuk analisis phishing instan oleh sistem keamanan cerdas kami.
+</p>
 
                     <!-- Form Analyzer -->
                     <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container-high space-y-6 animate-up delay-300">
                         <div class="space-y-2">
-                            <label for="input-pesan" class="text-label-md font-semibold text-on-surface text-sm block">
-                                Analisa Pesan
-                            </label>
+                            <label for="input-pesan" data-i18n="analyze_label" class="text-label-md font-semibold text-on-surface text-sm block">
+    Analisa Pesan
+</label>
 
-                            <textarea
-                                id="input-pesan"
-                                class="w-full h-40 bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none text-body-md text-sm"
-                                placeholder="Tempelkan konten pesan di sini..."
-                            ></textarea>
+<textarea
+    id="input-pesan"
+    data-i18n-placeholder="message_placeholder"
+    class="w-full h-40 bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none text-body-md text-sm"
+    placeholder="Tempelkan konten pesan di sini..."
+></textarea>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-4 items-end">
                             <div class="space-y-2">
-                                <label for="input-email" class="text-label-md font-semibold text-on-surface text-sm block">
-                                    Alamat Email
-                                </label>
+                                <label for="input-email" data-i18n="email_label" class="text-label-md font-semibold text-on-surface text-sm block">
+    Alamat Email
+</label>
 
-                                <input
-                                    id="input-email"
-                                    type="email"
-                                    class="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
-                                    placeholder="Masukkan email Anda"
-                                />
+<input
+    id="input-email"
+    type="email"
+    data-i18n-placeholder="email_placeholder"
+    class="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+    placeholder="Masukkan email Anda"
+/>
                             </div>
 
                             <button
-                                id="btn-analisa"
-                                class="w-full bg-primary-container text-on-primary py-4 rounded-lg font-h3 font-semibold hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 text-sm"
-                            >
-                                <span class="material-symbols-outlined">analytics</span>
-                                Analisa Pesan
-                            </button>
+    id="btn-analisa"
+    class="w-full bg-primary-container text-on-primary py-4 rounded-lg font-h3 font-semibold hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 text-sm"
+>
+    <span class="material-symbols-outlined">analytics</span>
+    <span data-i18n="analyze_button">Analisa Pesan</span>
+</button>
                         </div>
 
                         <div class="flex items-start gap-2 text-secondary text-xs">
                             <span class="material-symbols-outlined text-lg flex-shrink-0">info</span>
-                            <p>Kami akan mengirimkan ID Tiket dan pembaruan laporan ke email ini</p>
+                            <p data-i18n="email_info">Kami akan mengirimkan ID Tiket dan pembaruan laporan ke email ini</p>
                         </div>
                     </div>
                 </div>
@@ -278,220 +282,274 @@
             </div>
         </section>
 
-        <!-- ====== STATS ====== -->
-        <section class="max-w-7xl mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between hover-lift">
-                    <h3 class="font-semibold text-secondary text-lg">Serangan Phishing 2023</h3>
+       <!-- ====== STATS ====== -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between hover-lift">
+            <h3 data-i18n="stats_phishing_title" class="font-semibold text-secondary text-lg">
+                Serangan Phishing 2023
+            </h3>
 
-                    <div class="mt-8">
-                        <div class="text-5xl font-bold text-primary font-display">+142%</div>
-                        <p class="text-sm text-secondary mt-2">
-                            Peningkatan upaya penipuan digital di Asia Tenggara dalam 12 bulan terakhir.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-primary text-on-primary p-6 rounded-xl flex flex-col justify-between hover-lift">
-                    <span class="material-symbols-outlined text-3xl">trending_up</span>
-
-                    <div class="mt-8">
-                        <div class="text-5xl font-bold font-display">Rp 5.2T</div>
-                        <p class="text-sm opacity-80 mt-2">
-                            Estimasi kerugian nasabah akibat kejahatan siber di Indonesia per tahun.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between hover-lift">
-                    <h3 class="font-semibold text-secondary text-lg">Waktu Deteksi</h3>
-
-                    <div class="mt-8">
-                        <div class="text-5xl font-bold text-on-surface font-display">&lt;2s</div>
-                        <p class="text-sm text-secondary mt-2">
-                            Kecepatan CIMB Guardian dalam menganalisa ancaman setelah Anda menekan tombol analisa.
-                        </p>
-                    </div>
-                </div>
+            <div class="mt-8">
+                <div class="text-5xl font-bold text-primary font-display">+142%</div>
+                <p data-i18n="stats_phishing_desc" class="text-sm text-secondary mt-2">
+                    Peningkatan upaya penipuan digital di Asia Tenggara dalam 12 bulan terakhir.
+                </p>
             </div>
-        </section>
+        </div>
 
-        <!-- ====== WHY US ====== -->
-        <section class="max-w-7xl mx-auto px-6 py-12">
-            <div class="text-center mb-16 space-y-4">
-                <h2 class="text-h1 font-h1 font-semibold text-3xl">Mengapa menggunakan CIMB Guardian?</h2>
-                <p class="text-body-lg text-secondary max-w-2xl mx-auto">
-                    Sistem kami dibangun di atas infrastruktur keamanan perbankan global untuk memberikan kepastian hukum dan teknis.
+        <div class="bg-primary text-on-primary p-6 rounded-xl flex flex-col justify-between hover-lift">
+            <span class="material-symbols-outlined text-3xl">trending_up</span>
+
+            <div class="mt-8">
+                <div class="text-5xl font-bold font-display">Rp 5.2T</div>
+                <p data-i18n="stats_loss_desc" class="text-sm opacity-80 mt-2">
+                    Estimasi kerugian nasabah akibat kejahatan siber di Indonesia per tahun.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-surface-container-high flex flex-col justify-between hover-lift">
+            <h3 data-i18n="stats_detection_title" class="font-semibold text-secondary text-lg">
+                Waktu Deteksi
+            </h3>
+
+            <div class="mt-8">
+                <div class="text-5xl font-bold text-on-surface font-display">&lt;2s</div>
+                <p data-i18n="stats_detection_desc" class="text-sm text-secondary mt-2">
+                    Kecepatan CIMB Guardian dalam menganalisa ancaman setelah Anda menekan tombol analisa.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+      <!-- ====== WHY US ====== -->
+<section class="max-w-7xl mx-auto px-6 py-12">
+    <div class="text-center mb-16 space-y-4">
+        <h2 data-i18n="why_title" class="text-h1 font-h1 font-semibold text-3xl">
+            Mengapa menggunakan CIMB Guardian?
+        </h2>
+
+        <p data-i18n="why_desc" class="text-body-lg text-secondary max-w-2xl mx-auto">
+            Sistem kami dibangun di atas infrastruktur keamanan perbankan global untuk memberikan kepastian hukum dan teknis.
+        </p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-8">
+        <div class="space-y-4 group hover-lift p-2 rounded-xl">
+            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">security</span>
+            </div>
+
+            <h4 data-i18n="why_card_1_title" class="font-semibold text-lg">
+                Keamanan Perbankan
+            </h4>
+
+            <p data-i18n="why_card_1_desc" class="text-sm text-secondary leading-relaxed">
+                Analisis dilakukan menggunakan standar keamanan data finansial internasional.
+            </p>
+        </div>
+
+        <div class="space-y-4 group hover-lift p-2 rounded-xl">
+            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">psychology</span>
+            </div>
+
+            <h4 data-i18n="why_card_2_title" class="font-semibold text-lg">
+                Kecerdasan Buatan
+            </h4>
+
+            <p data-i18n="why_card_2_desc" class="text-sm text-secondary leading-relaxed">
+                Model AI kami terus belajar dari jutaan pola serangan phishing terbaru setiap hari.
+            </p>
+        </div>
+
+        <div class="space-y-4 group hover-lift p-2 rounded-xl">
+            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">description</span>
+            </div>
+
+            <h4 data-i18n="why_card_3_title" class="font-semibold text-lg">
+                Tiket Laporan Otomatis
+            </h4>
+
+            <p data-i18n="why_card_3_desc" class="text-sm text-secondary leading-relaxed">
+                Dapatkan bukti pelaporan digital yang sah untuk keperluan klaim atau investigasi.
+            </p>
+        </div>
+
+        <div class="space-y-4 group hover-lift p-2 rounded-xl">
+            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                <span class="material-symbols-outlined">support_agent</span>
+            </div>
+
+            <h4 data-i18n="why_card_4_title" class="font-semibold text-lg">
+                Dukungan Prioritas
+            </h4>
+
+            <p data-i18n="why_card_4_desc" class="text-sm text-secondary leading-relaxed">
+                Analisis berisiko tinggi akan diteruskan langsung ke tim Fraud Response kami.
+            </p>
+        </div>
+    </div>
+</section>
+
+        <!-- ====== TIPS ====== -->
+        <!-- ====== TIPS ====== -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+    <div class="bg-surface-container rounded-3xl overflow-hidden flex flex-col lg:flex-row">
+
+        <!-- GAMBAR KIRI: JANGAN DIHAPUS -->
+        <div class="lg:w-1/3 relative min-h-[300px]">
+            <img
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgXlUSjBy7djXsakmYnsvZGY1ZPm7uDT40sE74Rv4NBS6-HK1Xk1F4c3UdE6Cs_3IGpaNgzkZnpMKtTeGvp4D5lNmiCTKJJE0_Ejt8MWOJ9u_Jrsj2NxYOzr4doICTMb4onETBuGfzEsaik8fqp0mB7XGfg6L3F_DF6WPrfbFu_UV_8ZJ3q1L-2-ijiSSJzZ7JsmE5XAhVBFfv2LqZBS3lhFc7U6Rre7bi5gXqQoP5VAzVdmuJNxZJ3IaWSA-CnPptMAcbPFcInf8"
+                alt="Ruang laboratorium teknologi modern dengan banyak layar menampilkan kode keamanan"
+                class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+        </div>
+
+        <!-- KONTEN KANAN: BAGIAN INI YANG DIBERI data-i18n -->
+        <div class="lg:w-2/3 p-8 md:p-16 space-y-12">
+            <div class="space-y-2">
+                <h2 data-i18n="tips_title" class="font-display font-bold text-3xl">
+                    Tips Keamanan Digital Utama
+                </h2>
+
+                <p data-i18n="tips_desc" class="text-body-lg text-secondary">
+                    Langkah cerdas untuk melindungi aset finansial Anda.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-4 gap-8">
-                <div class="space-y-4 group hover-lift p-2 rounded-xl">
-                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined">security</span>
-                    </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
+                    <span class="text-primary font-bold text-2xl font-display">01.</span>
 
-                    <h4 class="font-semibold text-lg">Keamanan Perbankan</h4>
-                    <p class="text-sm text-secondary leading-relaxed">
-                        Analisis dilakukan menggunakan standar keamanan data finansial internasional.
+                    <h5 data-i18n="tips_1_title" class="font-semibold text-lg">
+                        Cek URL dan Pengirim
+                    </h5>
+
+                    <p data-i18n="tips_1_desc" class="text-sm text-secondary">
+                        Jangan pernah mengeklik tautan dari pengirim yang tidak dikenal atau memiliki domain mencurigakan.
                     </p>
                 </div>
 
-                <div class="space-y-4 group hover-lift p-2 rounded-xl">
-                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined">psychology</span>
-                    </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
+                    <span class="text-primary font-bold text-2xl font-display">02.</span>
 
-                    <h4 class="font-semibold text-lg">Kecerdasan Buatan</h4>
-                    <p class="text-sm text-secondary leading-relaxed">
-                        Model AI kami terus belajar dari jutaan pola serangan phishing terbaru setiap hari.
+                    <h5 data-i18n="tips_2_title" class="font-semibold text-lg">
+                        Jangan Bagikan OTP
+                    </h5>
+
+                    <p data-i18n="tips_2_desc" class="text-sm text-secondary">
+                        Bank tidak akan pernah meminta One-Time Password (OTP) Anda melalui telepon, SMS, atau media sosial.
                     </p>
                 </div>
 
-                <div class="space-y-4 group hover-lift p-2 rounded-xl">
-                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined">description</span>
-                    </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
+                    <span class="text-primary font-bold text-2xl font-display">03.</span>
 
-                    <h4 class="font-semibold text-lg">Tiket Laporan Otomatis</h4>
-                    <p class="text-sm text-secondary leading-relaxed">
-                        Dapatkan bukti pelaporan digital yang sah untuk keperluan klaim atau investigasi.
+                    <h5 data-i18n="tips_3_title" class="font-semibold text-lg">
+                        Gunakan 2FA
+                    </h5>
+
+                    <p data-i18n="tips_3_desc" class="text-sm text-secondary">
+                        Aktifkan Otentikasi Dua Faktor pada semua akun email dan aplikasi mobile banking Anda.
                     </p>
                 </div>
 
-                <div class="space-y-4 group hover-lift p-2 rounded-xl">
-                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-surface-container-high text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                        <span class="material-symbols-outlined">support_agent</span>
-                    </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
+                    <span class="text-primary font-bold text-2xl font-display">04.</span>
 
-                    <h4 class="font-semibold text-lg">Dukungan Prioritas</h4>
-                    <p class="text-sm text-secondary leading-relaxed">
-                        Analisis berisiko tinggi akan diteruskan langsung ke tim Fraud Response kami.
+                    <h5 data-i18n="tips_4_title" class="font-semibold text-lg">
+                        Lapor Segera
+                    </h5>
+
+                    <p data-i18n="tips_4_desc" class="text-sm text-secondary">
+                        Jika Anda terlanjur memberikan data, segera hubungi call center resmi bank di 14041.
                     </p>
                 </div>
             </div>
-        </section>
-
-        <!-- ====== TIPS ====== -->
-        <section class="max-w-7xl mx-auto px-6 py-16">
-            <div class="bg-surface-container rounded-3xl overflow-hidden flex flex-col lg:flex-row">
-                <div class="lg:w-1/3 relative min-h-[300px]">
-                    <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgXlUSjBy7djXsakmYnsvZGY1ZPm7uDT40sE74Rv4NBS6-HK1Xk1F4c3UdE6Cs_3IGpaNgzkZnpMKtTeGvp4D5lNmiCTKJJE0_Ejt8MWOJ9u_Jrsj2NxYOzr4doICTMb4onETBuGfzEsaik8fqp0mB7XGfg6L3F_DF6WPrfbFu_UV_8ZJ3q1L-2-ijiSSJzZ7JsmE5XAhVBFfv2LqZBS3lhFc7U6Rre7bi5gXqQoP5VAzVdmuJNxZJ3IaWSA-CnPptMAcbPFcInf8"
-                        alt="Ruang laboratorium teknologi modern dengan banyak layar menampilkan kode keamanan"
-                        class="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
-                </div>
-
-                <div class="lg:w-2/3 p-8 md:p-16 space-y-12">
-                    <div class="space-y-2">
-                        <h2 class="font-display font-bold text-3xl">Tips Keamanan Digital Utama</h2>
-                        <p class="text-body-lg text-secondary">Langkah cerdas untuk melindungi aset finansial Anda.</p>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
-                            <span class="text-primary font-bold text-2xl font-display">01.</span>
-                            <h5 class="font-semibold text-lg">Cek URL dan Pengirim</h5>
-                            <p class="text-sm text-secondary">
-                                Jangan pernah mengeklik tautan dari pengirim yang tidak dikenal atau memiliki domain mencurigakan.
-                            </p>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
-                            <span class="text-primary font-bold text-2xl font-display">02.</span>
-                            <h5 class="font-semibold text-lg">Jangan Bagikan OTP</h5>
-                            <p class="text-sm text-secondary">
-                                Bank tidak akan pernah meminta One-Time Password (OTP) Anda melalui telepon, SMS, atau media sosial.
-                            </p>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
-                            <span class="text-primary font-bold text-2xl font-display">03.</span>
-                            <h5 class="font-semibold text-lg">Gunakan 2FA</h5>
-                            <p class="text-sm text-secondary">
-                                Aktifkan Otentikasi Dua Faktor pada semua akun email dan aplikasi mobile banking Anda.
-                            </p>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-4 hover-lift">
-                            <span class="text-primary font-bold text-2xl font-display">04.</span>
-                            <h5 class="font-semibold text-lg">Lapor Segera</h5>
-                            <p class="text-sm text-secondary">
-                                Jika Anda terlanjur memberikan data, segera hubungi call center resmi bank di 14041.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </div>
+</section>
 
     </main>
 
     <!-- ====== FOOTER ====== -->
-    <footer class="bg-slate-50 border-t border-slate-200 mt-12">
-        <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-8">
-            <div class="space-y-2 text-center md:text-left">
-                <div class="text-lg font-bold text-slate-900">CIMB Guardian</div>
-                <p class="text-xs text-slate-500">© 2026 CIMB Guardian. Hak Cipta Dilindungi.</p>
+   <!-- ====== FOOTER ====== -->
+<footer class="bg-slate-50 border-t border-slate-200 mt-12">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-8">
+        <div class="space-y-2 text-center md:text-left">
+            <div class="text-lg font-bold text-slate-900">
+                CIMB Guardian
             </div>
 
-            <nav class="flex flex-wrap justify-center gap-6 text-xs">
-                <button
-                    type="button"
-                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-                    data-footer="security"
-                >
-                    Kebijakan Keamanan
-                </button>
-
-                <button
-                    type="button"
-                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-                    data-footer="terms"
-                >
-                    Syarat Layanan
-                </button>
-
-                <button
-                    type="button"
-                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-                    data-footer="privacy"
-                >
-                    Pusat Privasi
-                </button>
-
-                <button
-                    type="button"
-                    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-                    data-footer="support"
-                >
-                    Hubungi Dukungan
-                </button>
-            </nav>
-
-            <div class="flex gap-4">
-                <button
-                    type="button"
-                    id="btn-language"
-                    class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
-                    title="Ganti Bahasa"
-                >
-                    <span class="material-symbols-outlined text-lg">public</span>
-                </button>
-
-                <button
-                    type="button"
-                    id="btn-official-channel"
-                    class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
-                    title="Kanal Resmi CIMB"
-                >
-                    <span class="material-symbols-outlined text-lg">shield</span>
-                </button>
-            </div>
+            <p data-i18n="footer_copyright_2026" class="text-xs text-slate-500">
+                © 2026 CIMB Guardian. Hak Cipta Dilindungi.
+            </p>
         </div>
-    </footer>
+
+        <nav class="flex flex-wrap justify-center gap-6 text-xs">
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="security"
+                data-i18n="footer_security"
+            >
+                Kebijakan Keamanan
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="terms"
+                data-i18n="footer_terms"
+            >
+                Syarat Layanan
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="privacy"
+                data-i18n="footer_privacy"
+            >
+                Pusat Privasi
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="support"
+                data-i18n="footer_support"
+            >
+                Hubungi Dukungan
+            </button>
+        </nav>
+
+        <div class="flex gap-4">
+            <button
+                type="button"
+                id="btn-language"
+                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                title="Ganti Bahasa"
+            >
+                <span id="language-label" class="text-xs font-bold">ID</span>
+            </button>
+
+            <button
+                type="button"
+                id="btn-official-channel"
+                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                title="Kanal Resmi CIMB"
+            >
+                <span class="material-symbols-outlined text-lg">shield</span>
+            </button>
+        </div>
+    </div>
+</footer>
 
     <!-- ====== FOOTER MODAL ====== -->
     <div id="footer-modal" class="fixed inset-0 z-[9999] hidden">

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CIMB Guardian - Manajemen Tiket</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b5000b", "primary-container": "#e30613", "on-primary": "#ffffff",
+                        "secondary": "#5d5f5f", "surface": "#fbf9f8",
+                        "surface-container-low": "#f5f3f3", "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7", "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1c", "on-background": "#1b1c1c", "background": "#fbf9f8",
+                        "outline-variant": "#e9bcb6",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "h1": ["Work Sans", "sans-serif"], "h3": ["Work Sans", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background text-on-background" style="font-family: 'Inter', sans-serif;">
+
+    <!-- ====== SIDEBAR ====== -->
+    <aside class="w-64 h-screen border-r fixed left-0 top-0 z-40 bg-white border-slate-100 shadow-[4px_0px_20px_rgba(0,0,0,0.02)] flex flex-col py-6">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-red-600 mb-2 font-h1">CIMB Guardian</h1>
+            <p class="text-xs text-slate-400 font-medium tracking-widest uppercase">Enterprise Monitoring</p>
+        </div>
+       <nav class="flex-1 space-y-1">
+    <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="{{ url_for('admin_reports_queue') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">inbox</span>
+        <span>Laporan Masuk</span>
+    </a>
+
+    <a href="{{ url_for('admin_case_review') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">report_problem</span>
+        <span>Review Kasus</span>
+    </a>
+
+    <a href="{{ url_for('admin_ticket_management') }}" class="flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 font-semibold border-r-4 border-red-600 text-sm">
+        <span class="material-symbols-outlined">confirmation_number</span>
+        <span>Manajemen Tiket</span>
+    </a>
+
+    <a href="{{ url_for('admin_whitelist') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">verified_user</span>
+        <span>Whitelist</span>
+    </a>
+
+    <a href="{{ url_for('admin_education_cms') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">school</span>
+        <span>Edukasi</span>
+    </a>
+
+    <a href="{{ url_for('admin_analytics') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">analytics</span>
+        <span>Analitik</span>
+    </a>
+
+    <a href="{{ url_for('admin_settings') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">settings</span>
+        <span>Pengaturan</span>
+    </a>
+</nav>
+        <div class="mt-auto px-6 border-t border-slate-100 pt-6">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhMRIfcTzro7aKTMcqxjJv480-Ft--nl1ELbcrT7lxY0_rLs8CgktSdgy9WPZsxF9HVdIa-Hkas-wSdxI3TwLPVPZcrrc2H2PZWkeTMiSN3PxOVWhnhNoUutzdOxmWxLtI_9wi-9d7nPHsu5Dbk_Hfw0QWaPwyf_jEFxLoP6LiyXh6GVbvvfTSKzfGfSW7HOX7mTfBqBno4-2vUJlgDdqIWb1HfUDDTF83g4zuttO6x3CZKHx4yZDkV8PLUl8A3xRMwoiW-gUaark"
+                        alt="Admin Profile" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-on-surface">Admin Utama</p>
+                    <p class="text-xs text-slate-500">Security Ops</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ====== TOPBAR ====== -->
+    <header class="admin-main h-16 fixed top-0 right-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm flex items-center justify-between px-8">
+        <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input type="text" class="pl-10 pr-4 py-2 bg-slate-50 border-none rounded-lg text-sm w-80 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Cari tiket, ID, atau nasabah..." />
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 text-sm font-medium px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                System Online
+            </div>
+            <button class="hover:bg-slate-100 rounded-full p-2 transition-colors relative">
+                <span class="material-symbols-outlined text-slate-600">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full border-2 border-white"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="admin-main pt-16 min-h-screen">
+        <div class="max-w-[1280px] mx-auto p-8">
+
+            <!-- Page Header -->
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-bold text-on-surface mb-2 font-h1">Manajemen Tiket</h2>
+                   <p class="text-slate-500 text-sm">Pantau dan perbarui status investigasi tiket aktif dari sistem CIMB Guardian.</p>
+                </div>
+                <div class="flex gap-3">
+                    <button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50 transition-all">
+                        <span class="material-symbols-outlined text-lg">filter_list</span>
+                        Filter
+                    </button>
+                    <button id="btn-tiket-baru" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:opacity-90 transition-all shadow-lg shadow-red-500/10">
+                        <span class="material-symbols-outlined text-lg">add</span>
+                        Tiket Baru
+                    </button>
+                </div>
+            </div>
+
+            <!-- ====== STATS ====== -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Total Tiket Aktif</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="ticket-total-count" class="text-3xl font-bold text-on-surface">0</h3>
+                        <span class="text-emerald-600 text-sm font-bold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">trending_up</span>12%
+                        </span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Dalam Investigasi</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="ticket-investigation-count" class="text-3xl font-bold text-on-surface">0</h3>
+                        <span class="text-slate-400 text-sm font-medium">SLA: 98%</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Butuh Perhatian</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="ticket-attention-count" class="text-3xl font-bold text-red-600">0</h3>
+                        <span class="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] font-bold rounded uppercase">Kritis</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
+                    <p class="text-sm font-medium text-slate-500 mb-1">Selesai (24 Jam)</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="ticket-done-count" class="text-3xl font-bold text-on-surface">0</h3>
+                        <span class="text-slate-400 text-sm font-medium">Avg: 4.2h</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== TABEL TIKET ====== -->
+            <div class="bg-white rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                    <h3 class="text-xl font-semibold font-h3">Antrean Tiket Investigasi</h3>
+                    <div class="flex gap-4">
+                        <div class="flex items-center bg-slate-100 rounded-lg p-1">
+                           <button
+    type="button"
+    data-ticket-filter="all"
+    class="px-3 py-1.5 text-xs font-bold bg-white shadow-sm rounded-md"
+>
+    Semua
+</button>
+
+<button
+    type="button"
+    data-ticket-filter="priority"
+    class="px-3 py-1.5 text-xs font-semibold text-slate-500 hover:text-on-surface rounded-md"
+>
+    Prioritas
+</button>
+                        </div>
+                        <button class="material-symbols-outlined text-slate-400 hover:text-on-surface transition-colors">download</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/50">
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID Tiket</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nasabah</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Jenis Fraud</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Update Terakhir</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticket-management-body" class="divide-y divide-slate-100">
+    <tr>
+        <td colspan="6" class="px-6 py-8 text-center text-sm text-slate-400">
+            Memuat data tiket...
+        </td>
+    </tr>
+</tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                    <p id="ticket-pagination-info" class="text-xs font-medium text-slate-500">
+    Menampilkan 0 tiket
+</p>
+                    <div class="flex gap-2">
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-400 disabled:opacity-50" disabled>
+                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-primary bg-primary text-white text-xs font-bold">1</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">3</button>
+                        <span class="px-2 text-slate-400 self-center">...</span>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">257</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== HELP SECTION ====== -->
+            <div class="mt-12 grid grid-cols-3 gap-8 pb-12">
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-primary">verified</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-on-surface mb-1">Audit Trail Otomatis</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Setiap pembaruan status dicatat secara permanen untuk kebutuhan audit kepatuhan perbankan.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-slate-600">timer</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-on-surface mb-1">Pemantauan SLA</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Sistem akan memberikan peringatan otomatis jika tiket tidak mendapatkan update dalam 24 jam.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-slate-600">support_agent</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm text-on-surface mb-1">Eskalasi Cepat</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Gunakan fitur eskalasi untuk kasus risiko tinggi yang memerlukan tindakan segera dari tim senior.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+    let ticketManagementData = [];
+    let ticketPriorityOnly = false;
+
+    function normalizeTicketStatus(status) {
+        const value = String(status || 'Pending').toLowerCase();
+
+        if (value === 'fraud') return 'Investigasi';
+        if (value === 'aman') return 'Selesai';
+        if (value === 'diproses') return 'Investigasi';
+
+        return 'Pending';
+    }
+
+    function getTicketStatusClass(status) {
+        const value = normalizeTicketStatus(status).toLowerCase();
+
+        if (value === 'investigasi') {
+            return 'bg-amber-50 text-amber-600 border border-amber-100';
+        }
+
+        if (value === 'selesai') {
+            return 'bg-emerald-50 text-emerald-600 border border-emerald-100';
+        }
+
+        return 'bg-slate-100 text-slate-600';
+    }
+
+    function formatTicketDate(value) {
+        if (!value) return '-';
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+
+        return date.toLocaleString('id-ID', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function getFraudType(item) {
+        const riskScore = Number(item.risk_score || 0);
+
+        if (item.extracted_urls && item.extracted_phones) return 'Phishing Alert';
+        if (item.extracted_urls) return 'URL Phishing';
+        if (item.extracted_phones) return 'Nomor Mencurigakan';
+        if (riskScore >= 70) return 'High Risk Report';
+
+        return 'General Report';
+    }
+
+    function renderTicketManagement() {
+        const tbody = document.getElementById('ticket-management-body');
+        const totalCount = document.getElementById('ticket-total-count');
+        const investigationCount = document.getElementById('ticket-investigation-count');
+        const attentionCount = document.getElementById('ticket-attention-count');
+        const doneCount = document.getElementById('ticket-done-count');
+        const paginationInfo = document.getElementById('ticket-pagination-info');
+
+        if (!tbody) return;
+
+        const total = ticketManagementData.length;
+        const investigation = ticketManagementData.filter(item => normalizeTicketStatus(item.admin_status) === 'Investigasi').length;
+        const attention = ticketManagementData.filter(item => Number(item.risk_score || 0) >= 70).length;
+        const done = ticketManagementData.filter(item => normalizeTicketStatus(item.admin_status) === 'Selesai').length;
+
+        if (totalCount) totalCount.textContent = total;
+        if (investigationCount) investigationCount.textContent = investigation;
+        if (attentionCount) attentionCount.textContent = attention;
+        if (doneCount) doneCount.textContent = done;
+
+        let rows = ticketManagementData;
+
+        if (ticketPriorityOnly) {
+            rows = ticketManagementData.filter(item => Number(item.risk_score || 0) >= 70);
+        }
+
+        if (paginationInfo) {
+            paginationInfo.textContent = `Menampilkan ${rows.length} dari ${total} tiket`;
+        }
+
+        if (!rows.length) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-sm text-slate-400">
+                        Tidak ada tiket yang tersedia.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = rows.map(item => {
+            const statusLabel = normalizeTicketStatus(item.admin_status);
+            const statusClass = getTicketStatusClass(item.admin_status);
+            const fraudType = getFraudType(item);
+
+            return `
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <span class="font-mono text-xs font-bold text-slate-900">
+                            ${item.ticket_id || '-'}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-on-surface">
+                                ${item.reporter_email || '-'}
+                            </span>
+                            <span class="text-xs text-slate-400">
+                                ID: ${item.id || '-'}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-slate-600">
+                            ${fraudType}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm text-slate-700">
+                                ${formatTicketDate(item.updated_at || item.created_at)}
+                            </span>
+                            <span class="text-[10px] text-slate-400">
+                                Oleh: ${item.admin_status === 'Pending' ? 'System AI' : 'Admin'}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${statusClass}">
+                            ${statusLabel}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <a
+                                href="/admin/case-review?ticket_id=${encodeURIComponent(item.ticket_id || '')}"
+                                class="text-xs font-bold text-primary hover:underline"
+                            >
+                                Lihat Detail
+                            </a>
+
+                            <a
+                                href="/admin/case-review?ticket_id=${encodeURIComponent(item.ticket_id || '')}"
+                                class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center hover:bg-primary hover:text-white transition-all"
+                                title="Edit status tiket"
+                            >
+                                <span class="material-symbols-outlined text-lg">edit_note</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    async function loadTicketManagement() {
+        const tbody = document.getElementById('ticket-management-body');
+
+        try {
+            const res = await fetch('/admin/reports');
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || 'Gagal mengambil data tiket');
+            }
+
+            ticketManagementData = Array.isArray(data) ? data : [];
+            renderTicketManagement();
+
+        } catch (err) {
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-sm text-red-500">
+                            ${err.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+    }
+
+    function initTicketManagementButtons() {
+        const btnNewTicket = document.getElementById('btn-tiket-baru');
+
+        if (btnNewTicket) {
+            btnNewTicket.addEventListener('click', function () {
+                alert('Tiket baru dibuat otomatis dari laporan user. Gunakan halaman user untuk membuat laporan baru.');
+            });
+        }
+
+        document.querySelectorAll('[data-ticket-filter]').forEach(button => {
+            button.addEventListener('click', function () {
+                const filter = button.dataset.ticketFilter;
+
+                document.querySelectorAll('[data-ticket-filter]').forEach(item => {
+                    item.classList.remove('bg-white', 'shadow-sm');
+                    item.classList.add('text-slate-500');
+                });
+
+                button.classList.add('bg-white', 'shadow-sm');
+                button.classList.remove('text-slate-500');
+
+                ticketPriorityOnly = filter === 'priority';
+                renderTicketManagement();
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadTicketManagement();
+        initTicketManagementButtons();
+    });
+</script>
+
+    <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+</body>
+</html>

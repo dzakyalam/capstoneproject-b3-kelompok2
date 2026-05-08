@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CIMB Guardian - Laporan Masuk</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b5000b", "primary-container": "#e30613", "on-primary": "#ffffff",
+                        "secondary": "#5d5f5f", "surface": "#fbf9f8",
+                        "surface-container-low": "#f5f3f3", "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7", "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1c", "on-background": "#1b1c1c", "background": "#fbf9f8",
+                        "outline-variant": "#e9bcb6", "error": "#ba1a1a",
+                        "error-container": "#ffdad6", "on-error-container": "#93000a",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "h1": ["Work Sans", "sans-serif"], "h3": ["Work Sans", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e4e2e2; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-md text-on-background antialiased overflow-x-hidden" style="font-family: 'Inter', sans-serif;">
+
+    <!-- ====== SIDEBAR ====== -->
+    <aside class="w-64 h-screen border-r fixed left-0 top-0 z-40 bg-white border-slate-100 shadow-[4px_0px_20px_rgba(0,0,0,0.02)] flex flex-col py-6">
+        <div class="px-6 mb-8">
+            <h1 class="text-xl font-bold text-red-600 mb-0 font-h1">CIMB Guardian</h1>
+            <p class="text-xs tracking-tight text-slate-500">Enterprise Monitoring</p>
+        </div>
+       <nav class="flex-1 space-y-1">
+    <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Dashboard</span>
+    </a>
+
+    <a href="{{ url_for('admin_reports_queue') }}" class="flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 font-semibold border-r-4 border-red-600 text-sm">
+        <span class="material-symbols-outlined">inbox</span>
+        <span>Laporan Masuk</span>
+    </a>
+
+    <a href="{{ url_for('admin_case_review') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">report_problem</span>
+        <span>Review Kasus</span>
+    </a>
+
+    <a href="{{ url_for('admin_ticket_management') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">confirmation_number</span>
+        <span>Manajemen Tiket</span>
+    </a>
+
+    <a href="{{ url_for('admin_whitelist') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">verified_user</span>
+        <span>Whitelist</span>
+    </a>
+
+    <a href="{{ url_for('admin_education_cms') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">school</span>
+        <span>Edukasi</span>
+    </a>
+
+    <a href="{{ url_for('admin_analytics') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">analytics</span>
+        <span>Analitik</span>
+    </a>
+
+    <a href="{{ url_for('admin_settings') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
+        <span class="material-symbols-outlined">settings</span>
+        <span>Pengaturan</span>
+    </a>
+</nav>
+        <div class="mt-auto px-6 pt-4 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXWoiM7GuOPgR9RNz_j3b1uGXu0gsiwQfRmhyTJlq_TwEFgu8xq9aKhSxELufyBleed9v043EMsAH35VHDmdtrAH9zoGbUEC1E2CbyW9NQE-DPykSzfKZhV3uarffTW8C5z8QkxD5g1J4t--LIxKw2rK-E3dPfm8K7JBQgP6vBJgapYv0PyiA2Y0p5hMntRSIkb5GGwoJZ-fVLvEX_ShreeeHQM7kPcEIIxK2xlSSF0YHiAG3VK1H_oVQUKoNOUzYnD_nA_24DeWQ"
+                    alt="Foto profil admin" class="w-10 h-10 rounded-full border-2 border-red-50 object-cover" />
+                <div>
+                    <p class="text-xs font-bold text-on-surface">Budi Santoso</p>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest">Lead Investigator</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ====== TOPBAR ====== -->
+    <header class="admin-main h-16 fixed top-0 right-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm flex items-center justify-between px-8">
+        <div class="relative w-full max-w-md group">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-600 transition-colors">search</span>
+            <input type="text" class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-red-600/20 transition-all placeholder:text-slate-400" placeholder="Cari laporan atau ID tiket..." />
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 rounded-full">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span class="text-[11px] font-bold text-emerald-700 tracking-wide">SYSTEM ONLINE</span>
+            </div>
+            <div class="flex items-center gap-1">
+                <button class="hover:bg-slate-100 rounded-full p-2 transition-colors text-slate-600">
+                    <span class="material-symbols-outlined">wifi_tethering_error</span>
+                </button>
+                <button class="hover:bg-slate-100 rounded-full p-2 transition-colors relative text-slate-600">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-red-600 border-2 border-white rounded-full"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="admin-main mt-16 p-8 min-h-screen">
+        <div class="max-w-[1440px] mx-auto">
+
+            <!-- Page Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 text-slate-400 text-xs font-medium mb-2">
+                        <a href="{{ url_for('admin_dashboard') }}" class="hover:text-primary transition-colors">CIMB Guardian</a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <span class="text-red-600 font-semibold">Laporan Masuk</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-on-surface font-h1">Laporan Masuk</h2>
+                    <p class="text-slate-500 mt-1 text-sm">Lihat dan kelola semua laporan penipuan yang masuk</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex bg-white rounded-lg p-1 shadow-sm border border-slate-100">
+                        <button class="filter-tab px-4 py-2 text-sm font-semibold bg-red-600 text-white rounded-md shadow-sm">Semua</button>
+                        <button class="filter-tab px-4 py-2 text-sm font-medium text-slate-500 hover:text-on-surface">Pending</button>
+                        <button class="filter-tab px-4 py-2 text-sm font-medium text-slate-500 hover:text-on-surface">Investigasi</button>
+                        <button class="filter-tab px-4 py-2 text-sm font-medium text-slate-500 hover:text-on-surface">Selesai</button>
+                    </div>
+                    <button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold text-on-surface hover:bg-slate-50 shadow-sm transition-all">
+                        <span class="material-symbols-outlined text-lg">filter_list</span>
+                        Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- ====== STATS CARDS ====== -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between border-l-4 border-red-600">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-red-50 text-red-600 rounded-lg"><span class="material-symbols-outlined">report</span></span>
+                        <span class="text-xs font-bold text-red-600">+12% vs last week</span>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Laporan Hari Ini</p>
+                        <h3 id="queue-total-today" class="text-3xl font-bold mt-1">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-orange-50 text-orange-600 rounded-lg"><span class="material-symbols-outlined">hourglass_empty</span></span>
+                        <span class="text-xs font-bold text-slate-400">Target: &lt; 4h</span>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Rata-rata Respon</p>
+                        <h3 class="text-3xl font-bold mt-1">2.4<span class="text-lg font-normal text-slate-400 ml-1">jam</span></h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><span class="material-symbols-outlined">verified</span></span>
+                        <span class="text-xs font-bold text-emerald-600">92% akurasi AI</span>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Kasus Terverifikasi</p>
+                        <h3 id="queue-verified-count" class="text-3xl font-bold mt-1">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-slate-50 text-slate-600 rounded-lg"><span class="material-symbols-outlined">group</span></span>
+                        <span class="text-xs font-bold text-slate-400">Aktif: 8/12</span>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Tim Investigator</p>
+                        <h3 class="text-3xl font-bold mt-1">12</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== TABEL ANTREAN ====== -->
+            <div class="bg-white rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] overflow-hidden border border-slate-100">
+                <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-white">
+                    <div class="flex items-center gap-4">
+                        <h3 class="text-xl font-semibold text-on-surface font-h3">Queue Antrean Laporan</h3>
+                        <span id="queue-new-count" class="px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">
+    0 Laporan
+</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
+                            <span class="material-symbols-outlined">refresh</span>
+                        </button>
+                        <button class="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
+                            <span class="material-symbols-outlined">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-low/30">
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ticket ID</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Pelapor</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Target Deteksi</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Skor Risiko</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reports-queue-body" class="divide-y divide-slate-100">
+    <tr>
+        <td colspan="7" class="px-6 py-8 text-center text-sm text-slate-400">
+            Memuat laporan masuk...
+        </td>
+    </tr>
+</tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+                   <span id="queue-pagination-info" class="text-xs text-slate-500 font-medium">
+    Menampilkan 0 laporan
+</span>
+                    <div class="flex items-center gap-1">
+                        <button class="p-2 border border-slate-200 bg-white rounded-md text-slate-400 cursor-not-allowed">
+                            <span class="material-symbols-outlined text-lg">chevron_left</span>
+                        </button>
+                        <button class="w-8 h-8 flex items-center justify-center bg-red-600 text-white text-xs font-bold rounded-md">1</button>
+                        <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-md">2</button>
+                        <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-md">3</button>
+                        <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-md">...</button>
+                        <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-md">5</button>
+                        <button class="p-2 border border-slate-200 bg-white rounded-md text-slate-600 hover:bg-slate-50 transition-colors">
+                            <span class="material-symbols-outlined text-lg">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== BOTTOM CARDS ====== -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-900 text-white p-8 rounded-2xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="text-xl font-semibold mb-2">Automated Threat Analysis</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Sistem kami baru saja memblokir 12 URL phishing secara otomatis berdasarkan laporan dari antrean ini.</p>
+                        <a href="analytics.html" class="inline-block px-6 py-2 bg-white text-slate-900 rounded-lg text-sm font-bold hover:bg-slate-100 transition-colors">Lihat Laporan Teknis</a>
+                    </div>
+                    <div class="absolute -right-10 -bottom-10 opacity-20 rotate-12">
+                        <span class="material-symbols-outlined text-[180px]" style="font-variation-settings: 'FILL' 1;">security</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 flex items-center gap-4">
+                        <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined">support_agent</span>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-on-surface">Bantuan Investigator</h5>
+                            <p class="text-slate-500 text-xs">Butuh bantuan untuk validasi data? Hubungi tim support teknis.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 flex items-center gap-4">
+                        <div class="w-12 h-12 bg-slate-50 text-slate-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined">download</span>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-on-surface">Ekspor Data Queue</h5>
+                            <p class="text-slate-500 text-xs">Unduh semua data laporan dalam format CSV atau PDF.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    let reportsQueueData = [];
+    let currentQueueFilter = 'all';
+
+    function getStatusClass(status) {
+        const value = String(status || 'Pending').toLowerCase();
+
+        if (value === 'fraud') {
+            return 'bg-red-100 text-red-700';
+        }
+
+        if (value === 'aman') {
+            return 'bg-emerald-100 text-emerald-700';
+        }
+
+        if (value === 'diproses' || value === 'investigasi') {
+            return 'bg-blue-100 text-blue-700';
+        }
+
+        return 'bg-orange-100 text-orange-700';
+    }
+
+    function getRiskColor(score) {
+        const value = Number(score || 0);
+
+        if (value >= 70) return 'bg-red-600 text-red-600';
+        if (value >= 40) return 'bg-orange-500 text-orange-600';
+        return 'bg-emerald-500 text-emerald-600';
+    }
+
+    function formatQueueDate(value) {
+        if (!value) return '-';
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+
+        return date.toLocaleString('id-ID', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function normalizeQueueStatus(status) {
+        const value = String(status || 'Pending').toLowerCase();
+
+        if (value === 'fraud') return 'Investigasi';
+        if (value === 'aman') return 'Selesai';
+        if (value === 'diproses') return 'Investigasi';
+
+        return 'Pending';
+    }
+
+    function renderReportsQueue() {
+        const tbody = document.getElementById('reports-queue-body');
+        const badge = document.getElementById('queue-new-count');
+        const paginationInfo = document.getElementById('queue-pagination-info');
+        const totalToday = document.getElementById('queue-total-today');
+        const verifiedCount = document.getElementById('queue-verified-count');
+
+        if (!tbody) return;
+
+        let filtered = reportsQueueData;
+
+        if (currentQueueFilter !== 'all') {
+            filtered = reportsQueueData.filter(item => {
+                const status = normalizeQueueStatus(item.admin_status).toLowerCase();
+                return status === currentQueueFilter;
+            });
+        }
+
+        if (badge) badge.textContent = `${reportsQueueData.length} Laporan`;
+        if (paginationInfo) paginationInfo.textContent = `Menampilkan ${filtered.length} dari ${reportsQueueData.length} laporan`;
+        if (totalToday) totalToday.textContent = reportsQueueData.length;
+        if (verifiedCount) {
+            verifiedCount.textContent = reportsQueueData.filter(item => {
+                const status = String(item.admin_status || '').toLowerCase();
+                return status === 'aman' || status === 'fraud';
+            }).length;
+        }
+
+        if (!filtered.length) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="px-6 py-8 text-center text-sm text-slate-400">
+                        Tidak ada laporan pada filter ini.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(item => {
+            const riskScore = Number(item.risk_score || 0);
+            const riskColor = getRiskColor(riskScore);
+            const statusLabel = normalizeQueueStatus(item.admin_status);
+            const statusClass = getStatusClass(item.admin_status);
+
+            const urls = item.extracted_urls || '-';
+            const phones = item.extracted_phones || '-';
+
+            return `
+                <tr class="hover:bg-slate-50/80 transition-colors group">
+                    <td class="px-6 py-4">
+                        <span class="font-mono text-sm font-bold text-slate-800">
+                            ${item.ticket_id || '-'}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-semibold text-on-surface">
+                                ${item.reporter_email || '-'}
+                            </span>
+                            <span class="text-[10px] text-slate-400">
+                                ID: ${item.id || '-'}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm text-slate-400">phone</span>
+                                <span class="text-sm font-medium">${phones || '-'}</span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm text-slate-400">link</span>
+                                <span class="text-sm text-blue-600 truncate max-w-[160px]">
+                                    ${urls || '-'}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full ${riskColor.split(' ')[0]}" style="width:${riskScore}%"></div>
+                            </div>
+
+                            <span class="text-sm font-bold ${riskColor.split(' ')[1]}">
+                                ${riskScore}%
+                            </span>
+                        </div>
+                    </td>
+
+                    <td class="px-6 py-4 text-sm text-slate-600">
+                        ${formatQueueDate(item.created_at)}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${statusClass} uppercase tracking-wide">
+                            ${statusLabel}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4 text-right">
+                        <a
+                            href="/admin/case-review?ticket_id=${encodeURIComponent(item.ticket_id || '')}"
+                            class="bg-red-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-red-700 shadow-md shadow-red-200 transition-all inline-flex"
+                        >
+                            Review
+                        </a>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    async function loadReportsQueue() {
+        const tbody = document.getElementById('reports-queue-body');
+
+        try {
+            const res = await fetch('/admin/reports');
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || 'Gagal mengambil data laporan');
+            }
+
+            reportsQueueData = Array.isArray(data) ? data : [];
+            renderReportsQueue();
+
+        } catch (err) {
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="px-6 py-8 text-center text-sm text-red-500">
+                            ${err.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+    }
+
+    function initQueueFilters() {
+        document.querySelectorAll('.filter-tab').forEach(button => {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(item => {
+                    item.classList.remove('bg-red-600', 'text-white', 'shadow-sm');
+                    item.classList.add('text-slate-500');
+                });
+
+                button.classList.add('bg-red-600', 'text-white', 'shadow-sm');
+                button.classList.remove('text-slate-500');
+
+                const label = button.textContent.trim().toLowerCase();
+
+                if (label === 'semua') currentQueueFilter = 'all';
+                else if (label === 'pending') currentQueueFilter = 'pending';
+                else if (label === 'investigasi') currentQueueFilter = 'investigasi';
+                else if (label === 'selesai') currentQueueFilter = 'selesai';
+
+                renderReportsQueue();
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadReportsQueue();
+        initQueueFilters();
+    });
+</script>
+
+    <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+</body>
+</html>
