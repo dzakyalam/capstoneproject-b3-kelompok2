@@ -8,6 +8,7 @@ import pymysql
 import numpy as np
 import hashlib
 import smtplib
+import json
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
 from scipy.sparse import hstack, csr_matrix
@@ -284,6 +285,141 @@ def import_whitelist_from_csv():
 
     print(f"[OK] Whitelist CSV berhasil diproses. Domain: {imported_domains}, Phone: {imported_phones}")
 
+def seed_pdf_education_materials():
+    materials = [
+        {
+            "title": "Jangan Tersangkut! Mengenali Phishing & Situs Palsu",
+            "category": "Phishing",
+            "summary": "Pelajari cara mengenali pesan phishing, situs palsu, URL mencurigakan, dan langkah aman saat menerima tautan dari SMS, email, atau WhatsApp.",
+            "read_time": "7 mnt baca",
+            "image_url": "",
+            "content": """
+MODUL 1 — Jangan Tersangkut! Mengenali Phishing & Situs Palsu
+
+Apa itu Phishing?
+Phishing adalah upaya penipuan di mana pelaku menyamar sebagai pihak terpercaya seperti bank, pemerintah, atau marketplace untuk memancing korban agar menyerahkan data pribadi.
+
+Bagaimana Cara Kerjanya?
+Pelaku biasanya mengirim pesan melalui SMS, email, atau WhatsApp yang tampak resmi. Pesan tersebut sering berisi ancaman seperti akun diblokir atau iming-iming hadiah. Di dalamnya terdapat tautan yang mengarah ke situs palsu.
+
+PERINGATAN:
+CIMB Niaga tidak pernah meminta username, password, PIN, atau OTP melalui SMS, email, WhatsApp, maupun telepon.
+
+Langkah Praktis:
+1. Selalu periksa URL resmi CIMB Niaga, yaitu cimbniaga.co.id.
+2. Jangan klik tautan dari SMS atau WhatsApp yang mengatasnamakan bank.
+3. Akses layanan melalui aplikasi OCTO Mobile atau ketik URL resmi langsung.
+4. Jika ragu, hubungi CIMB Care di 14041.
+5. Waspadai domain mirip seperti cimb-niaga-login.com atau cimb.promo-hadiah.net.
+"""
+        },
+        {
+            "title": "Kode Sakti yang Harus Dijaga: Rahasia OTP Anda",
+            "category": "OTP",
+            "summary": "Pahami mengapa OTP sangat penting, bagaimana penipu mencoba mendapatkannya, dan langkah aman menjaga kode verifikasi perbankan.",
+            "read_time": "6 mnt baca",
+            "image_url": "",
+            "content": """
+MODUL 2 — Kode Sakti yang Harus Dijaga: Rahasia OTP Anda
+
+Apa itu OTP?
+OTP atau One-Time Password adalah kode verifikasi yang dikirim ke nomor ponsel dan hanya berlaku satu kali dalam waktu singkat. OTP digunakan sebagai lapisan keamanan tambahan.
+
+Mengapa OTP Sangat Berharga?
+OTP adalah pertahanan terakhir rekening Anda. Karena itu, penipu sering berpura-pura menjadi petugas bank, kurir, atau pihak resmi untuk meminta OTP.
+
+PERINGATAN:
+Tidak ada petugas bank, kurir, atau instansi resmi yang berhak meminta OTP Anda.
+
+Langkah Praktis:
+1. Jangan pernah menyebutkan OTP kepada siapa pun.
+2. Gunakan OTP hanya di aplikasi OCTO Mobile atau website resmi.
+3. Jika menerima OTP padahal tidak sedang transaksi, segera hubungi CIMB Care 14041.
+4. Jangan mengetik OTP di form dari tautan WhatsApp, SMS, atau email.
+5. Pastikan nomor ponsel yang terdaftar masih aktif.
+"""
+        },
+        {
+            "title": "Hati-hati Undangan Digital! Bahaya File APK Palsu",
+            "category": "Malware APK",
+            "summary": "Kenali bahaya file APK palsu yang menyamar sebagai undangan, paket kurir, atau aplikasi lain untuk mencuri OTP dan data perbankan.",
+            "read_time": "6 mnt baca",
+            "image_url": "",
+            "content": """
+MODUL 3 — Hati-hati Undangan Digital! Bahaya File APK Palsu
+
+Apa itu File APK Berbahaya?
+APK adalah format file instalasi aplikasi Android. File APK berbahaya dapat mencuri data dari ponsel, termasuk SMS, OTP, kontak, dan login perbankan.
+
+Bagaimana Cara Kerjanya?
+Korban menerima file APK melalui WhatsApp, SMS, atau email. Jika diinstal, aplikasi dapat meminta akses SMS dan kontak. Dari situ, pelaku bisa membaca OTP yang masuk.
+
+PERINGATAN:
+Undangan asli dan informasi paket tidak pernah dikirim dalam format APK.
+
+Langkah Praktis:
+1. Jangan pernah menginstal APK dari WhatsApp, SMS, atau email.
+2. Instal aplikasi hanya dari Google Play Store atau App Store resmi.
+3. Nonaktifkan install aplikasi dari sumber tidak dikenal.
+4. Periksa izin aplikasi sebelum menginstal.
+5. Jika terlanjur menginstal APK mencurigakan, aktifkan mode pesawat, hapus aplikasi, ganti password, dan hubungi bank.
+"""
+        },
+        {
+            "title": "Scan dengan Bijak: Ancaman Quishing lewat QR Code Palsu",
+            "category": "Quishing",
+            "summary": "Pelajari modus QR code palsu, cara memeriksa QRIS, dan langkah aman sebelum membuka tautan hasil scan QR.",
+            "read_time": "6 mnt baca",
+            "image_url": "",
+            "content": """
+MODUL 4 — Scan dengan Bijak: Ancaman Quishing lewat QR Code Palsu
+
+Apa itu Quishing?
+Quishing adalah gabungan dari QR code dan phishing. Modus ini menggunakan QR code palsu yang mengarahkan korban ke situs berbahaya.
+
+Bagaimana Cara Kerjanya?
+Pelaku dapat menempelkan QR code palsu di atas QR resmi, misalnya di meja kasir, flyer pembayaran, atau pamflet promosi. Setelah dipindai, korban diarahkan ke situs phishing atau pembayaran ke rekening penipu.
+
+PERINGATAN:
+Selalu periksa URL yang muncul setelah memindai QR code sebelum menekan tombol Buka atau Lanjutkan.
+
+Langkah Praktis:
+1. Periksa kondisi fisik QR code.
+2. Setelah memindai, baca URL yang muncul sebelum membuka.
+3. Gunakan fitur QRIS resmi di aplikasi OCTO Mobile.
+4. Hindari memindai QR code dari flyer atau poster yang tidak jelas.
+5. Jika QR meminta login perbankan padahal hanya untuk bayar makanan, abaikan.
+"""
+        },
+    ]
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            for item in materials:
+                cur.execute(
+                    "SELECT id FROM education_articles WHERE title=%s LIMIT 1",
+                    (item["title"],)
+                )
+                exists = cur.fetchone()
+
+                if exists:
+                    continue
+
+                cur.execute("""
+                    INSERT INTO education_articles
+                    (title, category, summary, content, status, read_time, image_url)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, (
+                    item["title"],
+                    item["category"],
+                    item["summary"],
+                    item["content"],
+                    "Published",
+                    item["read_time"],
+                    item["image_url"],
+                ))
+
+    print("[OK] Materi edukasi dari PDF berhasil dimasukkan.")
 
 # =========================================================
 # INIT DATABASE DAN TABEL
@@ -377,6 +513,7 @@ def init_db():
             """)
 
             # Tambah kolom reporter_email jika project lama belum punya
+                       # Tambah kolom reporter_email jika project lama belum punya
             try:
                 cur.execute("SHOW COLUMNS FROM reports LIKE 'reporter_email'")
                 has_column = cur.fetchone()
@@ -384,6 +521,34 @@ def init_db():
                     cur.execute("ALTER TABLE reports ADD COLUMN reporter_email VARCHAR(255) NULL AFTER ticket_id")
             except Exception as e:
                 print("[WARNING] Gagal memastikan kolom reporter_email:", e)
+
+                      # Tambah kolom source_message jika project lama belum punya
+            try:
+                cur.execute("SHOW COLUMNS FROM reports LIKE 'source_message'")
+                has_column = cur.fetchone()
+
+                if not has_column:
+                    cur.execute("""
+                        ALTER TABLE reports
+                        ADD COLUMN source_message VARCHAR(50) NULL AFTER message_text
+                    """)
+            except Exception as e:
+                print("[WARNING] Gagal memastikan kolom source_message:", e)
+
+            # Tambah kolom quiz_data jika project lama belum punya
+            try:
+                cur.execute("SHOW COLUMNS FROM education_articles LIKE 'quiz_data'")
+                has_column = cur.fetchone()
+
+                if not has_column:
+                    cur.execute("""
+                        ALTER TABLE education_articles
+                        ADD COLUMN quiz_data JSON NULL AFTER content
+                    """)
+            except Exception as e:
+                print("[WARNING] Gagal memastikan kolom quiz_data:", e)
+
+            # Seed admin default
 
             # Seed admin default
             cur.execute(
@@ -478,6 +643,9 @@ def init_db():
                         (title, category, summary, content, status, read_time, image_url)
                         VALUES (%s, %s, %s, %s, %s, %s, %s)
                     """, article)
+
+    # Seed materi edukasi dari PDF
+    seed_pdf_education_materials()
 
     # Import whitelist dari CSV
     import_whitelist_from_csv()
@@ -742,11 +910,11 @@ def analyze_message(text: str):
         score += 30
     score += int(nlp_prob * 40)
 
-    # Maksimal skor dibuat 95, bukan 100
-    score = min(score, 95)
+    # Maksimal skor dibuat 95
+    score = min(score, 100)
 
     if ai_score >= 60 and score < 70:
-        score = min(95, score + 10)
+        score = min(100, score + 10)
 
     if score >= 70:
         risk_level = "High Risk"
@@ -843,6 +1011,25 @@ def track_page():
 @app.route("/education.html")
 def education_page():
     return render_template("user/education.html")
+
+
+@app.route("/education-detail")
+@app.route("/education-detail.html")
+def education_detail_page():
+    return render_template("user/education-detail.html")
+
+
+@app.route("/quiz")
+@app.route("/quiz.html")
+def quiz_page():
+    return render_template("user/quiz.html")
+
+
+@app.route("/quiz-result")
+@app.route("/quiz-result.html")
+def quiz_result_page():
+    return render_template("user/quiz-result.html")
+
 
 @app.route("/bantuan.html")
 def help_page():
@@ -988,6 +1175,7 @@ def api_report():
         data = request.get_json(silent=True) or {}
         message_text = str(data.get("message_text") or "").strip()
         reporter_email = str(data.get("email") or "").strip()
+        source_message = str(data.get("source_message") or data.get("source") or "Lainnya").strip()
 
         if not message_text:
             return jsonify({"message": "Pesan wajib diisi"}), 400
@@ -1000,15 +1188,17 @@ def api_report():
                 cur.execute(
                     """
                     INSERT INTO reports (
-                        ticket_id, reporter_email, message_text, extracted_urls, extracted_phones,
-                        url_flag, phone_flag, nlp_prob, ai_extra_score, risk_score,
-                        risk_level, admin_status, admin_note
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        ticket_id, reporter_email, message_text, source_message,
+                        extracted_urls, extracted_phones,
+                        url_flag, phone_flag, nlp_prob, ai_extra_score,
+                        risk_score, risk_level, admin_status, admin_note
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """,
                     (
                         ticket_id,
                         reporter_email if reporter_email else None,
                         analysis["message_text"],
+                        source_message,
                         ", ".join(analysis["urls"]),
                         ", ".join(analysis["phones"]),
                         analysis["url_flag"],
@@ -1071,6 +1261,7 @@ def admin_reports():
                     ticket_id,
                     reporter_email,
                     message_text,
+                    source_message,
                     extracted_urls,
                     extracted_phones,
                     url_flag,
@@ -1300,6 +1491,37 @@ def admin_scam_types():
     result.sort(key=lambda x: x["count"], reverse=True)
     return jsonify(result), 200
 
+@app.route("/admin/analytics/message-sources", methods=["GET"])
+def admin_message_sources():
+    if not require_admin():
+        return jsonify({"message": "Unauthorized"}), 401
+
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT
+                    COALESCE(NULLIF(source_message, ''), 'Lainnya') AS source_message,
+                    COUNT(*) AS total
+                FROM reports
+                GROUP BY COALESCE(NULLIF(source_message, ''), 'Lainnya')
+                ORDER BY total DESC
+            """)
+            rows = cur.fetchall()
+
+    total_reports = sum(int(row["total"] or 0) for row in rows) or 1
+
+    result = []
+    for row in rows:
+        source = row["source_message"] or "Lainnya"
+        count = int(row["total"] or 0)
+
+        result.append({
+            "source": source,
+            "count": count,
+            "percentage": round((count / total_reports) * 100)
+        })
+
+    return jsonify(result), 200
 
 # =========================================================
 # ADMIN WHITELIST API
@@ -1487,8 +1709,8 @@ def admin_get_education_articles():
     with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT id, title, category, summary, content, status, read_time, image_url, created_at, updated_at
-                FROM education_articles
+                SELECT id, title, category, summary, content, quiz_data, status, read_time, image_url, created_at, updated_at
+FROM education_articles
                 ORDER BY updated_at DESC, created_at DESC
             """)
             rows = cur.fetchall()
@@ -1510,6 +1732,7 @@ def admin_add_education_article():
     status = str(data.get("status") or "Draft").strip()
     read_time = str(data.get("read_time") or "5 mnt baca").strip()
     image_url = str(data.get("image_url") or "").strip()
+    quiz_data = data.get("quiz_data") or []
 
     if not title or not category or not summary or not content:
         return jsonify({"message": "Semua field wajib diisi"}), 400
@@ -1521,9 +1744,18 @@ def admin_add_education_article():
         with conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO education_articles
-                (title, category, summary, content, status, read_time, image_url)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (title, category, summary, content, status, read_time, image_url))
+                (title, category, summary, content, quiz_data, status, read_time, image_url)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                title,
+                category,
+                summary,
+                content,
+                json.dumps(quiz_data, ensure_ascii=False),
+                status,
+                read_time,
+                image_url
+            ))
 
     return jsonify({"message": "Materi edukasi berhasil ditambahkan"}), 200
 
@@ -1542,6 +1774,7 @@ def admin_update_education_article(article_id):
     status = str(data.get("status") or "Draft").strip()
     read_time = str(data.get("read_time") or "5 mnt baca").strip()
     image_url = str(data.get("image_url") or "").strip()
+    quiz_data = data.get("quiz_data") or []
 
     if not title or not category or not summary or not content:
         return jsonify({"message": "Semua field wajib diisi"}), 400
@@ -1553,9 +1786,19 @@ def admin_update_education_article(article_id):
         with conn.cursor() as cur:
             cur.execute("""
                 UPDATE education_articles
-                SET title=%s, category=%s, summary=%s, content=%s, status=%s, read_time=%s, image_url=%s
+                SET title=%s, category=%s, summary=%s, content=%s, quiz_data=%s, status=%s, read_time=%s, image_url=%s
                 WHERE id=%s
-            """, (title, category, summary, content, status, read_time, image_url, article_id))
+            """, (
+                title,
+                category,
+                summary,
+                content,
+                json.dumps(quiz_data, ensure_ascii=False),
+                status,
+                read_time,
+                image_url,
+                article_id
+            ))
 
             if cur.rowcount == 0:
                 return jsonify({"message": "Artikel tidak ditemukan"}), 404
@@ -1576,13 +1819,12 @@ def admin_delete_education_article(article_id):
 
     return jsonify({"message": "Artikel berhasil dihapus"}), 200
 
-
 @app.route("/api/education/articles", methods=["GET"])
 def user_get_education_articles():
     with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT id, title, category, summary, content, read_time, image_url, created_at
+                SELECT id, title, category, summary, content, quiz_data, read_time, image_url, created_at
                 FROM education_articles
                 WHERE status='Published'
                 ORDER BY updated_at DESC, created_at DESC
@@ -1590,6 +1832,23 @@ def user_get_education_articles():
             rows = cur.fetchall()
 
     return jsonify(rows), 200
+
+@app.route("/api/education/article/<int:article_id>", methods=["GET"])
+def user_get_education_article(article_id):
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, title, category, summary, content, quiz_data, read_time, image_url, created_at
+                FROM education_articles
+                WHERE id=%s AND status='Published'
+                LIMIT 1
+            """, (article_id,))
+            row = cur.fetchone()
+
+    if not row:
+        return jsonify({"message": "Materi edukasi tidak ditemukan"}), 404
+
+    return jsonify(row), 200
 # =========================================================
 # HEALTH CHECK
 # =========================================================

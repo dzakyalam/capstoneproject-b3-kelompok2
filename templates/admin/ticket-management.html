@@ -104,10 +104,50 @@
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 System Online
             </div>
-            <button class="hover:bg-slate-100 rounded-full p-2 transition-colors relative">
-                <span class="material-symbols-outlined text-slate-600">notifications</span>
-                <span class="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full border-2 border-white"></span>
-            </button>
+<!-- Notifikasi Admin -->
+<div class="relative">
+    <button
+        id="btn-admin-notification"
+        type="button"
+        class="relative hover:bg-slate-100 rounded-full p-2 transition-colors"
+    >
+        <span class="material-symbols-outlined text-slate-600">notifications</span>
+        <span
+            id="admin-notification-dot"
+            class="absolute top-2 right-2 w-2 h-2 bg-red-600 rounded-full border-2 border-white"
+        ></span>
+    </button>
+
+    <div
+        id="admin-notification-panel"
+        class="hidden absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 overflow-hidden"
+    >
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div>
+                <h3 class="text-sm font-bold text-slate-900">Notifikasi</h3>
+                <p class="text-xs text-slate-500">Pembaruan laporan terbaru</p>
+            </div>
+            <span class="material-symbols-outlined text-red-600 text-lg">
+                notifications_active
+            </span>
+        </div>
+
+        <div id="admin-notification-list" class="max-h-80 overflow-y-auto divide-y divide-slate-50">
+            <div class="px-5 py-4 text-sm text-slate-400">
+                Memuat notifikasi...
+            </div>
+        </div>
+
+        <div class="px-5 py-3 bg-slate-50 border-t border-slate-100">
+            <a
+                href="{{ url_for('admin_case_review') }}"
+                class="text-xs font-bold text-red-600 hover:underline"
+            >
+                Lihat semua laporan
+            </a>
+        </div>
+    </div>
+</div>
         </div>
     </header>
 
@@ -487,12 +527,334 @@
         });
     }
 
+document.addEventListener('DOMContentLoaded', function () {
+    loadTicketManagement();
+    initTicketManagementButtons();
+    initAdminNotification();
+});
+</script>
+<script>
+    async function loadAdminNotifications() {
+        const list = document.getElementById('admin-notification-list');
+        const dot = document.getElementById('admin-notification-dot');
+
+        if (!list) return;
+
+        try {
+            const res = await fetch('/admin/reports');
+            const reports = await res.json();
+
+            if (!Array.isArray(reports) || reports.length === 0) {
+                list.innerHTML = `
+                    <div class="px-5 py-4 text-sm text-slate-400">
+                        Belum ada notifikasi laporan.
+                    </div>
+                `;
+
+                if (dot) dot.classList.add('hidden');
+                return;
+            }
+
+            const latestReports = reports.slice(0, 5);
+
+            const pendingCount = reports.filter(function (item) {
+                return String(item.admin_status || 'Pending').toLowerCase() === 'pending';
+            }).length;
+
+            if (dot) {
+                if (pendingCount > 0) {
+                    dot.classList.remove('hidden');
+                } else {
+                    dot.classList.add('hidden');
+                }
+            }
+
+            list.innerHTML = latestReports.map(function (item) {
+                const riskScore = Number(item.risk_score || 0);
+                const isHighRisk = riskScore >= 70;
+
+                return `
+                    <a
+                        href="/admin/case-review?ticket_id=${encodeURIComponent(item.ticket_id || '')}"
+                        class="block px-5 py-4 hover:bg-slate-50 transition-colors"
+                    >
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-xl ${isHighRisk ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'} flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-lg">
+                                    ${isHighRisk ? 'warning' : 'verified_user'}
+                                </span>
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center justify-between gap-2">
+                                    <p class="text-sm font-bold text-slate-900 truncate">
+                                        ${item.ticket_id || '-'}
+                                    </p>
+
+                                    <span class="text-xs font-bold ${isHighRisk ? 'text-red-600' : 'text-emerald-600'}">
+                                        ${riskScore}%
+                                    </span>
+                                </div>
+
+                                <p class="text-xs text-slate-500 truncate mt-1">
+                                    ${item.reporter_email || 'Email tidak tersedia'}
+                                </p>
+
+                                <p class="text-xs text-slate-400 mt-1">
+                                    Status: ${item.admin_status || 'Pending'}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+        } catch (err) {
+            list.innerHTML = `
+                <div class="px-5 py-4 text-sm text-red-500">
+                    Gagal memuat notifikasi.
+                </div>
+            `;
+        }
+    }
+
+    function initAdminNotification() {
+        const button = document.getElementById('btn-admin-notification');
+        const panel = document.getElementById('admin-notification-panel');
+
+        if (!button || !panel) return;
+
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
+            panel.classList.toggle('hidden');
+            loadAdminNotifications();
+        });
+
+        panel.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+
+        document.addEventListener('click', function () {
+            panel.classList.add('hidden');
+        });
+
+        loadAdminNotifications();
+    }
+</script>
+<script>
+    const ticketTranslations = {
+        id: {
+            searchPlaceholder: 'Cari tiket, ID, atau nasabah...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+
+            pageTitle: 'Manajemen Tiket',
+            pageDesc: 'Pantau dan perbarui status investigasi tiket aktif dari sistem CIMB Guardian.',
+
+            totalActive: 'Total Tiket Aktif',
+            investigating: 'Dalam Investigasi',
+            needAttention: 'Butuh Perhatian',
+            completed24: 'Selesai (24 Jam)',
+
+            filter: 'Filter',
+            newTicket: 'Tiket Baru',
+            ticketQueue: 'Antrean Tiket Investigasi',
+
+            all: 'Semua',
+            priority: 'Prioritas',
+
+            ticketId: 'ID Tiket',
+            customer: 'Nasabah',
+            fraudType: 'Jenis Fraud',
+            lastUpdate: 'Update Terakhir',
+            status: 'Status',
+            action: 'Aksi',
+
+            viewDetail: 'Lihat Detail',
+            bySystem: 'Oleh: System AI',
+            byAdmin: 'Oleh: Admin',
+
+            pending: 'Pending',
+            investigation: 'Investigasi',
+            fraud: 'Fraud',
+            safe: 'Aman',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        },
+        en: {
+            searchPlaceholder: 'Search ticket, ID, or customer...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+
+            pageTitle: 'Ticket Management',
+            pageDesc: 'Monitor and update active investigation ticket statuses from the CIMB Guardian system.',
+
+            totalActive: 'Total Active Tickets',
+            investigating: 'Under Investigation',
+            needAttention: 'Needs Attention',
+            completed24: 'Completed (24 Hours)',
+
+            filter: 'Filter',
+            newTicket: 'New Ticket',
+            ticketQueue: 'Investigation Ticket Queue',
+
+            all: 'All',
+            priority: 'Priority',
+
+            ticketId: 'Ticket ID',
+            customer: 'Customer',
+            fraudType: 'Fraud Type',
+            lastUpdate: 'Last Updated',
+            status: 'Status',
+            action: 'Action',
+
+            viewDetail: 'View Detail',
+            bySystem: 'By: System AI',
+            byAdmin: 'By: Admin',
+
+            pending: 'Pending',
+            investigation: 'Investigation',
+            fraud: 'Fraud',
+            safe: 'Safe',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        }
+    };
+
+    function applyTicketLanguage(lang) {
+        const t = ticketTranslations[lang] || ticketTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Ticket Management'
+            : 'CIMB Guardian - Manajemen Tiket';
+
+        const searchInput = document.querySelector('header input, #ticket-search');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+
+        const systemOnline = document.querySelector('.bg-emerald-50.text-emerald-600');
+        if (systemOnline) {
+            systemOnline.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                ${t.systemOnline}
+            `;
+        }
+
+        const logoutLink = document.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+            logoutLink.innerHTML = `
+                <span class="material-symbols-outlined text-lg">logout</span>
+                ${t.logout}
+            `;
+        }
+
+        const pageTitle = Array.from(document.querySelectorAll('h1, h2')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('manajemen tiket') || text.includes('ticket management');
+        });
+        if (pageTitle) pageTitle.textContent = t.pageTitle;
+
+        const pageDesc = Array.from(document.querySelectorAll('p')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('pantau dan perbarui') || text.includes('monitor and update');
+        });
+        if (pageDesc) pageDesc.textContent = t.pageDesc;
+
+        const filterBtn = Array.from(document.querySelectorAll('button')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('filter');
+        });
+        if (filterBtn) {
+            filterBtn.innerHTML = `
+                <span class="material-symbols-outlined text-sm">filter_list</span>
+                ${t.filter}
+            `;
+        }
+
+        const newTicketBtn = Array.from(document.querySelectorAll('button')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('tiket baru') ||
+                   el.textContent.trim().toLowerCase().includes('new ticket');
+        });
+        if (newTicketBtn) {
+            newTicketBtn.innerHTML = `
+                <span class="material-symbols-outlined text-sm">add</span>
+                ${t.newTicket}
+            `;
+        }
+
+        Array.from(document.querySelectorAll('p, span, h3, h4, th, button, a')).forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text === 'total tiket aktif') el.textContent = t.totalActive;
+            if (text === 'dalam investigasi') el.textContent = t.investigating;
+            if (text === 'butuh perhatian') el.textContent = t.needAttention;
+            if (text === 'selesai (24 jam)') el.textContent = t.completed24;
+
+            if (text === 'antrean tiket investigasi') el.textContent = t.ticketQueue;
+
+            if (text === 'semua') el.textContent = t.all;
+            if (text === 'prioritas') el.textContent = t.priority;
+
+            if (text === 'id tiket') el.textContent = t.ticketId;
+            if (text === 'nasabah') el.textContent = t.customer;
+            if (text === 'jenis fraud') el.textContent = t.fraudType;
+            if (text === 'update terakhir') el.textContent = t.lastUpdate;
+            if (text === 'status') el.textContent = t.status;
+            if (text === 'aksi') el.textContent = t.action;
+
+            if (text === 'lihat detail') el.textContent = t.viewDetail;
+
+            if (text === 'pending') el.textContent = t.pending;
+            if (text === 'investigasi') el.textContent = t.investigation;
+            if (text === 'fraud') el.textContent = t.fraud;
+            if (text === 'aman') el.textContent = t.safe;
+
+            if (text === 'system health') el.textContent = t.systemHealth;
+            if (text === 'nodes online') el.textContent = t.nodesOnline;
+        });
+
+        Array.from(document.querySelectorAll('p, span')).forEach(function (el) {
+            const text = el.textContent.trim();
+
+            if (text === 'Oleh: System AI') el.textContent = t.bySystem;
+            if (text === 'Oleh: Admin') el.textContent = t.byAdmin;
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-        loadTicketManagement();
-        initTicketManagementButtons();
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        applyTicketLanguage(currentLang);
     });
 </script>
-
     <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>

@@ -81,16 +81,25 @@
     </a>
 </nav>
         <div class="px-4 mt-auto">
-            <div class="p-4 bg-slate-50 rounded-xl">
-                <div class="flex items-center gap-3">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW4mZa6BS0W5y1N3OoS67h5DAqRfR2HyBvsS48qeiwRCJHyY0I8WQQew476m92RzZeqrwgMuXcjNY_ZviU3IaEalVKrxuQRvvI_rKTHzbbE6w9wekVqLSsTJx7VvnUOv6ozSvqa1z4DdM4QrEuDrsML4gA567Oa1g1hNd6MTLk8Smt55mTPOovgeUxIuLeDrkV9K7IilnvQ4R-C2WgEA0-mEjg5nWScqqVHntNO2SIkO9nnDZK2VFRE8w8JqgktjkvoZ3h1h54Sh0"
-                        alt="Admin Profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" />
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">Admin Utama</p>
-                        <p class="text-xs text-slate-500">Super Admin</p>
-                    </div>
-                </div>
-            </div>
+            <button
+    id="btn-sidebar-avatar"
+    type="button"
+    class="w-full p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-all text-left"
+    title="Ganti Foto Profil"
+>
+    <div class="flex items-center gap-3">
+ <img
+    id="sidebar-admin-avatar"
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW4mZa6BS0W5y1N3OoS67h5DAqRfR2HyBvsS48qeiwRCJHyY0I8WQQew476m92RzZeqrwgMuXcjNY_ZviU3IaEalVKrxuQRvvI_rKTHzbbE6w9wekVqLSsTJx7VvnUOv6ozSvqa1z4DdM4QrEuDrsML4gA567Oa1g1hNd6MTLk8Smt55mTPOovgeUxIuLeDrkV9K7IilnvQ4R-C2WgEA0-mEjg5nWScqqVHntNO2SIkO9nnDZK2VFRE8w8JqgktjkvoZ3h1h54Sh0"
+    alt="Admin Profile"
+    class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+/>
+        <div>
+            <p class="text-sm font-bold text-slate-800">Admin Utama</p>
+            <p class="text-xs text-slate-500">Super Admin</p>
+        </div>
+    </div>
+</button>
         </div>
     </aside>
 
@@ -118,11 +127,20 @@
     <span class="material-symbols-outlined text-lg">logout</span>
     Logout
 </a>
-                <button class="flex items-center gap-2 hover:bg-slate-100 p-1 rounded-lg transition-all">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9MPQ86GUj5kIfJua8qfry9IzUYB02TVw3LVxuoZFQH-rynlTrpTjrzcgcW3sqUs7exImrKpxqVb_iYBRedFTsB7wwl_nmdTtFVSR3gMf8g7yQX83EFvszLEvPqk8rXqY7vrEIW0QYiRRyAse6N-GiSmYVDpSt5kPtL_RtUMpYnG7Pa8AP0SAmmxMyiHDC_5SACmdtxFxZz5G1XTcmdCDoym5GoaZdoGN-64XecWDhkK19Vvf6qNl_RQBarR7hbKDdxC4bzblPgmg"
-                        alt="Admin" class="w-8 h-8 rounded-full" />
-                    <span class="material-symbols-outlined text-slate-400">expand_more</span>
-                </button>
+<button
+    id="btn-topbar-avatar"
+    type="button"
+    class="flex items-center gap-2 hover:bg-slate-100 p-1 rounded-lg transition-all"
+    title="Ganti Foto Profil"
+>
+<img
+    id="topbar-admin-avatar"
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9MPQ86GUj5kIfJua8qfry9IzUYB02TVw3LVxuoZFQH-rynlTrpTjrzcgcW3sqUs7exImrKpxqVb_iYBRedFTsB7wwl_nmdTtFVSR3gMf8g7yQX83EFvszLEvPqk8rXqY7vrEIW0QYiRRyAse6N-GiSmYVDpSt5kPtL_RtUMpYnG7Pa8AP0SAmmxMyiHDC_5SACmdtxFxZz5G1XTcmdCDoym5GoaZdoGN-64XecWDhkK19Vvf6qNl_RQBarR7hbKDdxC4bzblPgmg"
+    alt="Admin"
+    class="w-8 h-8 rounded-full object-cover"
+/>
+    <span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
             </div>
         </div>
     </header>
@@ -252,12 +270,69 @@
                         Bahasa yang dipilih akan disimpan di browser dan dapat digunakan oleh halaman user yang mendukung fitur bahasa.
                     </p>
                 </div>
+                
             </div>
         </div>
     </div>
+    
 </main>
 
     <script>
+    const settingsTranslations = {
+        id: {
+            pageTitle: 'Pengaturan',
+            pageDesc: 'Kelola informasi admin dan bahasa sistem CIMB Guardian.',
+            adminInfo: 'Informasi Admin',
+            adminName: 'Nama Lengkap Admin',
+            adminEmail: 'Email Institusi',
+            saveButton: 'Simpan Perubahan',
+            languageTitle: 'Bahasa Sistem',
+            languageId: 'Bahasa Indonesia',
+            languageEn: 'English',
+            languageDesc: 'Bahasa yang dipilih akan disimpan di browser dan dapat digunakan oleh halaman user yang mendukung fitur bahasa.',
+            searchPlaceholder: 'Cari pengaturan atau sistem...',
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+            savedAdmin: 'Informasi admin berhasil disimpan.',
+            emptyName: 'Nama admin tidak boleh kosong.',
+            invalidEmail: 'Email institusi tidak valid.',
+            langIdToast: 'Bahasa sistem diubah ke Bahasa Indonesia.',
+            langEnToast: 'System language changed to English.'
+        },
+        en: {
+            pageTitle: 'Settings',
+            pageDesc: 'Manage admin information and CIMB Guardian system language.',
+            adminInfo: 'Admin Information',
+            adminName: 'Full Admin Name',
+            adminEmail: 'Institution Email',
+            saveButton: 'Save Changes',
+            languageTitle: 'System Language',
+            languageId: 'Indonesian',
+            languageEn: 'English',
+            languageDesc: 'The selected language will be saved in the browser and used by supported user pages.',
+            searchPlaceholder: 'Search settings or system...',
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+            savedAdmin: 'Admin information saved successfully.',
+            emptyName: 'Admin name cannot be empty.',
+            invalidEmail: 'Institution email is invalid.',
+            langIdToast: 'Bahasa sistem diubah ke Bahasa Indonesia.',
+            langEnToast: 'System language changed to English.'
+        }
+    };
+
     function showSettingsToast(message, type = 'success') {
         const oldToast = document.getElementById('settings-toast');
         if (oldToast) oldToast.remove();
@@ -269,7 +344,6 @@
             ${type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}
         `;
         toast.textContent = message;
-
         document.body.appendChild(toast);
 
         setTimeout(function () {
@@ -306,6 +380,57 @@
         }
     }
 
+    function applySettingsLanguage(lang) {
+        const t = settingsTranslations[lang] || settingsTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Settings'
+            : 'CIMB Guardian - Pengaturan';
+
+        const pageTitle = document.querySelector('main h2');
+        const pageDesc = document.querySelector('main header p');
+
+        if (pageTitle) pageTitle.textContent = t.pageTitle;
+        if (pageDesc) pageDesc.textContent = t.pageDesc;
+
+        const searchInput = document.querySelector('header.admin-main input');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const adminTitle = document.querySelector('.lg\\:col-span-7 h3');
+        if (adminTitle) adminTitle.textContent = t.adminInfo;
+
+        const adminLabels = document.querySelectorAll('.lg\\:col-span-7 label');
+        if (adminLabels[0]) adminLabels[0].textContent = t.adminName;
+        if (adminLabels[1]) adminLabels[1].textContent = t.adminEmail;
+
+        const saveButton = document.getElementById('btn-simpan-settings');
+        if (saveButton) saveButton.textContent = t.saveButton;
+
+        const languageTitle = document.querySelector('.lg\\:col-span-5 h3');
+        if (languageTitle) languageTitle.textContent = t.languageTitle;
+
+        const langIdText = document.querySelector('#btn-language-id .text-sm');
+        const langEnText = document.querySelector('#btn-language-en .text-sm');
+
+        if (langIdText) langIdText.textContent = t.languageId;
+        if (langEnText) langEnText.textContent = t.languageEn;
+
+        const languageDesc = document.querySelector('.lg\\:col-span-5 p.text-xs');
+        if (languageDesc) languageDesc.textContent = t.languageDesc;
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+    }
+
     function loadSimpleSettings() {
         const saved = JSON.parse(localStorage.getItem('cimbAdminSettings') || '{}');
 
@@ -322,9 +447,13 @@
 
         const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
         updateLanguageButtons(currentLang);
+        applySettingsLanguage(currentLang);
     }
 
     function saveSimpleSettings() {
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        const t = settingsTranslations[currentLang] || settingsTranslations.id;
+
         const nameInput = document.getElementById('settings-admin-name');
         const emailInput = document.getElementById('settings-admin-email');
 
@@ -332,12 +461,12 @@
         const adminEmail = emailInput ? emailInput.value.trim() : '';
 
         if (!adminName) {
-            showSettingsToast('Nama admin tidak boleh kosong.', 'error');
+            showSettingsToast(t.emptyName, 'error');
             return;
         }
 
         if (!adminEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adminEmail)) {
-            showSettingsToast('Email institusi tidak valid.', 'error');
+            showSettingsToast(t.invalidEmail, 'error');
             return;
         }
 
@@ -348,7 +477,7 @@
         };
 
         localStorage.setItem('cimbAdminSettings', JSON.stringify(settings));
-        showSettingsToast('Informasi admin berhasil disimpan.');
+        showSettingsToast(t.savedAdmin);
     }
 
     function initSimpleSettingsPage() {
@@ -366,7 +495,8 @@
             btnLanguageId.addEventListener('click', function () {
                 localStorage.setItem('cimbGuardianLang', 'id');
                 updateLanguageButtons('id');
-                showSettingsToast('Bahasa sistem diubah ke Bahasa Indonesia.');
+                applySettingsLanguage('id');
+                showSettingsToast(settingsTranslations.id.langIdToast);
             });
         }
 
@@ -374,14 +504,182 @@
             btnLanguageEn.addEventListener('click', function () {
                 localStorage.setItem('cimbGuardianLang', 'en');
                 updateLanguageButtons('en');
-                showSettingsToast('System language changed to English.');
+                applySettingsLanguage('en');
+                showSettingsToast(settingsTranslations.en.langEnToast);
             });
         }
     }
 
     document.addEventListener('DOMContentLoaded', initSimpleSettingsPage);
 </script>
+<!-- ====== AVATAR POPUP ====== -->
+<div id="avatar-popup" class="hidden fixed inset-0 z-[9999]">
+    <div id="avatar-popup-overlay" class="absolute inset-0 bg-black/30"></div>
 
+    <div class="absolute right-6 top-20 w-[340px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-6">
+        <div class="flex items-center justify-between mb-5">
+            <div>
+                <h3 class="text-lg font-bold text-slate-900">Ganti Foto Profil</h3>
+                <p class="text-xs text-slate-500">Upload foto admin dari perangkat</p>
+            </div>
+
+            <button
+                id="btn-close-avatar-popup"
+                type="button"
+                class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500"
+            >
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div class="flex flex-col items-center text-center">
+            <img
+                id="avatar-preview"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9MPQ86GUj5kIfJua8qfry9IzUYB02TVw3LVxuoZFQH-rynlTrpTjrzcgcW3sqUs7exImrKpxqVb_iYBRedFTsB7wwl_nmdTtFVSR3gMf8g7yQX83EFvszLEvPqk8rXqY7vrEIW0QYiRRyAse6N-GiSmYVDpSt5kPtL_RtUMpYnG7Pa8AP0SAmmxMyiHDC_5SACmdtxFxZz5G1XTcmdCDoym5GoaZdoGN-64XecWDhkK19Vvf6qNl_RQBarR7hbKDdxC4bzblPgmg"
+                alt="Preview Avatar"
+                class="w-24 h-24 rounded-full object-cover border-4 border-red-50 shadow-sm mb-4"
+            />
+
+            <input
+                id="input-admin-avatar"
+                type="file"
+                accept="image/*"
+                class="hidden"
+            />
+
+            <div class="flex gap-2 w-full">
+                <button
+                    id="btn-upload-admin-avatar"
+                    type="button"
+                    class="flex-1 bg-red-600 text-white text-sm font-bold px-4 py-3 rounded-lg hover:bg-red-700 transition-all"
+                >
+                    Pilih Foto
+                </button>
+
+                <button
+                    id="btn-reset-admin-avatar"
+                    type="button"
+                    class="bg-white border border-slate-200 text-slate-600 text-sm font-bold px-4 py-3 rounded-lg hover:bg-slate-100 transition-all"
+                >
+                    Reset
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-4">
+                Foto akan disimpan di browser menggunakan localStorage.
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    const defaultSidebarAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuDW4mZa6BS0W5y1N3OoS67h5DAqRfR2HyBvsS48qeiwRCJHyY0I8WQQew476m92RzZeqrwgMuXcjNY_ZviU3IaEalVKrxuQRvvI_rKTHzbbE6w9wekVqLSsTJx7VvnUOv6ozSvqa1z4DdM4QrEuDrsML4gA567Oa1g1hNd6MTLk8Smt55mTPOovgeUxIuLeDrkV9K7IilnvQ4R-C2WgEA0-mEjg5nWScqqVHntNO2SIkO9nnDZK2VFRE8w8JqgktjkvoZ3h1h54Sh0";
+
+    const defaultTopbarAvatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuB9MPQ86GUj5kIfJua8qfry9IzUYB02TVw3LVxuoZFQH-rynlTrpTjrzcgcW3sqUs7exImrKpxqVb_iYBRedFTsB7wwl_nmdTtFVSR3gMf8g7yQX83EFvszLEvPqk8rXqY7vrEIW0QYiRRyAse6N-GiSmYVDpSt5kPtL_RtUMpYnG7Pa8AP0SAmmxMyiHDC_5SACmdtxFxZz5G1XTcmdCDoym5GoaZdoGN-64XecWDhkK19Vvf6qNl_RQBarR7hbKDdxC4bzblPgmg";
+
+    function openAvatarPopup() {
+        const popup = document.getElementById('avatar-popup');
+        if (popup) popup.classList.remove('hidden');
+    }
+
+    function closeAvatarPopup() {
+        const popup = document.getElementById('avatar-popup');
+        if (popup) popup.classList.add('hidden');
+    }
+
+    function applyAdminAvatar(imageData) {
+        const sidebarAvatar = document.getElementById('sidebar-admin-avatar');
+        const topbarAvatar = document.getElementById('topbar-admin-avatar');
+        const avatarPreview = document.getElementById('avatar-preview');
+
+        const sidebarSrc = imageData || defaultSidebarAvatar;
+        const topbarSrc = imageData || defaultTopbarAvatar;
+
+        if (sidebarAvatar) sidebarAvatar.src = sidebarSrc;
+        if (topbarAvatar) topbarAvatar.src = topbarSrc;
+        if (avatarPreview) avatarPreview.src = topbarSrc;
+    }
+
+    function initAdminAvatarStorage() {
+        const savedAvatar = localStorage.getItem('adminAvatarImage');
+
+        const topbarButton = document.getElementById('btn-topbar-avatar');
+        const sidebarButton = document.getElementById('btn-sidebar-avatar');
+        const closeButton = document.getElementById('btn-close-avatar-popup');
+        const overlay = document.getElementById('avatar-popup-overlay');
+
+        const uploadButton = document.getElementById('btn-upload-admin-avatar');
+        const resetButton = document.getElementById('btn-reset-admin-avatar');
+        const inputAvatar = document.getElementById('input-admin-avatar');
+
+        applyAdminAvatar(savedAvatar);
+
+        if (topbarButton) {
+            topbarButton.addEventListener('click', openAvatarPopup);
+        }
+
+        if (sidebarButton) {
+            sidebarButton.addEventListener('click', openAvatarPopup);
+        }
+
+        if (closeButton) {
+            closeButton.addEventListener('click', closeAvatarPopup);
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', closeAvatarPopup);
+        }
+
+        if (uploadButton && inputAvatar) {
+            uploadButton.addEventListener('click', function () {
+                inputAvatar.click();
+            });
+        }
+
+        if (inputAvatar) {
+            inputAvatar.addEventListener('change', function () {
+                const file = inputAvatar.files && inputAvatar.files[0];
+
+                if (!file) return;
+
+                if (!file.type.startsWith('image/')) {
+                    showSettingsToast('File harus berupa gambar.', 'error');
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    const imageData = event.target.result;
+
+                    localStorage.setItem('adminAvatarImage', imageData);
+                    applyAdminAvatar(imageData);
+                    closeAvatarPopup();
+
+                    if (typeof showSettingsToast === 'function') {
+                        showSettingsToast('Foto profil admin berhasil diperbarui.');
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (resetButton) {
+            resetButton.addEventListener('click', function () {
+                localStorage.removeItem('adminAvatarImage');
+                applyAdminAvatar(null);
+
+                if (typeof showSettingsToast === 'function') {
+                    showSettingsToast('Foto profil admin berhasil direset.');
+                }
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initAdminAvatarStorage();
+    });
+</script>
 <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>

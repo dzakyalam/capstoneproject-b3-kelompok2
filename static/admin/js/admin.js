@@ -97,12 +97,22 @@ async function loadAdminSummary() {
 function buildTableRow(item) {
     const ticketId = escapeHtml(item.ticket_id || '-');
     const reporterEmail = escapeHtml(item.reporter_email || '-');
+    const sourceMessage = escapeHtml(item.source_message || 'Lainnya');
     const riskScore = Number(item.risk_score || 0);
 
     return `
         <tr class="hover:bg-slate-50/50 transition-colors">
             <td class="px-6 py-4 font-bold text-slate-700">${ticketId}</td>
+
             <td class="px-6 py-4 text-slate-600 text-sm">${reporterEmail}</td>
+
+            <td class="px-6 py-4">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">
+                    <span class="material-symbols-outlined text-sm">forum</span>
+                    ${sourceMessage}
+                </span>
+            </td>
+
             <td class="px-6 py-4">
                 <div class="flex flex-col items-center">
                     <span class="${getRiskTextClass(riskScore)} font-bold">${riskScore}%</span>
@@ -111,7 +121,9 @@ function buildTableRow(item) {
                     </div>
                 </div>
             </td>
+
             <td class="px-6 py-4">${getStatusBadge(item.admin_status)}</td>
+
             <td class="px-6 py-4 text-right">
                 <button class="btn-review text-primary font-bold text-sm hover:underline" data-ticket="${ticketId}">
                     Review
@@ -158,7 +170,7 @@ async function loadAdminReports() {
         if (!Array.isArray(data) || data.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="px-6 py-6 text-center text-slate-400">Belum ada laporan dari user.</td>
+                    <td colspan="6" class="px-6 py-6 text-center text-slate-400">Belum ada laporan dari user.</td>
                 </tr>
             `;
             if (tableInfo) tableInfo.textContent = 'Menampilkan 0 laporan';
@@ -190,7 +202,7 @@ async function loadAdminReports() {
         console.error('loadAdminReports:', err);
         tbody.innerHTML = `
             <tr>
-                <td colspan="5" class="px-6 py-6 text-center text-red-500">${escapeHtml(err.message)}</td>
+                <td colspan="6" class="px-6 py-6 text-center text-red-500">${escapeHtml(err.message)}</td>
             </tr>
         `;
         if (priorityList) {
@@ -237,7 +249,7 @@ function bindSearch(allData) {
         if (!filtered.length) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="px-6 py-6 text-center text-slate-400">Tidak ada data yang cocok.</td>
+                    <td colspan="6" class="px-6 py-6 text-center text-slate-400">Tidak ada data yang cocok.</td>
                 </tr>
             `;
             if (tableInfo) tableInfo.textContent = 'Menampilkan 0 laporan';
@@ -971,6 +983,19 @@ function resetEducationForm() {
     document.getElementById('education-status').value = 'Published';
     document.getElementById('education-image-url').value = '';
     updateEducationPreview();
+
+    const quizCount = document.getElementById('education-quiz-count');
+const quizFields = document.getElementById('education-quiz-fields');
+
+if (quizCount) quizCount.value = 0;
+
+if (quizFields) {
+    quizFields.innerHTML = `
+        <div class="text-xs text-slate-400">
+            Masukkan jumlah soal lalu tekan tombol Buat Form Quiz.
+        </div>
+    `;
+}
 }
 
 function openEducationModal(mode = 'add', data = null) {
@@ -1090,20 +1115,131 @@ function initEducationModal() {
         }
     });
 }
+function createQuizQuestionHtml(index, data = {}) {
+    const options = Array.isArray(data.options) ? data.options : ['', '', '', ''];
+
+    return `
+        <div class="quiz-question-item bg-white border border-slate-200 rounded-2xl p-5" data-index="${index}">
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="text-sm font-bold text-slate-800">
+                    Soal ${index + 1}
+                </h4>
+
+                <span class="text-xs text-slate-400">
+                    Pilih jawaban benar
+                </span>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">
+                        Pertanyaan
+                    </label>
+                    <textarea
+                        class="quiz-question-text w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-red-500 focus:ring-red-200"
+                        rows="2"
+                        placeholder="Masukkan pertanyaan quiz..."
+                    >${escapeHtml(data.question || '')}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Opsi A</label>
+                        <input class="quiz-option-a w-full rounded-xl border border-slate-200 px-4 py-2 text-sm" value="${escapeHtml(options[0] || '')}" placeholder="Jawaban A" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Opsi B</label>
+                        <input class="quiz-option-b w-full rounded-xl border border-slate-200 px-4 py-2 text-sm" value="${escapeHtml(options[1] || '')}" placeholder="Jawaban B" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Opsi C</label>
+                        <input class="quiz-option-c w-full rounded-xl border border-slate-200 px-4 py-2 text-sm" value="${escapeHtml(options[2] || '')}" placeholder="Jawaban C" />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Opsi D</label>
+                        <input class="quiz-option-d w-full rounded-xl border border-slate-200 px-4 py-2 text-sm" value="${escapeHtml(options[3] || '')}" placeholder="Jawaban D" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">
+                        Jawaban Benar
+                    </label>
+                    <select class="quiz-answer w-full rounded-xl border border-slate-200 px-4 py-2 text-sm">
+                        <option value="0" ${Number(data.answer) === 0 ? 'selected' : ''}>A</option>
+                        <option value="1" ${Number(data.answer) === 1 ? 'selected' : ''}>B</option>
+                        <option value="2" ${Number(data.answer) === 2 ? 'selected' : ''}>C</option>
+                        <option value="3" ${Number(data.answer) === 3 ? 'selected' : ''}>D</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">
+                        Penjelasan Jawaban
+                    </label>
+                    <textarea
+                        class="quiz-explanation w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-red-500 focus:ring-red-200"
+                        rows="2"
+                        placeholder="Masukkan penjelasan jawaban..."
+                    >${escapeHtml(data.explanation || '')}</textarea>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function generateQuizFields(existingData = null) {
+    const countInput = document.getElementById('education-quiz-count');
+    const container = document.getElementById('education-quiz-fields');
+
+    if (!countInput || !container) return;
+
+    const existingQuiz = Array.isArray(existingData) ? existingData : [];
+    const count = existingQuiz.length || Number(countInput.value || 0);
+
+    if (!count || count < 1) {
+        container.innerHTML = `
+            <div class="text-xs text-slate-400">
+                Masukkan jumlah soal lalu tekan tombol Buat Form Quiz.
+            </div>
+        `;
+        return;
+    }
+
+    countInput.value = count;
+
+    container.innerHTML = Array.from({ length: count }, function (_, index) {
+        return createQuizQuestionHtml(index, existingQuiz[index] || {});
+    }).join('');
+}
+
+function initQuizFieldBuilder() {
+    const btn = document.getElementById('btn-generate-quiz-fields');
+
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+        generateQuizFields();
+    });
+}
 
 async function saveEducationArticle(event) {
     event.preventDefault();
 
     const id = document.getElementById('education-id').value;
     const payload = {
-        title: document.getElementById('education-title').value.trim(),
-        category: document.getElementById('education-category').value.trim(),
-        summary: document.getElementById('education-summary').value.trim(),
-        content: document.getElementById('education-content').value.trim(),
-        read_time: document.getElementById('education-read-time').value.trim() || '5 mnt baca',
-        status: document.getElementById('education-status').value,
-        image_url: document.getElementById('education-image-url').value.trim()
-    };
+    title: document.getElementById('education-title').value.trim(),
+    category: document.getElementById('education-category').value.trim(),
+    summary: document.getElementById('education-summary').value.trim(),
+    content: document.getElementById('education-content').value.trim(),
+    quiz_data: collectQuizData(),
+    read_time: document.getElementById('education-read-time').value.trim() || '5 mnt baca',
+    status: document.getElementById('education-status').value,
+    image_url: document.getElementById('education-image-url').value.trim()
+};
 
     if (!payload.title || !payload.category || !payload.summary || !payload.content) {
         showToast('Semua field penting harus diisi.', 'error');
@@ -1256,6 +1392,29 @@ function initEducationFilters() {
     }
 }
 
+function collectQuizData() {
+    const items = document.querySelectorAll('.quiz-question-item');
+
+    return Array.from(items).map(function (item) {
+        const question = item.querySelector('.quiz-question-text')?.value.trim() || '';
+        const optionA = item.querySelector('.quiz-option-a')?.value.trim() || '';
+        const optionB = item.querySelector('.quiz-option-b')?.value.trim() || '';
+        const optionC = item.querySelector('.quiz-option-c')?.value.trim() || '';
+        const optionD = item.querySelector('.quiz-option-d')?.value.trim() || '';
+        const answer = Number(item.querySelector('.quiz-answer')?.value || 0);
+        const explanation = item.querySelector('.quiz-explanation')?.value.trim() || '';
+
+        return {
+            question: question,
+            options: [optionA, optionB, optionC, optionD],
+            answer: answer,
+            explanation: explanation
+        };
+    }).filter(function (item) {
+        return item.question && item.options.every(Boolean);
+    });
+}
+
 // ============================================
 // INIT ALL
 // ============================================
@@ -1276,6 +1435,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loadEducationArticles();
     initEducationModal();
     initEducationFilters();
+    initQuizFieldBuilder();
 
     const form = document.getElementById('education-form');
     if (form) {

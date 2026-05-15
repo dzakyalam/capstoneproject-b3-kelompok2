@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuis Keamanan Digital | CIMB-Guardian</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='user/css/style.css') }}" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b5000b", "primary-container": "#e30613", "on-primary": "#ffffff",
+                        "on-primary-container": "#fff5f3",
+                        "secondary": "#5d5f5f", "surface": "#fbf9f8", "background": "#fbf9f8",
+                        "surface-container-low": "#f5f3f3", "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7", "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1c", "on-background": "#1b1c1c",
+                        "on-surface-variant": "#5e3f3b",
+                        "outline": "#936e69", "outline-variant": "#e9bcb6",
+                        "tertiary-container": "#727171",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "h1": ["Work Sans", "sans-serif"], "h2": ["Work Sans", "sans-serif"],
+                        "h3": ["Work Sans", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"], "label-sm": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"], "body-sm": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                    },
+                    fontSize: {
+                        "h1": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h2": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h3": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }],
+                    },
+                    spacing: {
+                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
+                        "xl": "32px", "2xl": "48px", "3xl": "64px", "gutter": "24px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col" style="font-family: 'Inter', sans-serif;">
+
+    <!-- ====== HEADER ====== -->
+    <header class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-50">
+        <div class="flex justify-between items-center h-20 px-8 max-w-[1280px] mx-auto w-full">
+            <a href="{{ url_for('home') }}" class="text-xl font-black text-red-600 flex items-center gap-2" style="font-family: 'Work Sans', sans-serif;">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+                CIMB-Guardian
+            </a>
+            <nav class="hidden md:flex gap-8 text-sm tracking-tight items-center" style="font-family: 'Work Sans', sans-serif;">
+                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-600 transition-colors">Home</a>
+                <a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-600 transition-colors">Track Ticket</a>
+                <a href="{{ url_for('education_page') }}" class="text-red-600 font-semibold border-b-2 border-red-600 pb-1">Education</a>
+                <a href="{{ url_for('help_page') }}" class="text-slate-600 hover:text-red-600 transition-colors">Help</a>
+            </nav>
+            <a href="{{ url_for('admin_login') }}" class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95 shadow-md">
+    Secure Login
+</a>
+        </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-16">
+        <div class="w-full max-w-4xl">
+
+            <!-- Header -->
+            <div class="mb-8 text-center md:text-left">
+                <h1 class="text-3xl font-semibold text-on-background mb-4 font-h1">Kuis Keamanan Digital</h1>
+                <p class="text-lg text-secondary mb-8">Uji pengetahuan Anda untuk menjaga keamanan aset digital Anda.</p>
+            </div>
+
+            <!-- Grid Kuis -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+
+                <!-- Kartu Soal Utama -->
+                <div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container">
+                    <div class="flex items-center gap-4 mb-8">
+                       <span id="quiz-number" class="bg-primary-container/10 text-primary w-10 h-10 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</span>
+                        <h2 id="quiz-question" class="text-2xl font-semibold text-on-surface font-h2">
+    Memuat soal...
+</h2>
+                    </div>
+
+                    <div class="space-y-4" id="quiz-options"></div>
+
+                    <!-- Navigasi Soal -->
+                    <div class="flex justify-between items-center mt-16">
+                        <button id="btn-prev" class="flex items-center gap-2 px-6 py-3 border border-outline text-on-background text-sm font-semibold rounded-lg hover:bg-surface-container-low transition-all">
+                            <span class="material-symbols-outlined text-xl">arrow_back</span>
+                            Sebelumnya
+                        </button>
+                        <button
+    id="btn-next"
+    type="button"
+    class="flex items-center gap-2 px-8 py-3 bg-primary-container text-on-primary-container text-sm font-semibold rounded-lg shadow-md hover:brightness-110 active:scale-95 transition-all"
+>
+    Lanjut
+    <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+                    </div>
+                </div>
+
+                <!-- Kartu Samping -->
+                <div class="md:col-span-4 space-y-6">
+
+                    <!-- Progress -->
+                    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container">
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-xs font-bold uppercase text-secondary tracking-wider">PROGRES</span>
+                            <span id="quiz-progress-percent" class="text-xl font-bold text-primary">0%</span>
+                        </div>
+                        <div class="w-full bg-surface-container rounded-full h-3 mb-4">
+                            <div id="quiz-progress-bar" class="bg-primary h-3 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <p id="quiz-progress-text" class="text-sm text-on-surface-variant">0 dari 0 soal selesai</p>
+                    </div>
+
+                    <!-- Timer -->
+                    <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-surface-container flex items-center gap-6">
+                        <div class="bg-tertiary-container/10 p-4 rounded-lg flex-shrink-0">
+                            <span class="material-symbols-outlined text-tertiary-container text-3xl">timer</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold uppercase text-secondary tracking-wider">Sisa Waktu</span>
+                            <span class="text-3xl font-bold text-on-background" id="timer-display">04:55</span>
+                        </div>
+                    </div>
+
+                    <!-- Tip Card -->
+                    <div class="relative overflow-hidden bg-on-background rounded-xl p-6 text-white group">
+                        <div class="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-[120px]">verified_user</span>
+                        </div>
+                        <span class="inline-block px-2 py-1 bg-primary text-[10px] font-bold rounded mb-4 tracking-widest uppercase">Guardian Tip</span>
+                        <h4 class="text-xl font-semibold text-white mb-2 font-h3">Lindungi Password Anda</h4>
+                        <p class="text-sm text-slate-300">Gunakan verifikasi dua langkah (2FA) untuk memberikan lapisan keamanan ekstra pada akun perbankan Anda.</p>
+                        <div class="mt-6">
+                            <img
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEe6M4HlWKxTKkyOwwdVfxl6tnvuQmBz_mJLoyl9jPce7pBnJv-obQ6bPvk9JJgI4rUL47WLcdWh1zPSVdiQQOOFvySg0aI6HCzE65bsdFcjtkn2BJSpoJ_KrfBFF805aMBENEQs8EThy2uVjdkTpkgrjTOyj5cFP_lMOQvug4pb9ZTtRYpSBB6QsU9z48xN0uN48Gm1gB3TZLernQKaogBawLGiHFjizOYHB-kOeDWuvpqebY1iPfyD2o4DqmALNj71tPfQZHwl0"
+                                alt="Antarmuka vault digital dengan ikon pemindaian biometrik"
+                                class="w-full h-32 object-cover rounded-lg opacity-80"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+   <!-- ====== FOOTER ====== -->
+<footer class="bg-slate-50 border-t border-slate-200 mt-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-8">
+        <div class="space-y-2 text-center md:text-left">
+            <div class="text-lg font-bold text-slate-900 font-display">
+                CIMB Guardian
+            </div>
+
+            <p data-i18n="footer_copyright_2026" class="text-xs text-slate-500">
+                © 2026 CIMB Guardian. Hak Cipta Dilindungi.
+            </p>
+        </div>
+
+        <nav class="flex flex-wrap justify-center gap-6 text-xs">
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="security"
+                data-i18n="footer_security"
+            >
+                Kebijakan Keamanan
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="terms"
+                data-i18n="footer_terms"
+            >
+                Syarat Layanan
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="privacy"
+                data-i18n="footer_privacy"
+            >
+                Pusat Privasi
+            </button>
+
+            <button
+                type="button"
+                class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+                data-footer="support"
+                data-i18n="footer_support"
+            >
+                Hubungi Dukungan
+            </button>
+        </nav>
+
+        <div class="flex gap-4">
+            <button
+                type="button"
+                id="btn-language"
+                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                title="Ganti Bahasa"
+            >
+                <span id="language-label" class="text-xs font-bold">ID</span>
+            </button>
+
+            <button
+                type="button"
+                id="btn-official-channel"
+                class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all"
+                title="Kanal Resmi CIMB"
+            >
+                <span class="material-symbols-outlined text-lg">shield</span>
+            </button>
+        </div>
+    </div>
+</footer>
+<!-- ====== FOOTER MODAL ====== -->
+<div id="footer-modal" class="fixed inset-0 z-[9999] hidden">
+    <div id="footer-modal-overlay" class="absolute inset-0 bg-black/40"></div>
+
+    <div class="relative bg-white w-[92%] max-w-xl mx-auto mt-24 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="flex items-start justify-between gap-4 p-6 border-b border-slate-100">
+            <div>
+                <h3 id="footer-modal-title" class="text-xl font-bold text-slate-900">
+                    Judul
+                </h3>
+
+                <p id="footer-modal-subtitle" class="text-sm text-slate-500 mt-1">
+                    Informasi CIMB Guardian
+                </p>
+            </div>
+
+            <button
+                id="footer-modal-close"
+                type="button"
+                class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500"
+            >
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="footer-modal-content" class="p-6 text-sm text-slate-600 leading-relaxed">
+            Konten modal.
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='user/js/main.js') }}"></script>
+    <script>
+    // ==============================
+    // TIMER COUNTDOWN
+    // ==============================
+    var seconds = 4 * 60 + 55;
+    var timerEl = document.getElementById('timer-display');
+
+    var interval = setInterval(function () {
+        if (seconds <= 0) {
+            clearInterval(interval);
+            finishQuiz();
+            return;
+        }
+
+        seconds--;
+
+        var m = Math.floor(seconds / 60);
+        var s = seconds % 60;
+
+        timerEl.textContent =
+            (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }, 1000);
+
+
+    // ==============================
+    // BANK SOAL BERDASARKAN MATERI
+    // ==============================
+    const quizBank = {
+        phishing: {
+            title: "Kuis Phishing & Situs Palsu",
+            questions: [
+                {
+                    question: "Anda menerima SMS berisi link bit.ly/cimb-secure untuk verifikasi rekening. Apa tindakan paling aman?",
+                    options: [
+                        "Klik link dan verifikasi akun",
+                        "Abaikan SMS, lalu cek langsung di OCTO Mobile atau hubungi 14041",
+                        "Balas SMS dan tanyakan pengirim",
+                        "Forward SMS ke semua kontak"
+                    ],
+                    answer: 1,
+                    explanation: "Bank tidak pernah mengirim tautan verifikasi melalui SMS. Gunakan aplikasi resmi atau hubungi CIMB Care."
+                },
+                {
+                    question: "URL mana yang benar dan aman untuk mengakses CIMB Niaga?",
+                    options: [
+                        "cimbniaga-secure.login.com",
+                        "www.cimbniaga.co.id",
+                        "cimb-niaga.banking-id.net",
+                        "login-cimbniaga.secure-bank.com"
+                    ],
+                    answer: 1,
+                    explanation: "Domain resmi CIMB Niaga adalah cimbniaga.co.id."
+                },
+                {
+                    question: "Ciri umum pesan phishing adalah...",
+                    options: [
+                        "Bahasa selalu formal",
+                        "Menciptakan rasa panik atau urgensi",
+                        "Selalu dikirim hari Senin",
+                        "Selalu berisi gambar besar"
+                    ],
+                    answer: 1,
+                    explanation: "Phishing sering memakai kata seperti segera, akun diblokir, hadiah hangus, atau batas waktu."
+                }
+            ]
+        },
+
+        otp: {
+            title: "Kuis Keamanan OTP",
+            questions: [
+                {
+                    question: "Seseorang mengaku CS CIMB Niaga dan meminta OTP untuk membuka blokir rekening. Apa respons yang tepat?",
+                    options: [
+                        "Berikan OTP karena situasinya darurat",
+                        "Tutup telepon karena tidak ada petugas bank yang boleh meminta OTP",
+                        "Minta ia membuktikan identitas dulu",
+                        "Berikan OTP jika ia menyebut nama lengkap Anda"
+                    ],
+                    answer: 1,
+                    explanation: "OTP tidak boleh diberikan kepada siapa pun, termasuk pihak yang mengaku petugas bank."
+                },
+                {
+                    question: "Anda menerima OTP padahal tidak sedang transaksi. Apa artinya?",
+                    options: [
+                        "Normal karena sistem sedang update",
+                        "Ada kemungkinan seseorang mencoba mengakses akun Anda",
+                        "OTP spam dan bisa diabaikan",
+                        "Ponsel sedang error"
+                    ],
+                    answer: 1,
+                    explanation: "OTP yang datang tanpa diminta bisa menjadi tanda bahwa akun sedang dicoba diakses pihak lain."
+                },
+                {
+                    question: "Di mana OTP aman dimasukkan?",
+                    options: [
+                        "Form dari tautan WhatsApp",
+                        "Aplikasi OCTO Mobile resmi yang dibuka sendiri",
+                        "Website dari penelepon",
+                        "Form Google dari media sosial"
+                    ],
+                    answer: 1,
+                    explanation: "OTP hanya aman digunakan pada aplikasi atau website resmi yang Anda akses sendiri."
+                }
+            ]
+        },
+
+        apk: {
+            title: "Kuis Bahaya File APK Palsu",
+            questions: [
+                {
+                    question: "Anda menerima pesan WhatsApp berisi file Undangan-Nikah-Digital.apk. Apa yang harus dilakukan?",
+                    options: [
+                        "Buka karena terlihat seperti undangan biasa",
+                        "Jangan buka atau instal file APK tersebut",
+                        "Simpan dulu untuk nanti",
+                        "Minta dikirim ulang dalam grup"
+                    ],
+                    answer: 1,
+                    explanation: "File APK adalah file instalasi aplikasi Android dan bisa berisi malware pencuri data."
+                },
+                {
+                    question: "Izin aplikasi mana yang patut dicurigai?",
+                    options: [
+                        "Aplikasi kamera meminta akses kamera",
+                        "Aplikasi pelacak paket meminta akses SMS dan kontak",
+                        "Aplikasi peta meminta akses lokasi",
+                        "Aplikasi musik meminta akses audio"
+                    ],
+                    answer: 1,
+                    explanation: "Aplikasi pelacak paket tidak membutuhkan akses SMS dan kontak. Izin yang tidak relevan perlu dicurigai."
+                },
+                {
+                    question: "Jika sudah terlanjur menginstal APK mencurigakan, langkah awal yang aman adalah...",
+                    options: [
+                        "Restart ponsel saja",
+                        "Aktifkan mode pesawat, hapus aplikasi, ganti password, dan hubungi bank",
+                        "Tunggu sampai ada transaksi mencurigakan",
+                        "Kirim file APK ke teman"
+                    ],
+                    answer: 1,
+                    explanation: "Mode pesawat membantu memutus koneksi agar data tidak terus terkirim ke pelaku."
+                }
+            ]
+        },
+
+        quishing: {
+            title: "Kuis Quishing QR Code Palsu",
+            questions: [
+                {
+                    question: "Anda melihat dua stiker QRIS bertumpuk di meja kasir. Apa tindakan yang tepat?",
+                    options: [
+                        "Scan QR paling atas",
+                        "Tanya kasir QR mana yang resmi dan periksa stiker",
+                        "Pilih secara acak",
+                        "Langsung bayar tanpa cek"
+                    ],
+                    answer: 1,
+                    explanation: "QR bertumpuk bisa menjadi tanda QR palsu ditempel di atas QR asli."
+                },
+                {
+                    question: "Setelah scan QR, muncul URL http://cimb-promo-cashback.xyz/daftar. Apa yang harus dilakukan?",
+                    options: [
+                        "Buka karena ada kata CIMB",
+                        "Jangan buka karena bukan domain resmi dan memakai http",
+                        "Buka tapi jangan isi data",
+                        "Kirim ke teman dulu"
+                    ],
+                    answer: 1,
+                    explanation: "Domain resmi CIMB Niaga adalah cimbniaga.co.id. Domain .xyz dan http perlu dicurigai."
+                },
+                {
+                    question: "Perbedaan utama phishing dan quishing adalah...",
+                    options: [
+                        "Quishing hanya terjadi di luar negeri",
+                        "Quishing menggunakan QR code sehingga URL tersembunyi sebelum dipindai",
+                        "Quishing selalu mudah dideteksi",
+                        "Tidak ada perbedaan"
+                    ],
+                    answer: 1,
+                    explanation: "QR code menyembunyikan URL sehingga pengguna harus memeriksa link setelah memindai."
+                }
+            ]
+        }
+    };
+
+
+    // ==============================
+    // VARIABEL QUIZ
+    // ==============================
+    let currentQuiz = null;
+    let currentIndex = 0;
+    let userAnswers = [];
+
+
+    // ==============================
+    // AMBIL QUERY PARAMETER
+    // ==============================
+    function getQueryParam(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
+
+
+    // ==============================
+    // TENTUKAN QUIZ BERDASARKAN MATERI
+    // ==============================
+    async function loadQuizFromArticle() {
+    const articleId = getQueryParam('article_id');
+
+    if (!articleId) {
+        alert('Materi kuis tidak ditemukan.');
+        window.location.href = '/education.html';
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/education/article/${encodeURIComponent(articleId)}`);
+        const article = await res.json();
+
+        if (!res.ok) {
+            throw new Error(article.message || 'Gagal memuat kuis.');
+        }
+
+        let quizData = article.quiz_data || [];
+
+        if (typeof quizData === 'string') {
+            quizData = JSON.parse(quizData || '[]');
+        }
+
+        if (!Array.isArray(quizData) || quizData.length === 0) {
+            alert('Kuis untuk materi ini belum tersedia.');
+            window.location.href = `/education-detail.html?article_id=${encodeURIComponent(articleId)}`;
+            return;
+        }
+
+        currentQuiz = {
+            title: `Kuis: ${article.title || 'Materi Edukasi'}`,
+            questions: quizData
+        };
+
+        currentIndex = 0;
+        userAnswers = new Array(currentQuiz.questions.length).fill(null);
+
+        renderQuestion();
+
+    } catch (err) {
+        alert(err.message);
+        window.location.href = '/education.html';
+    }
+}
+
+    // ==============================
+    // TAMPILKAN SOAL
+    // ==============================
+    function renderQuestion() {
+        const question = currentQuiz.questions[currentIndex];
+
+        document.querySelector('h1').textContent = currentQuiz.title;
+        document.getElementById('quiz-number').textContent = currentIndex + 1;
+        document.getElementById('quiz-question').textContent = question.question;
+
+        const optionsEl = document.getElementById('quiz-options');
+
+        optionsEl.innerHTML = question.options.map(function (option, index) {
+            return `
+                <label class="group flex items-center p-6 border border-surface-container rounded-lg hover:border-primary hover:bg-primary/5 transition-all cursor-pointer">
+                    <input
+                        type="radio"
+                        name="quiz"
+                        value="${index}"
+                        class="w-5 h-5 text-primary focus:ring-primary border-surface-container"
+                    />
+                    <span class="ml-6 text-on-surface">${String.fromCharCode(65 + index)}. ${option}</span>
+                </label>
+            `;
+        }).join('');
+
+        updateProgress();
+        bindRadioStyle();
+
+        const btnNext = document.getElementById('btn-next');
+
+        if (currentIndex === currentQuiz.questions.length - 1) {
+            btnNext.innerHTML = `
+                Selesai
+                <span class="material-symbols-outlined text-xl">check_circle</span>
+            `;
+        } else {
+            btnNext.innerHTML = `
+                Lanjut
+                <span class="material-symbols-outlined text-xl">arrow_forward</span>
+            `;
+        }
+    }
+
+
+    // ==============================
+    // UPDATE PROGRESS
+    // ==============================
+    function updateProgress() {
+        const total = currentQuiz.questions.length;
+        const done = currentIndex;
+        const percent = Math.round((done / total) * 100);
+
+        document.getElementById('quiz-progress-percent').textContent = percent + '%';
+        document.getElementById('quiz-progress-bar').style.width = percent + '%';
+        document.getElementById('quiz-progress-text').textContent = `${done} dari ${total} soal selesai`;
+    }
+
+
+    // ==============================
+    // STYLE PILIHAN JAWABAN
+    // ==============================
+    function bindRadioStyle() {
+        document.querySelectorAll('input[name="quiz"]').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                document.querySelectorAll('#quiz-options label').forEach(function (label) {
+                    label.classList.remove('border-2', 'border-primary', 'bg-primary/5');
+                    label.classList.add('border', 'border-surface-container');
+
+                    const span = label.querySelector('span');
+                    span.classList.remove('font-semibold', 'text-primary');
+                    span.classList.add('text-on-surface');
+                });
+
+                const selectedLabel = radio.closest('label');
+                selectedLabel.classList.remove('border', 'border-surface-container');
+                selectedLabel.classList.add('border-2', 'border-primary', 'bg-primary/5');
+
+                const span = selectedLabel.querySelector('span');
+                span.classList.add('font-semibold', 'text-primary');
+                span.classList.remove('text-on-surface');
+            });
+        });
+    }
+
+
+    // ==============================
+    // SELESAIKAN QUIZ
+    // ==============================
+    function finishQuiz() {
+        if (!currentQuiz) {
+            return;
+        }
+
+        let correct = 0;
+
+        currentQuiz.questions.forEach(function (q, index) {
+            if (userAnswers[index] === q.answer) {
+                correct++;
+            }
+        });
+
+        const result = {
+            title: currentQuiz.title,
+            total: currentQuiz.questions.length,
+            correct: correct,
+            wrong: currentQuiz.questions.length - correct,
+            score: Math.round((correct / currentQuiz.questions.length) * 100),
+            questions: currentQuiz.questions,
+            answers: userAnswers,
+            article_id: getQueryParam('article_id')
+        };
+
+        localStorage.setItem('cimbQuizResult', JSON.stringify(result));
+        window.location.href = '/quiz-result.html';
+    }
+
+
+    // ==============================
+    // TOMBOL SEBELUMNYA
+    // ==============================
+    document.getElementById('btn-prev').addEventListener('click', function () {
+        if (currentIndex > 0) {
+            currentIndex--;
+            renderQuestion();
+        } else {
+            const articleId = getQueryParam('article_id');
+
+            if (articleId) {
+                window.location.href = `/education-detail.html?article_id=${articleId}`;
+            } else {
+                window.location.href = '/education.html';
+            }
+        }
+    });
+
+
+    // ==============================
+    // TOMBOL LANJUT / SELESAI
+    // ==============================
+    document.getElementById('btn-next').addEventListener('click', function () {
+        const selectedAnswer = document.querySelector('input[name="quiz"]:checked');
+
+        if (!selectedAnswer) {
+            alert('Silakan pilih jawaban terlebih dahulu.');
+            return;
+        }
+
+        userAnswers[currentIndex] = Number(selectedAnswer.value);
+
+        if (currentIndex < currentQuiz.questions.length - 1) {
+            currentIndex++;
+            renderQuestion();
+        } else {
+            finishQuiz();
+        }
+    });
+
+
+    // ==============================
+    // LOAD QUIZ SAAT HALAMAN DIBUKA
+    // ==============================
+    document.addEventListener('DOMContentLoaded', function () {
+    loadQuizFromArticle();
+});
+</script>
+</body>
+</html>

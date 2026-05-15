@@ -109,14 +109,55 @@
                 <span class="text-[11px] font-bold text-emerald-700 tracking-wide">SYSTEM ONLINE</span>
             </div>
             <div class="flex items-center gap-1">
-                <button class="hover:bg-slate-100 rounded-full p-2 transition-colors text-slate-600">
-                    <span class="material-symbols-outlined">wifi_tethering_error</span>
-                </button>
-                <button class="hover:bg-slate-100 rounded-full p-2 transition-colors relative text-slate-600">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-red-600 border-2 border-white rounded-full"></span>
-                </button>
+    <button class="hover:bg-slate-100 rounded-full p-2 transition-colors text-slate-600">
+        <span class="material-symbols-outlined">wifi_tethering_error</span>
+    </button>
+
+    <!-- Notifikasi Admin -->
+    <div class="relative">
+        <button
+            id="btn-admin-notification"
+            type="button"
+            class="relative hover:bg-slate-100 rounded-full p-2 transition-colors text-slate-600"
+        >
+            <span class="material-symbols-outlined">notifications</span>
+            <span
+                id="admin-notification-dot"
+                class="absolute top-2 right-2 w-2 h-2 bg-red-600 border-2 border-white rounded-full"
+            ></span>
+        </button>
+
+        <div
+            id="admin-notification-panel"
+            class="hidden absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 z-50 overflow-hidden"
+        >
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">Notifikasi</h3>
+                    <p class="text-xs text-slate-500">Pembaruan laporan terbaru</p>
+                </div>
+                <span class="material-symbols-outlined text-red-600 text-lg">
+                    notifications_active
+                </span>
             </div>
+
+            <div id="admin-notification-list" class="max-h-80 overflow-y-auto divide-y divide-slate-50">
+                <div class="px-5 py-4 text-sm text-slate-400">
+                    Memuat notifikasi...
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-100">
+                <a
+                    href="{{ url_for('admin_case_review') }}"
+                    class="text-xs font-bold text-red-600 hover:underline"
+                >
+                    Lihat semua laporan
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
         </div>
     </header>
 
@@ -515,12 +556,325 @@
         });
     }
 
+document.addEventListener('DOMContentLoaded', function () {
+    loadReportsQueue();
+    initQueueFilters();
+    initAdminNotification();
+});
+</script>
+<script>
+    async function loadAdminNotifications() {
+        const list = document.getElementById('admin-notification-list');
+        const dot = document.getElementById('admin-notification-dot');
+
+        if (!list) return;
+
+        try {
+            const res = await fetch('/admin/reports');
+            const reports = await res.json();
+
+            if (!Array.isArray(reports) || reports.length === 0) {
+                list.innerHTML = `
+                    <div class="px-5 py-4 text-sm text-slate-400">
+                        Belum ada notifikasi laporan.
+                    </div>
+                `;
+
+                if (dot) dot.classList.add('hidden');
+                return;
+            }
+
+            const latestReports = reports.slice(0, 5);
+
+            const pendingCount = reports.filter(function (item) {
+                return String(item.admin_status || 'Pending').toLowerCase() === 'pending';
+            }).length;
+
+            if (dot) {
+                if (pendingCount > 0) {
+                    dot.classList.remove('hidden');
+                } else {
+                    dot.classList.add('hidden');
+                }
+            }
+
+            list.innerHTML = latestReports.map(function (item) {
+                const riskScore = Number(item.risk_score || 0);
+                const isHighRisk = riskScore >= 70;
+
+                return `
+                    <a
+                        href="/admin/case-review?ticket_id=${encodeURIComponent(item.ticket_id || '')}"
+                        class="block px-5 py-4 hover:bg-slate-50 transition-colors"
+                    >
+                        <div class="flex items-start gap-3">
+                            <div class="w-9 h-9 rounded-xl ${isHighRisk ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'} flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-lg">
+                                    ${isHighRisk ? 'warning' : 'verified_user'}
+                                </span>
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center justify-between gap-2">
+                                    <p class="text-sm font-bold text-slate-900 truncate">
+                                        ${item.ticket_id || '-'}
+                                    </p>
+
+                                    <span class="text-xs font-bold ${isHighRisk ? 'text-red-600' : 'text-emerald-600'}">
+                                        ${riskScore}%
+                                    </span>
+                                </div>
+
+                                <p class="text-xs text-slate-500 truncate mt-1">
+                                    ${item.reporter_email || 'Email tidak tersedia'}
+                                </p>
+
+                                <p class="text-xs text-slate-400 mt-1">
+                                    Status: ${item.admin_status || 'Pending'}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+        } catch (err) {
+            list.innerHTML = `
+                <div class="px-5 py-4 text-sm text-red-500">
+                    Gagal memuat notifikasi.
+                </div>
+            `;
+        }
+    }
+
+    function initAdminNotification() {
+        const button = document.getElementById('btn-admin-notification');
+        const panel = document.getElementById('admin-notification-panel');
+
+        if (!button || !panel) return;
+
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
+            panel.classList.toggle('hidden');
+            loadAdminNotifications();
+        });
+
+        panel.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+
+        document.addEventListener('click', function () {
+            panel.classList.add('hidden');
+        });
+
+        loadAdminNotifications();
+    }
+</script>
+<script>
+    const reportsQueueTranslations = {
+        id: {
+            searchPlaceholder: 'Cari laporan atau ID tiket...',
+            systemOnline: 'System Online',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+
+            breadcrumbHome: 'CIMB Guardian',
+            breadcrumbReports: 'Laporan Masuk',
+            pageTitle: 'Laporan Masuk',
+            pageDesc: 'Lihat dan kelola semua laporan penipuan yang masuk',
+
+            all: 'Semua',
+            pending: 'Pending',
+            investigation: 'Investigasi',
+            completed: 'Selesai',
+            filter: 'Filter',
+
+            todayReports: 'Laporan Hari Ini',
+            avgResponse: 'Rata-rata Respon',
+            verifiedCases: 'Kasus Terverifikasi',
+            investigatorTeam: 'Tim Investigator',
+
+            target: 'Target: < 4h',
+            aiAccuracy: '92% akurasi AI',
+            activeTeam: 'Aktif: 8/12',
+            vsLastWeek: '+12% vs last week',
+
+            queueTitle: 'Queue Antrean Laporan',
+            reportCount: 'Laporan',
+
+            ticketId: 'Ticket ID',
+            reporter: 'Pelapor',
+            detectionTarget: 'Target Deteksi',
+            riskScore: 'Skor Risiko',
+            date: 'Tanggal',
+            status: 'Status',
+            action: 'Aksi',
+
+            review: 'Review',
+            statusPending: 'Pending',
+            statusInvestigation: 'Investigasi',
+            statusDone: 'Selesai',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        },
+        en: {
+            searchPlaceholder: 'Search report or ticket ID...',
+            systemOnline: 'System Online',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+
+            breadcrumbHome: 'CIMB Guardian',
+            breadcrumbReports: 'Incoming Reports',
+            pageTitle: 'Incoming Reports',
+            pageDesc: 'View and manage all incoming fraud reports',
+
+            all: 'All',
+            pending: 'Pending',
+            investigation: 'Investigation',
+            completed: 'Completed',
+            filter: 'Filter',
+
+            todayReports: 'Today’s Reports',
+            avgResponse: 'Average Response',
+            verifiedCases: 'Verified Cases',
+            investigatorTeam: 'Investigator Team',
+
+            target: 'Target: < 4h',
+            aiAccuracy: '92% AI accuracy',
+            activeTeam: 'Active: 8/12',
+            vsLastWeek: '+12% vs last week',
+
+            queueTitle: 'Report Queue',
+            reportCount: 'Reports',
+
+            ticketId: 'Ticket ID',
+            reporter: 'Reporter',
+            detectionTarget: 'Detection Target',
+            riskScore: 'Risk Score',
+            date: 'Date',
+            status: 'Status',
+            action: 'Action',
+
+            review: 'Review',
+            statusPending: 'Pending',
+            statusInvestigation: 'Investigation',
+            statusDone: 'Completed',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        }
+    };
+
+    function applyReportsQueueLanguage(lang) {
+        const t = reportsQueueTranslations[lang] || reportsQueueTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Incoming Reports'
+            : 'CIMB Guardian - Laporan Masuk';
+
+        const searchInput = document.querySelector('header input, #reports-search');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+
+        const systemOnline = document.querySelector('.bg-emerald-50.text-emerald-600');
+        if (systemOnline) {
+            systemOnline.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                ${t.systemOnline}
+            `;
+        }
+
+        const pageTitle = Array.from(document.querySelectorAll('h1, h2')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('laporan masuk') || text.includes('incoming reports');
+        });
+        if (pageTitle) pageTitle.textContent = t.pageTitle;
+
+        const pageDesc = Array.from(document.querySelectorAll('p')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('lihat dan kelola') || text.includes('view and manage');
+        });
+        if (pageDesc) pageDesc.textContent = t.pageDesc;
+
+        Array.from(document.querySelectorAll('p, span, h3, h4, th, button, a')).forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text === 'cimb guardian') el.textContent = t.breadcrumbHome;
+            if (text === 'laporan masuk') el.textContent = t.breadcrumbReports;
+
+            if (text === 'semua') el.textContent = t.all;
+            if (text === 'pending') el.textContent = t.pending;
+            if (text === 'investigasi') el.textContent = t.investigation;
+            if (text === 'selesai') el.textContent = t.completed;
+            if (text === 'filter') el.textContent = t.filter;
+
+            if (text === 'laporan hari ini') el.textContent = t.todayReports;
+            if (text === 'rata-rata respon') el.textContent = t.avgResponse;
+            if (text === 'kasus terverifikasi') el.textContent = t.verifiedCases;
+            if (text === 'tim investigator') el.textContent = t.investigatorTeam;
+
+            if (text === 'target: < 4h') el.textContent = t.target;
+            if (text === '92% akurasi ai') el.textContent = t.aiAccuracy;
+            if (text === 'aktif: 8/12') el.textContent = t.activeTeam;
+            if (text === '+12% vs last week') el.textContent = t.vsLastWeek;
+
+            if (text.includes('queue antrean laporan')) {
+                el.textContent = t.queueTitle;
+            }
+
+            if (text === 'ticket id') el.textContent = t.ticketId;
+            if (text === 'pelapor') el.textContent = t.reporter;
+            if (text === 'target deteksi') el.textContent = t.detectionTarget;
+            if (text === 'skor risiko') el.textContent = t.riskScore;
+            if (text === 'tanggal') el.textContent = t.date;
+            if (text === 'status') el.textContent = t.status;
+            if (text === 'aksi') el.textContent = t.action;
+
+            if (text === 'review') el.textContent = t.review;
+
+            if (text === 'system health') el.textContent = t.systemHealth;
+            if (text === 'nodes online') el.textContent = t.nodesOnline;
+        });
+
+        Array.from(document.querySelectorAll('span')).forEach(function (el) {
+            const text = el.textContent.trim();
+
+            if (text.includes('Laporan')) {
+                el.textContent = text.replace('Laporan', t.reportCount);
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
-        loadReportsQueue();
-        initQueueFilters();
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        applyReportsQueueLanguage(currentLang);
     });
 </script>
-
     <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>

@@ -219,15 +219,23 @@
         Logout
     </a>
 
-    <div class="flex items-center gap-3">
-        <div class="text-right">
-            <p class="text-sm font-bold text-slate-800 leading-none">Admin Center</p>
-            <p class="text-xs text-slate-500 font-medium">Super Admin</p>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary">admin_panel_settings</span>
-        </div>
+<a
+    href="{{ url_for('admin_settings') }}"
+    class="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-slate-100 transition-all cursor-pointer"
+    title="Buka Pengaturan"
+>
+    <div class="text-right">
+        <p class="text-sm font-bold text-slate-800 leading-none">Admin Center</p>
+        <p class="text-xs text-slate-500 font-medium">Super Admin</p>
     </div>
+
+    <img
+        id="topbar-admin-avatar"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9MPQ86GUj5kIfJua8qfry9IzUYB02TVw3LVxuoZFQH-rynlTrpTjrzcgcW3sqUs7exImrKpxqVb_iYBRedFTsB7wwl_nmdTtFVSR3gMf8g7yQX83EFvszLEvPqk8rXqY7vrEIW0QYiRRyAse6N-GiSmYVDpSt5kPtL_RtUMpYnG7Pa8AP0SAmmxMyiHDC_5SACmdtxFxZz5G1XTcmdCDoym5GoaZdoGN-64XecWDhkK19Vvf6qNl_RQBarR7hbKDdxC4bzblPgmg"
+        alt="Admin"
+        class="w-10 h-10 rounded-full object-cover border-2 border-slate-100 hover:ring-2 hover:ring-red-600 transition-all"
+    />
+</a>
 </div>
     </header>
 
@@ -708,7 +716,209 @@
             initAdminNotification();
         });
     </script>
+<script>
+    const whitelistTranslations = {
+        id: {
+            searchPlaceholder: 'Cari domain atau nomor resmi...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
 
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+
+            pageBadge: 'Security Reference',
+            pageTitle: 'Whitelist Resmi',
+            pageDesc: 'Kelola domain dan nomor resmi yang dianggap aman oleh sistem deteksi.',
+
+            refresh: 'Refresh',
+            addDomain: 'Tambah Domain',
+            addPhone: 'Tambah Nomor',
+
+            totalDomain: 'Total Domain',
+            totalPhone: 'Total Nomor',
+            whitelistStatus: 'Status Whitelist',
+            verified: 'Terverifikasi',
+
+            domainTitle: 'Domain Resmi',
+            domainDesc: 'Daftar domain yang dianggap aman oleh sistem.',
+            phoneTitle: 'Nomor Resmi',
+            phoneDesc: 'Daftar nomor yang dianggap aman oleh sistem.',
+
+            domainBadge: 'Domain',
+            phoneBadge: 'Phone',
+            activeBadge: 'Active',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        },
+        en: {
+            searchPlaceholder: 'Search official domains or numbers...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+
+            pageBadge: 'Security Reference',
+            pageTitle: 'Official Whitelist',
+            pageDesc: 'Manage official domains and numbers considered safe by the detection system.',
+
+            refresh: 'Refresh',
+            addDomain: 'Add Domain',
+            addPhone: 'Add Number',
+
+            totalDomain: 'Total Domains',
+            totalPhone: 'Total Numbers',
+            whitelistStatus: 'Whitelist Status',
+            verified: 'Verified',
+
+            domainTitle: 'Official Domains',
+            domainDesc: 'List of domains considered safe by the system.',
+            phoneTitle: 'Official Numbers',
+            phoneDesc: 'List of numbers considered safe by the system.',
+
+            domainBadge: 'Domain',
+            phoneBadge: 'Phone',
+            activeBadge: 'Active',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        }
+    };
+
+    function applyWhitelistLanguage(lang) {
+        const t = whitelistTranslations[lang] || whitelistTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Whitelist'
+            : 'CIMB Guardian - Whitelist Resmi';
+
+        const searchInput = document.querySelector('header input, #whitelist-search');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+
+        const systemOnline = document.querySelector('.bg-emerald-50.text-emerald-600');
+        if (systemOnline) {
+            systemOnline.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                ${t.systemOnline}
+            `;
+        }
+
+        const logoutLink = document.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+            logoutLink.innerHTML = `
+                <span class="material-symbols-outlined text-lg">logout</span>
+                ${t.logout}
+            `;
+        }
+
+        const pageBadge = Array.from(document.querySelectorAll('p')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('security reference');
+        });
+        if (pageBadge) pageBadge.textContent = t.pageBadge;
+
+        const pageTitle = Array.from(document.querySelectorAll('h1, h2')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('whitelist resmi') || text.includes('official whitelist');
+        });
+        if (pageTitle) pageTitle.textContent = t.pageTitle;
+
+        const pageDesc = Array.from(document.querySelectorAll('p')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('kelola domain') || text.includes('manage official');
+        });
+        if (pageDesc) pageDesc.textContent = t.pageDesc;
+
+        const refreshBtn = document.getElementById('btn-refresh-whitelist');
+        if (refreshBtn) {
+            refreshBtn.innerHTML = `
+                <span class="material-symbols-outlined text-sm">refresh</span>
+                ${t.refresh}
+            `;
+        }
+
+        const addDomainBtn = document.getElementById('btn-add-domain');
+        if (addDomainBtn) {
+            addDomainBtn.innerHTML = `
+                <span class="material-symbols-outlined text-sm">add</span>
+                ${t.addDomain}
+            `;
+        }
+
+        const addPhoneBtn = document.getElementById('btn-add-phone');
+        if (addPhoneBtn) {
+            addPhoneBtn.innerHTML = `
+                <span class="material-symbols-outlined text-sm">add_call</span>
+                ${t.addPhone}
+            `;
+        }
+
+        Array.from(document.querySelectorAll('p, span, h3, h4')).forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text === 'total domain') el.textContent = t.totalDomain;
+            if (text === 'total nomor') el.textContent = t.totalPhone;
+            if (text === 'status whitelist') el.textContent = t.whitelistStatus;
+            if (text === 'terverifikasi') el.textContent = t.verified;
+
+            if (text === 'domain resmi') el.textContent = t.domainTitle;
+            if (text === 'nomor resmi') el.textContent = t.phoneTitle;
+
+            if (text === 'daftar domain yang dianggap aman oleh sistem.') {
+                el.textContent = t.domainDesc;
+            }
+
+            if (text === 'daftar nomor yang dianggap aman oleh sistem.') {
+                el.textContent = t.phoneDesc;
+            }
+
+            if (text === 'domain') el.textContent = t.domainBadge;
+            if (text === 'phone') el.textContent = t.phoneBadge;
+            if (text === 'active') el.textContent = t.activeBadge;
+
+            if (text === 'system health') el.textContent = t.systemHealth;
+            if (text === 'nodes online') el.textContent = t.nodesOnline;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        applyWhitelistLanguage(currentLang);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedAvatar = localStorage.getItem('adminAvatarImage');
+        const topbarAvatar = document.getElementById('topbar-admin-avatar');
+
+        if (savedAvatar && topbarAvatar) {
+            topbarAvatar.src = savedAvatar;
+        }
+    });
+</script>
     <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>

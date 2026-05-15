@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Edukasi - Apa itu Phishing? | CIMB-Guardian</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='user/css/style.css') }}" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#b5000b", "primary-container": "#e30613", "on-primary": "#ffffff",
+                        "on-primary-container": "#fff5f3", "primary-fixed": "#ffdad5",
+                        "secondary": "#5d5f5f", "surface": "#fbf9f8", "background": "#fbf9f8",
+                        "surface-container-low": "#f5f3f3", "surface-container": "#efeded",
+                        "surface-container-high": "#e9e8e7", "surface-container-highest": "#e4e2e2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1c", "on-background": "#1b1c1c",
+                        "outline-variant": "#e9bcb6", "outline": "#936e69",
+                        "error": "#ba1a1a", "error-container": "#ffdad6", "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#454747",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"],
+                        "h1": ["Work Sans", "sans-serif"], "h2": ["Work Sans", "sans-serif"],
+                        "h3": ["Work Sans", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"], "body-sm": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"], "label-sm": ["Inter", "sans-serif"],
+                    },
+                    fontSize: {
+                        "display": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "h1": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h2": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "h3": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.04em", fontWeight: "500" }],
+                    },
+                    spacing: {
+                        "xs": "4px", "sm": "8px", "md": "16px", "lg": "24px",
+                        "xl": "32px", "2xl": "48px", "3xl": "64px", "gutter": "24px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .security-bg-pattern {
+            background-image: radial-gradient(circle at 2px 2px, #e2e2e2 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background" style="font-family: 'Inter', sans-serif;">
+
+    <!-- ====== HEADER ====== -->
+    <header class="bg-white border-b border-slate-100 shadow-sm sticky top-0 z-50">
+        <div class="flex justify-between items-center h-20 px-8 max-w-[1280px] mx-auto w-full">
+            <a href="{{ url_for('home') }}" class="text-xl font-black text-red-600 flex items-center gap-2 font-display tracking-tight">
+                <span class="material-symbols-outlined text-3xl">shield</span>
+                CIMB-Guardian
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm tracking-tight" style="font-family: 'Work Sans', sans-serif;">
+                <a href="{{ url_for('home') }}" class="text-slate-600 hover:text-red-600 transition-colors">Home</a>
+<a href="{{ url_for('track_page') }}" class="text-slate-600 hover:text-red-600 transition-colors">Track Ticket</a>
+<a href="{{ url_for('education_page') }}" class="text-red-600 font-semibold border-b-2 border-red-600 pb-1">Education</a>
+<a href="{{ url_for('help_page') }}" class="text-slate-600 hover:text-red-600 transition-colors">Help</a>
+            </nav>
+            <a
+    href="{{ url_for('admin_login') }}"
+    class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95 shadow-lg"
+>
+    Secure Login
+</a>
+        </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="min-h-screen security-bg-pattern pb-12">
+        <div class="max-w-[1280px] mx-auto px-8 pt-8">
+
+            <!-- Breadcrumb -->
+            <nav class="flex items-center gap-2 mb-6 text-sm font-semibold text-secondary">
+                <a href="{{ url_for('home') }}" class="hover:text-primary transition-colors">Beranda</a>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                <a href="{{ url_for('education_page') }}" class="hover:text-primary transition-colors">Edukasi</a>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                <span id="detail-breadcrumb-title" class="text-on-background font-semibold">Memuat materi...</span>
+            </nav>
+
+            <!-- Article Title -->
+            <div class="flex flex-col md:flex-row gap-8 items-start mb-16">
+                <div class="flex-1">
+                    <p id="detail-category" class="text-sm font-semibold text-primary mb-3">
+    Memuat kategori...
+</p>
+
+<h1 id="detail-title" class="text-5xl font-bold text-on-background mb-4 leading-tight font-display">
+    Memuat materi...
+</h1>
+
+<p id="detail-summary" class="text-lg text-secondary max-w-2xl leading-relaxed">
+    Mohon tunggu...
+</p>
+                </div>
+                <div class="hidden md:flex w-32 h-32 bg-primary-container/10 rounded-3xl items-center justify-center border-2 border-primary/20 flex-shrink-0">
+                    <span class="material-symbols-outlined text-6xl text-primary">phishing</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="max-w-[1280px] mx-auto px-8 flex flex-col lg:flex-row gap-8">
+
+            <!-- Artikel Utama -->
+            <!-- Artikel Utama -->
+<article class="flex-1 bg-white p-8 md:p-12 rounded-xl shadow-sm border border-surface-container-highest">
+    <div id="detail-content" class="text-slate-800 leading-7 whitespace-pre-line">
+        Memuat konten materi...
+    </div>
+
+    <!-- CTA Kuis -->
+    <div id="quiz-cta" class="mt-12 relative overflow-hidden rounded-xl bg-slate-900 p-6 md:p-8 text-white">
+        <div class="absolute top-0 right-0 p-8 opacity-10">
+            <span class="material-symbols-outlined text-[120px]">quiz</span>
+        </div>
+
+        <div class="relative z-10">
+            <h3 class="text-2xl font-semibold mb-2 text-white font-h2">
+                Uji Pemahaman Anda
+            </h3>
+
+            <p class="text-slate-300 max-w-xl mb-6">
+                Ikuti kuis singkat untuk menguji sejauh mana Anda memahami materi ini dan tingkatkan profil keamanan digital Anda.
+            </p>
+
+            <a
+                id="btn-start-quiz"
+                href="{{ url_for('quiz_page') }}"
+                class="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold px-8 py-3 rounded-lg hover:bg-red-700 transition-all active:scale-95 group"
+            >
+                Mulai Kuis
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                </span>
+            </a>
+        </div>
+    </div>
+</article>
+
+            <!-- Sidebar -->
+            <aside class="w-full lg:w-80 space-y-6">
+                <div class="bg-white p-6 rounded-xl border border-surface-container shadow-sm">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-secondary mb-4">Topik Terkait</h4>
+                    <div class="space-y-4">
+                        <a href="#" class="flex gap-3 group">
+                            <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+                                <span class="material-symbols-outlined">password</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-on-background group-hover:text-primary transition-colors">Keamanan Password</p>
+                                <p class="text-xs text-secondary">Pelajari cara membuat kata sandi yang kuat.</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex gap-3 group">
+                            <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+                                <span class="material-symbols-outlined">phone_android</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-on-background group-hover:text-primary transition-colors">Waspada Vishing</p>
+                                <p class="text-xs text-secondary">Hati-hati terhadap penipuan via telepon.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-surface-container shadow-sm overflow-hidden">
+                    <img
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAca3wTpSR75M7D8IOy2H0RVZOhm1QaRBP6LrV03lakXIY7ocuVbj6bgmETy6Q4dNubeLZN17HA5oaAKCyie8U_kNQOeKh3EETAFlRRgYgSRbK7HT2cWsq_T5LE8l_JF_H5gON8U6vRr7WXS4I5LhVVmgfhYQZampqBts5kg9p9l7QQaQb3uivqkrSbJUr28lGsLoj52WBM6x4QqW5lVmGHU5bngTRxV05dMSeWuR9isYNjCXTcaZx92aXZQZtMOqnnE2WRjn0rDSc"
+                        alt="Visualisasi pusat keamanan siber dengan tampilan data dan grafik jaringan"
+                        class="w-full h-40 object-cover"
+                    />
+                    <div class="p-6 text-center">
+                        <p class="text-sm font-semibold text-on-background mb-2">Butuh bantuan darurat?</p>
+                        <button class="w-full border border-primary text-primary text-sm font-semibold py-2 rounded-lg hover:bg-primary/5 transition-colors">
+                            Hubungi Support
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+<!-- ====== FOOTER ====== -->
+<footer class="bg-slate-50 border-t border-slate-200 mt-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto gap-8">
+        <div class="space-y-2 text-center md:text-left">
+            <div class="text-lg font-bold text-slate-900 font-display">
+                CIMB Guardian
+            </div>
+
+            <p data-i18n="footer_copyright_2026" class="text-xs text-slate-500">
+                © 2026 CIMB Guardian. Hak Cipta Dilindungi.
+            </p>
+        </div>
+
+        <nav class="flex flex-wrap justify-center gap-6 text-xs">
+            <button type="button" class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors" data-footer="security" data-i18n="footer_security">
+                Kebijakan Keamanan
+            </button>
+
+            <button type="button" class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors" data-footer="terms" data-i18n="footer_terms">
+                Syarat Layanan
+            </button>
+
+            <button type="button" class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors" data-footer="privacy" data-i18n="footer_privacy">
+                Pusat Privasi
+            </button>
+
+            <button type="button" class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors" data-footer="support" data-i18n="footer_support">
+                Hubungi Dukungan
+            </button>
+        </nav>
+
+        <div class="flex gap-4">
+            <button type="button" id="btn-language" class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all" title="Ganti Bahasa">
+                <span id="language-label" class="text-xs font-bold">ID</span>
+            </button>
+
+            <button type="button" id="btn-official-channel" class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all" title="Kanal Resmi CIMB">
+                <span class="material-symbols-outlined text-lg">shield</span>
+            </button>
+        </div>
+    </div>
+</footer>
+<!-- ====== FOOTER MODAL ====== -->
+<div id="footer-modal" class="fixed inset-0 z-[9999] hidden">
+    <div id="footer-modal-overlay" class="absolute inset-0 bg-black/40"></div>
+
+    <div class="relative bg-white w-[92%] max-w-xl mx-auto mt-24 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="flex items-start justify-between gap-4 p-6 border-b border-slate-100">
+            <div>
+                <h3 id="footer-modal-title" class="text-xl font-bold text-slate-900">
+                    Judul
+                </h3>
+
+                <p id="footer-modal-subtitle" class="text-sm text-slate-500 mt-1">
+                    Informasi CIMB Guardian
+                </p>
+            </div>
+
+            <button id="footer-modal-close" type="button" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="footer-modal-content" class="p-6 text-sm text-slate-600 leading-relaxed">
+            Konten modal.
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='user/js/main.js') }}"></script>
+<script>
+    function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function formatContent(content) {
+        return content || 'Konten belum tersedia.';
+    }
+
+    async function loadEducationDetail() {
+        const articleId = getQueryParam('article_id');
+
+        if (!articleId) {
+            alert('Materi tidak ditemukan.');
+            window.location.href = '/education.html';
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/education/article/${articleId}`);
+            const article = await res.json();
+
+            if (!res.ok) {
+                throw new Error(article.message || 'Materi edukasi tidak ditemukan.');
+            }
+
+            document.title = `${article.title} | CIMB-Guardian`;
+
+            document.getElementById('detail-breadcrumb-title').textContent = article.title || 'Detail Materi';
+            document.getElementById('detail-category').textContent = article.category || 'Artikel';
+            document.getElementById('detail-title').textContent = article.title || '-';
+            document.getElementById('detail-summary').textContent = article.summary || '';
+            document.getElementById('detail-content').textContent = formatContent(article.content);
+
+            const quizButton = document.getElementById('btn-start-quiz');
+
+if (quizButton) {
+    quizButton.href = `{{ url_for('quiz_page') }}?article_id=${encodeURIComponent(article.id)}`;
+}
+        } catch (err) {
+            console.error('Gagal memuat detail materi:', err);
+            alert('Gagal memuat materi: ' + err.message);
+            window.location.href = '/education.html';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadEducationDetail);
+</script>
+</body>
+</html>

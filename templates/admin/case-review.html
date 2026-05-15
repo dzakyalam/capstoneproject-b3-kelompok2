@@ -507,6 +507,208 @@
         initAdminNotification();
     });
 </script>
+<script>
+    const caseReviewTranslations = {
+        id: {
+            searchPlaceholder: 'Cari Tiket atau ID...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+
+            breadcrumbCase: 'Kasus',
+            breadcrumbDetail: 'Detail Review',
+            pageTitlePrefix: 'Case Review:',
+
+            reporterInfo: 'Informasi Pelapor',
+            emailAddress: 'Email Address',
+            reportTime: 'Waktu Lapor',
+            currentStatus: 'Status Saat Ini',
+
+            reportedMessage: 'Isi Pesan Terlapor',
+            copyText: 'Salin Teks',
+            defaultMessage: 'Pilih laporan dari Dashboard atau tabel Laporan Masuk untuk melihat detail review.',
+            detectedUrl: 'URL Terdeteksi',
+            detectedPhone: 'Nomor Terdeteksi',
+
+            aiAnalysis: 'AI Fraud Analysis',
+            riskScore: 'Risk Score',
+            detectedUrlShort: 'URL Terdeteksi',
+            detectedPhoneShort: 'Nomor Terdeteksi',
+            riskLevel: 'Level Risiko',
+
+            adminNote: 'Catatan Internal Admin',
+            notePlaceholder: 'Pilih tiket terlebih dahulu untuk menambahkan catatan.',
+            saveNote: 'Simpan Catatan',
+
+            decisionTitle: 'Ambil Keputusan',
+            markFraud: 'Tandai Fraud / Phishing',
+            markProcess: 'Tandai Diproses',
+            back: 'Kembali',
+            markSafe: 'Tandai Aman',
+            decisionHint: 'Keputusan akan tersimpan di sistem dan tampil di dashboard admin.',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        },
+        en: {
+            searchPlaceholder: 'Search ticket or ID...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+
+            breadcrumbCase: 'Case',
+            breadcrumbDetail: 'Review Detail',
+            pageTitlePrefix: 'Case Review:',
+
+            reporterInfo: 'Reporter Information',
+            emailAddress: 'Email Address',
+            reportTime: 'Report Time',
+            currentStatus: 'Current Status',
+
+            reportedMessage: 'Reported Message Content',
+            copyText: 'Copy Text',
+            defaultMessage: 'Select a report from the Dashboard or Incoming Reports table to view review details.',
+            detectedUrl: 'Detected URL',
+            detectedPhone: 'Detected Phone Number',
+
+            aiAnalysis: 'AI Fraud Analysis',
+            riskScore: 'Risk Score',
+            detectedUrlShort: 'Detected URL',
+            detectedPhoneShort: 'Detected Phone Number',
+            riskLevel: 'Risk Level',
+
+            adminNote: 'Internal Admin Note',
+            notePlaceholder: 'Select a ticket first to add a note.',
+            saveNote: 'Save Note',
+
+            decisionTitle: 'Make Decision',
+            markFraud: 'Mark Fraud / Phishing',
+            markProcess: 'Mark In Progress',
+            back: 'Back',
+            markSafe: 'Mark Safe',
+            decisionHint: 'The decision will be saved in the system and shown on the admin dashboard.',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        }
+    };
+
+    function applyCaseReviewLanguage(lang) {
+        const t = caseReviewTranslations[lang] || caseReviewTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Case Review'
+            : 'CIMB Guardian - Review Kasus';
+
+        const searchInput = document.querySelector('header input, #case-search');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+
+        const systemOnline = document.querySelector('.bg-emerald-50.text-emerald-600');
+        if (systemOnline) {
+            systemOnline.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                ${t.systemOnline}
+            `;
+        }
+
+        const logoutLink = document.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+            logoutLink.innerHTML = `
+                <span class="material-symbols-outlined text-lg">logout</span>
+                ${t.logout}
+            `;
+        }
+
+        Array.from(document.querySelectorAll('p, span, h2, h3, h4, label, button, a')).forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text === 'kasus') el.textContent = t.breadcrumbCase;
+            if (text === 'detail review') el.textContent = t.breadcrumbDetail;
+
+            if (text === 'informasi pelapor') el.textContent = t.reporterInfo;
+            if (text === 'email address') el.textContent = t.emailAddress;
+            if (text === 'waktu lapor') el.textContent = t.reportTime;
+            if (text === 'status saat ini') el.textContent = t.currentStatus;
+
+            if (text === 'isi pesan terlapor') el.textContent = t.reportedMessage;
+            if (text === 'salin teks') el.textContent = t.copyText;
+            if (text === 'url terdeteksi') el.textContent = t.detectedUrl;
+            if (text === 'nomor terdeteksi') el.textContent = t.detectedPhone;
+
+            if (text === 'ai fraud analysis') el.textContent = t.aiAnalysis;
+            if (text === 'risk score') el.textContent = t.riskScore;
+            if (text === 'level risiko') el.textContent = t.riskLevel;
+
+            if (text === 'catatan internal admin') el.textContent = t.adminNote;
+            if (text === 'simpan catatan') el.textContent = t.saveNote;
+
+            if (text === 'ambil keputusan') el.textContent = t.decisionTitle;
+            if (text === 'tandai fraud / phishing') el.textContent = t.markFraud;
+            if (text === 'tandai diproses') el.textContent = t.markProcess;
+            if (text === 'kembali') el.textContent = t.back;
+            if (text === 'tandai aman') el.textContent = t.markSafe;
+
+            if (text === 'system health') el.textContent = t.systemHealth;
+            if (text === 'nodes online') el.textContent = t.nodesOnline;
+        });
+
+        const title = Array.from(document.querySelectorAll('h1, h2')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('case review');
+        });
+        if (title) {
+            const ticket = document.getElementById('page-title-ticket')?.textContent || '-';
+            title.textContent = `${t.pageTitlePrefix} ${ticket}`;
+        }
+
+        const reportedMsg = document.getElementById('reported-msg');
+        if (reportedMsg && reportedMsg.textContent.trim().toLowerCase().includes('pilih laporan')) {
+            reportedMsg.textContent = t.defaultMessage;
+        }
+
+        const adminNote = document.getElementById('admin-note');
+        if (adminNote) {
+            adminNote.placeholder = t.notePlaceholder;
+        }
+
+        const decisionHint = Array.from(document.querySelectorAll('p')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('keputusan akan tersimpan') ||
+                   el.textContent.trim().toLowerCase().includes('the decision will be saved');
+        });
+        if (decisionHint) decisionHint.textContent = t.decisionHint;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        applyCaseReviewLanguage(currentLang);
+    });
+</script>
     <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>

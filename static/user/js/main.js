@@ -23,18 +23,23 @@ function initAnalyzer() {
     const btn = document.getElementById('btn-analisa');
     const textarea = document.getElementById('input-pesan');
     const emailInput = document.getElementById('input-email');
+    const sumberInput = document.getElementById('sumber-pesan');
 
     if (!btn) return;
 
     btn.addEventListener('click', async function () {
         const pesan = textarea ? textarea.value.trim() : '';
         const email = emailInput ? emailInput.value.trim() : '';
+        const sumberPesan = sumberInput ? sumberInput.value.trim():'';
 
         if (!pesan) {
             alert('Mohon tempelkan pesan yang ingin dianalisa terlebih dahulu.');
             return;
         }
-
+        if (!sumberPesan){
+            alert('Mohon isi sumber pesan terlebih dahulu.');
+            return;
+        }
         if (email && !isValidEmail(email)) {
             alert('Mohon masukkan alamat email yang valid.');
             return;
@@ -45,6 +50,7 @@ function initAnalyzer() {
         } else {
             sessionStorage.removeItem('emailPengguna');
         }
+        sessionStorage.setItem('sumberPesan', sumberPesan);
 
         btn.disabled = true;
         btn.innerHTML = '<span class="material-symbols-outlined animate-spin">autorenew</span> Menganalisa...';
@@ -133,6 +139,7 @@ function initResult() {
         btnKirim.addEventListener('click', async function () {
             const pesan = sessionStorage.getItem('pesanDianalisis') || '';
             const email = sessionStorage.getItem('emailPengguna') || '';
+            const sumberPesan = sessionStorage.getItem('sumberPesan') || '';
 
             if (!pesan) {
                 alert('Pesan belum tersedia untuk dilaporkan.');
@@ -154,9 +161,10 @@ function initResult() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        message_text: pesan,
-                        email: email
-                    }),
+    message_text: pesan,
+    email: email,
+    source_message: sumberPesan
+}),
                 });
 
                 const data = await res.json();
@@ -806,6 +814,10 @@ education_cta_desc: "Gunakan fitur Analisa Pesan kami untuk melaporkan atau memv
 education_score_label: "Skor Edukasi",
 education_cta_button: "Mulai Analisa Pesan",
 modal_close: "Tutup",
+
+message_source_label: "Sumber Pesan",
+message_source_placeholder: "Pilih sumber pesan...",
+message_source_other: "Lainnya",
     },
 
     en: {
@@ -822,32 +834,32 @@ footer_privacy: "Privacy Center",
 footer_support: "Contact Support",
 
         stats_phishing_title: "Phishing Attacks in 2023",
-stats_phishing_desc: "Increase in digital fraud attempts across Southeast Asia in the last 12 months.",
-stats_loss_desc: "Estimated customer losses caused by cybercrime in Indonesia each year.",
-stats_detection_title: "Detection Time",
-stats_detection_desc: "CIMB Guardian analyzes threats in less than two seconds after you click the analyze button.",
+        stats_phishing_desc: "Increase in digital fraud attempts across Southeast Asia in the last 12 months.",
+        stats_loss_desc: "Estimated customer losses caused by cybercrime in Indonesia each year.",
+        stats_detection_title: "Detection Time",
+        stats_detection_desc: "CIMB Guardian analyzes threats in less than two seconds after you click the analyze button.",
 
-why_title: "Why use CIMB Guardian?",
-why_desc: "Our system is built on global banking security infrastructure to provide legal and technical assurance.",
-why_card_1_title: "Banking-Grade Security",
-why_card_1_desc: "Analysis is performed using international financial data security standards.",
-why_card_2_title: "Artificial Intelligence",
-why_card_2_desc: "Our AI model continuously learns from millions of the latest phishing attack patterns.",
-why_card_3_title: "Automatic Report Tickets",
-why_card_3_desc: "Get valid digital reporting evidence for claims or investigation purposes.",
-why_card_4_title: "Priority Support",
-why_card_4_desc: "High-risk analysis results are forwarded directly to our Fraud Response team.",
+        why_title: "Why use CIMB Guardian?",
+        why_desc: "Our system is built on global banking security infrastructure to provide legal and technical assurance.",
+        why_card_1_title: "Banking-Grade Security",
+        why_card_1_desc: "Analysis is performed using international financial data security standards.",
+        why_card_2_title: "Artificial Intelligence",
+        why_card_2_desc: "Our AI model continuously learns from millions of the latest phishing attack patterns.",
+        why_card_3_title: "Automatic Report Tickets",
+        why_card_3_desc: "Get valid digital reporting evidence for claims or investigation purposes.",
+        why_card_4_title: "Priority Support",
+        why_card_4_desc: "High-risk analysis results are forwarded directly to our Fraud Response team.",
 
-tips_title: "Essential Digital Security Tips",
-tips_desc: "Smart steps to protect your financial assets.",
-tips_1_title: "Check URLs and Senders",
-tips_1_desc: "Never click links from unknown senders or suspicious-looking domains.",
-tips_2_title: "Never Share OTP Codes",
-tips_2_desc: "Banks will never ask for your One-Time Password (OTP) through calls, SMS, or social media.",
-tips_3_title: "Use 2FA",
-tips_3_desc: "Enable two-factor authentication on all email accounts and mobile banking apps.",
-tips_4_title: "Report Immediately",
-tips_4_desc: "If you have already shared sensitive data, contact the official bank call center at 14041 immediately.",
+        tips_title: "Essential Digital Security Tips",
+        tips_desc: "Smart steps to protect your financial assets.",
+        tips_1_title: "Check URLs and Senders",
+        tips_1_desc: "Never click links from unknown senders or suspicious-looking domains.",
+        tips_2_title: "Never Share OTP Codes",
+        tips_2_desc: "Banks will never ask for your One-Time Password (OTP) through calls, SMS, or social media.",
+        tips_3_title: "Use 2FA",
+        tips_3_desc: "Enable two-factor authentication on all email accounts and mobile banking apps.",
+        tips_4_title: "Report Immediately",
+        tips_4_desc: "If you have already shared sensitive data, contact the official bank call center at 14041 immediately.",
 
         hero_badge: "Real-Time Digital Protection",
         hero_title_1: "Protect Yourself from",
@@ -941,14 +953,18 @@ tips_4_desc: "If you have already shared sensitive data, contact the official ba
         success_contact_support: "Contact 24/7 Support",
 
         education_badge: "Digital Security Center",
-education_title: "Protect Your Finances with Knowledge",
-education_desc: "Learn how to identify digital security threats and practical steps to keep your banking accounts safe from modern fraud.",
-education_loading: "Loading education materials...",
-education_cta_title: "Are you unsure about a certain transaction?",
-education_cta_desc: "Use our Message Analysis feature to report or verify the communication you received.",
-education_score_label: "Education Score",
-education_cta_button: "Start Message Analysis",
-modal_close: "Close",
+        education_title: "Protect Your Finances with Knowledge",
+        education_desc: "Learn how to identify digital security threats and practical steps to keep your banking accounts safe from modern fraud.",
+        education_loading: "Loading education materials...",
+        education_cta_title: "Are you unsure about a certain transaction?",
+        education_cta_desc: "Use our Message Analysis feature to report or verify the communication you received.",
+        education_score_label: "Education Score",
+        education_cta_button: "Start Message Analysis",
+        modal_close: "Close",
+
+        message_source_label: "Message Source",
+        message_source_placeholder: "Select message source...",
+        message_source_other: "Other",
     }
 };
 

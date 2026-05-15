@@ -281,6 +281,64 @@
                 </div>
             </div>
 
+                        <!-- ====== DISTRIBUSI SUMBER PESAN ====== -->
+            <div class="grid grid-cols-12 gap-6">
+
+                <!-- Channel Terpopuler -->
+                <div class="col-span-12 lg:col-span-3 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50 flex flex-col justify-center">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary">hub</span>
+                        </div>
+
+                        <p class="text-sm font-semibold text-secondary">
+                            Channel Terpopuler
+                        </p>
+                    </div>
+
+                    <h4 id="top-source-title" class="text-2xl font-bold text-on-surface">
+    Memuat...
+</h4>
+
+<p id="top-source-desc" class="text-xs text-slate-400 mt-2">
+    Mengambil data dari laporan masuk
+</p>
+                </div>
+
+                <!-- Distribusi Sumber Penipuan -->
+                <div class="col-span-12 lg:col-span-9 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-h3 font-h3 text-on-surface">
+                                Distribusi Sumber Pesan
+                            </h3>
+
+                            <p class="text-sm text-secondary">
+                                Persentase asal pesan mencurigakan berdasarkan channel laporan
+                            </p>
+                        </div>
+
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+    LIVE DATA
+</span>
+                    </div>
+
+                    <div id="message-source-list" class="space-y-5">
+    <div class="text-sm text-slate-400">
+        Memuat distribusi sumber pesan...
+    </div>
+</div>
+
+                            
+
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <p class="text-xs text-secondary italic">
+                            *Data dihitung otomatis berdasarkan sumber pesan yang tersimpan di database.
+                        </p>
+                    </div>
+                </div>
+                        </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 <div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-50">
@@ -453,6 +511,364 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         initAdminNotification();
+    });
+</script>
+
+<script>
+    function getSourceIcon(source) {
+        const text = String(source || '').toLowerCase();
+
+        if (text.includes('whatsapp')) return 'chat';
+        if (text.includes('sms') || text.includes('telepon') || text.includes('phone')) return 'sms';
+        if (text.includes('email')) return 'mail';
+        if (text.includes('sosial') || text.includes('social')) return 'public';
+
+        return 'forum';
+    }
+
+    async function loadMessageSourceAnalytics() {
+        const list = document.getElementById('message-source-list');
+        const topTitle = document.getElementById('top-source-title');
+        const topDesc = document.getElementById('top-source-desc');
+
+        if (!list) return;
+
+        try {
+            const res = await fetch('/admin/analytics/message-sources');
+            const data = await res.json();
+
+            if (!Array.isArray(data) || data.length === 0) {
+                list.innerHTML = `
+                    <div class="text-sm text-slate-400">
+                        Belum ada data sumber pesan.
+                    </div>
+                `;
+
+                if (topTitle) topTitle.textContent = 'Belum ada data';
+                if (topDesc) topDesc.textContent = 'Sumber pesan belum tersedia di laporan.';
+                return;
+            }
+
+            const topSource = data[0];
+
+            if (topTitle) {
+                topTitle.innerHTML = `
+                    ${topSource.source}
+                    <span class="text-primary text-lg">(${topSource.percentage}%)</span>
+                `;
+            }
+
+            if (topDesc) {
+                topDesc.textContent = `Berdasarkan ${topSource.count} laporan dari database`;
+            }
+
+            list.innerHTML = data.map(item => {
+                const percentage = Number(item.percentage || 0);
+                const icon = getSourceIcon(item.source);
+
+                return `
+                    <div>
+                        <div class="flex justify-between text-sm font-medium items-center mb-1">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm text-slate-400">${icon}</span>
+                                <span>${item.source}</span>
+                            </div>
+
+                            <span class="text-primary font-bold">${percentage}%</span>
+                        </div>
+
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full">
+                            <div class="bg-primary h-full rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            ${item.count} laporan
+                        </p>
+                    </div>
+                `;
+            }).join('');
+
+        } catch (err) {
+            console.error('Gagal memuat distribusi sumber pesan:', err);
+
+            list.innerHTML = `
+                <div class="text-sm text-red-500">
+                    Gagal memuat distribusi sumber pesan.
+                </div>
+            `;
+
+            if (topTitle) topTitle.textContent = 'Gagal memuat';
+            if (topDesc) topDesc.textContent = 'Periksa koneksi backend atau route analytics.';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadMessageSourceAnalytics();
+
+        const refreshBtn = document.getElementById('btn-refresh-analytics');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', loadMessageSourceAnalytics);
+        }
+    });
+</script>
+<script>
+    const analyticsTranslations = {
+        id: {
+            pageBadge: 'Enterprise Dashboard',
+            pageTitle: 'Analitik & Keamanan',
+            searchPlaceholder: 'Cari data analitik atau domain...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+
+            trendTitle: 'Tren Laporan Harian',
+            trendDesc: 'Volume deteksi scam per hari di seluruh channel',
+            incomingReports: 'Laporan Masuk',
+            lastWeek: 'Minggu Lalu',
+
+            scamTitle: 'Jenis Scam Terpopuler',
+            updatedNote: '*Data diperbarui dari laporan terbaru',
+            detailLink: 'Lihat Detail',
+
+            topChannel: 'Channel Terpopuler',
+            sourceDistributionTitle: 'Distribusi Sumber Pesan',
+            sourceDistributionDesc: 'Persentase asal pesan mencurigakan berdasarkan channel laporan',
+            liveData: 'LIVE DATA',
+            sourceNote: '*Data dihitung otomatis berdasarkan sumber pesan yang tersimpan di database.',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online',
+            protectionStrength: 'Protection Strength',
+            optimal: 'OPTIMAL',
+            allActive: 'Semua sistem aktif',
+
+            officialDomain: 'Domain Resmi',
+allowedAccess: 'Akses yang diizinkan sistem',
+officialBankNumber: 'Nomor Resmi Bank',
+verifiedContact: 'Kontak sah yang diverifikasi',
+add: 'Tambah',
+refresh: 'Refresh',
+exportReport: 'Ekspor Laporan',
+loadingTrend: 'Memuat tren...',
+loadingData: 'Memuat data...',
+loadingDomain: 'Memuat domain...',
+loadingPhone: 'Memuat nomor...',
+loadingSource: 'Memuat distribusi sumber pesan...',
+basedOnReports: 'Berdasarkan',
+reportsFromDatabase: 'laporan dari database',
+reports: 'laporan',
+noSourceData: 'Belum ada data sumber pesan.',
+noData: 'Belum ada data',
+sourceUnavailable: 'Sumber pesan belum tersedia di laporan.',
+failedLoad: 'Gagal memuat',
+checkBackend: 'Periksa koneksi backend atau route analytics.',
+failedSource: 'Gagal memuat distribusi sumber pesan.',
+notificationTitle: 'Notifikasi',
+notificationDesc: 'Pembaruan laporan terbaru',
+loadingNotification: 'Memuat notifikasi...',
+viewAllReports: 'Lihat semua laporan',
+noNotification: 'Belum ada notifikasi laporan.',
+failedNotification: 'Gagal memuat notifikasi.'
+        },
+        en: {
+            pageBadge: 'Enterprise Dashboard',
+            pageTitle: 'Analytics & Security',
+            searchPlaceholder: 'Search analytics data or domain...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+
+            trendTitle: 'Daily Report Trends',
+            trendDesc: 'Scam detection volume per day across all channels',
+            incomingReports: 'Incoming Reports',
+            lastWeek: 'Last Week',
+
+            scamTitle: 'Most Popular Scam Types',
+            updatedNote: '*Data updated from the latest reports',
+            detailLink: 'View Details',
+
+            topChannel: 'Top Channel',
+            sourceDistributionTitle: 'Message Source Distribution',
+            sourceDistributionDesc: 'Percentage of suspicious message sources based on report channels',
+            liveData: 'LIVE DATA',
+            sourceNote: '*Data is calculated automatically based on message sources stored in the database.',
+
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online',
+            protectionStrength: 'Protection Strength',
+            optimal: 'OPTIMAL',
+            allActive: 'All systems active',
+
+            officialDomain: 'Official Domains',
+allowedAccess: 'System-approved access',
+officialBankNumber: 'Official Bank Numbers',
+verifiedContact: 'Verified legitimate contacts',
+add: 'Add',
+refresh: 'Refresh',
+exportReport: 'Export Report',
+loadingTrend: 'Loading trends...',
+loadingData: 'Loading data...',
+loadingDomain: 'Loading domains...',
+loadingPhone: 'Loading numbers...',
+loadingSource: 'Loading message source distribution...',
+basedOnReports: 'Based on',
+reportsFromDatabase: 'reports from database',
+reports: 'reports',
+noSourceData: 'No message source data yet.',
+noData: 'No data yet',
+sourceUnavailable: 'Message sources are not available in reports yet.',
+failedLoad: 'Failed to load',
+checkBackend: 'Check backend connection or analytics route.',
+failedSource: 'Failed to load message source distribution.',
+notificationTitle: 'Notifications',
+notificationDesc: 'Latest report updates',
+loadingNotification: 'Loading notifications...',
+viewAllReports: 'View all reports',
+noNotification: 'No report notifications yet.',
+failedNotification: 'Failed to load notifications.'
+        }
+    };
+
+    function applyAnalyticsLanguage(lang) {
+        const t = analyticsTranslations[lang] || analyticsTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Analytics'
+            : 'CIMB Guardian - Analitik';
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+
+        const searchInput = document.querySelector('header.admin-main input, header input');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const logoutLink = document.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+            logoutLink.innerHTML = `
+                <span class="material-symbols-outlined text-lg">logout</span>
+                ${t.logout}
+            `;
+        }
+
+        const systemOnline = document.querySelector('.bg-emerald-50.text-emerald-600');
+        if (systemOnline) {
+            systemOnline.innerHTML = `
+                <span class="material-symbols-outlined text-sm">wifi_tethering_error</span>
+                ${t.systemOnline}
+            `;
+        }
+
+        const pageBadge = document.querySelector('main .uppercase, .text-primary.uppercase');
+        if (pageBadge && pageBadge.textContent.toLowerCase().includes('enterprise')) {
+            pageBadge.textContent = t.pageBadge;
+        }
+
+        const pageTitle = document.querySelector('main h1, main h2');
+        if (pageTitle) pageTitle.textContent = t.pageTitle;
+
+        const allHeadings = Array.from(document.querySelectorAll('h3, h4'));
+
+        allHeadings.forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text.includes('tren laporan')) {
+                el.textContent = t.trendTitle;
+            }
+
+            if (text.includes('jenis scam')) {
+                el.textContent = t.scamTitle;
+            }
+
+            if (text.includes('channel terpopuler')) {
+                el.textContent = t.topChannel;
+            }
+
+            if (text.includes('distribusi sumber pesan')) {
+                el.textContent = t.sourceDistributionTitle;
+            }
+        });
+
+        const descriptions = Array.from(document.querySelectorAll('p'));
+
+        descriptions.forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text.includes('volume deteksi scam')) {
+                el.textContent = t.trendDesc;
+            }
+
+            if (text.includes('persentase asal pesan')) {
+                el.textContent = t.sourceDistributionDesc;
+            }
+
+            if (text.includes('data diperbarui')) {
+                el.textContent = t.updatedNote;
+            }
+
+            if (text.includes('data dihitung otomatis')) {
+                el.textContent = t.sourceNote;
+            }
+
+            if (text.includes('system health')) {
+                el.textContent = t.systemHealth;
+            }
+
+            if (text.includes('nodes online')) {
+                el.textContent = t.nodesOnline;
+            }
+
+            if (text.includes('semua sistem aktif')) {
+                el.textContent = t.allActive;
+            }
+        });
+
+        const liveData = Array.from(document.querySelectorAll('span')).find(function (el) {
+            return el.textContent.trim().toLowerCase() === 'live data';
+        });
+        if (liveData) liveData.textContent = t.liveData;
+
+        const detailLink = Array.from(document.querySelectorAll('a')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('lihat detail');
+        });
+        if (detailLink) detailLink.childNodes[0].textContent = t.detailLink + ' ';
+
+        const legendText = Array.from(document.querySelectorAll('span, p')).filter(function (el) {
+            return el.textContent.trim() === 'Laporan Masuk' || el.textContent.trim() === 'Minggu Lalu';
+        });
+
+        legendText.forEach(function (el) {
+            if (el.textContent.trim() === 'Laporan Masuk') el.textContent = t.incomingReports;
+            if (el.textContent.trim() === 'Minggu Lalu') el.textContent = t.lastWeek;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        applyAnalyticsLanguage(currentLang);
     });
 </script>
     <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>

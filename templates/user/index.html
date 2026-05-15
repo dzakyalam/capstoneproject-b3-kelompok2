@@ -148,6 +148,35 @@
     class="w-full h-40 bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none text-body-md text-sm"
     placeholder="Tempelkan konten pesan di sini..."
 ></textarea>
+
+
+                        </div>
+
+                        <!-- Sumber Pesan -->
+                        <div class="space-y-2">
+                            <label
+                                for="sumber-pesan"
+                                data-i18n="message_source_label"
+                                class="text-label-md font-semibold text-on-surface text-sm block"
+                            >
+                                Sumber Pesan
+                            </label>
+
+                            <select
+                                id="sumber-pesan"
+                                name="sumber_pesan"
+                                class="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm"
+                                required
+                            >
+                                <option value="" disabled selected data-i18n="message_source_placeholder">
+                                    Pilih sumber pesan...
+                                </option>
+                                <option value="SMS">SMS</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Telegram">Telegram</option>
+                                <option value="Email">Email</option>
+                                <option value="Lainnya" data-i18n="message_source_other">Lainnya</option>
+                            </select>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-4 items-end">

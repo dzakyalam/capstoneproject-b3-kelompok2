@@ -93,10 +93,55 @@
         </section>
 
         <div id="education-user-content">
-            <div data-i18n="education_loading" class="text-center text-slate-400 py-12">
-    Memuat materi edukasi...
+    <div data-i18n="education_loading" class="text-center text-slate-400 py-12">
+        Memuat materi edukasi...
+    </div>
 </div>
+
+<!-- ====== DEMO DETAIL EDUKASI & QUIZ ====== -->
+<section class="mt-10 bg-white rounded-xl border border-slate-100 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] overflow-hidden">
+    <div class="grid md:grid-cols-12 gap-0">
+        <div class="md:col-span-4 min-h-[260px] bg-red-50 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-[120px]">
+                phishing
+            </span>
         </div>
+
+        <div class="md:col-span-8 p-8 flex flex-col justify-center">
+            <div class="inline-flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest mb-4">
+                <span class="material-symbols-outlined text-lg">school</span>
+                Demo Materi Interaktif
+            </div>
+
+            <h2 class="text-3xl font-bold text-on-background mb-3 font-display">
+                Apa itu Phishing?
+            </h2>
+
+            <p class="text-secondary leading-relaxed mb-6">
+                Pelajari pengertian phishing, contoh kasus, cara menghindari penipuan digital,
+                lalu lanjutkan dengan kuis singkat untuk menguji pemahaman Anda.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a
+                    href="{{ url_for('education_detail_page') }}"
+                    class="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-surface-tint transition-all"
+                >
+                    Buka Detail Materi
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+
+                <a
+                    href="{{ url_for('quiz_page') }}"
+                    class="inline-flex items-center justify-center gap-2 border border-primary text-primary px-6 py-3 rounded-lg text-sm font-semibold hover:bg-red-50 transition-all"
+                >
+                    Mulai Kuis
+                    <span class="material-symbols-outlined text-sm">quiz</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
         <section class="mt-16 bg-on-surface text-white rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="flex-1">
@@ -147,42 +192,42 @@
         </div>
 
         <nav class="flex flex-wrap justify-center gap-6 text-xs">
-            <button
-    type="button"
-    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-    data-footer="security"
-    data-i18n="footer_security"
->
-    Kebijakan Keamanan
-</button>
+    <button
+        type="button"
+        class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+        data-footer="security"
+        data-i18n="footer_security"
+    >
+        Kebijakan Keamanan
+    </button>
 
-            <button
-    type="button"
-    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-    data-footer="terms"
-    data-i18n="footer_terms"
->
-    Syarat Layanan
-</button>
+    <button
+        type="button"
+        class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+        data-footer="terms"
+        data-i18n="footer_terms"
+    >
+        Syarat Layanan
+    </button>
 
-           <button
-    type="button"
-    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-    data-footer="privacy"
-    data-i18n="footer_privacy"
->
-    Pusat Privasi
-</button>
+    <button
+        type="button"
+        class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+        data-footer="privacy"
+        data-i18n="footer_privacy"
+    >
+        Pusat Privasi
+    </button>
 
-            <button
-    type="button"
-    class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
-    data-footer="support"
-    data-i18n="footer_support"
->
-    Hubungi Dukungan
-</button>
-        </nav>
+    <button
+        type="button"
+        class="footer-action text-slate-500 hover:text-red-600 hover:underline transition-colors"
+        data-footer="support"
+        data-i18n="footer_support"
+    >
+        Hubungi Dukungan
+    </button>
+</nav>
 
         <div class="flex gap-4">
             <button
@@ -205,7 +250,36 @@
         </div>
     </div>
 </footer>
+<!-- ====== FOOTER MODAL ====== -->
+<div id="footer-modal" class="fixed inset-0 z-[9999] hidden">
+    <div id="footer-modal-overlay" class="absolute inset-0 bg-black/40"></div>
 
+    <div class="relative bg-white w-[92%] max-w-xl mx-auto mt-24 rounded-2xl shadow-2xl overflow-hidden">
+        <div class="flex items-start justify-between gap-4 p-6 border-b border-slate-100">
+            <div>
+                <h3 id="footer-modal-title" class="text-xl font-bold text-slate-900">
+                    Judul
+                </h3>
+
+                <p id="footer-modal-subtitle" class="text-sm text-slate-500 mt-1">
+                    Informasi CIMB Guardian
+                </p>
+            </div>
+
+            <button
+                id="footer-modal-close"
+                type="button"
+                class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500"
+            >
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div id="footer-modal-content" class="p-6 text-sm text-slate-600 leading-relaxed">
+            Konten modal.
+        </div>
+    </div>
+</div>
     <div id="education-detail-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999] p-4">
         <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden">
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
@@ -361,10 +435,10 @@ function escapeHtml(value) {
                                 </div>
                                 <h2 class="text-2xl font-semibold mb-4 font-h2">${escapeHtml(featured.title)}</h2>
                                 <p class="text-secondary mb-8">${escapeHtml(featured.summary)}</p>
-                                <button onclick="openEducationDetail(${featured.id})" class="inline-flex items-center gap-2 text-sm font-semibold bg-primary text-white px-8 py-4 rounded-lg hover:bg-surface-tint transition-colors">
-                                    ${educationText('read_more')}
-<span class="material-symbols-outlined text-sm">arrow_forward</span>
-                                </button>
+                                <a href="/education-detail.html?article_id=${featured.id}" class="inline-flex items-center gap-2 text-sm font-semibold bg-primary text-white px-8 py-4 rounded-lg hover:bg-surface-tint transition-colors">
+    Baca Selengkapnya
+    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
                             </div>
                             <div class="md:w-1/3 rounded-lg overflow-hidden flex-shrink-0">
                                 <img
@@ -387,10 +461,10 @@ function escapeHtml(value) {
                                         <h3 class="text-xl font-semibold mb-2 font-h3">${escapeHtml(item.title)}</h3>
                                         <p class="text-sm text-secondary mb-8">${escapeHtml(item.summary)}</p>
                                     </div>
-                                    <button onclick="openEducationDetail(${item.id})" class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
-                                        ${educationText('read_more')}
-<span class="material-symbols-outlined text-sm">chevron_right</span>
-                                    </button>
+                                    <a href="/education-detail.html?article_id=${item.id}" class="text-primary text-sm font-semibold flex items-center gap-1 hover:underline">
+    Baca Selengkapnya
+    <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
                                 </div>
                             `;
                         }).join('')}

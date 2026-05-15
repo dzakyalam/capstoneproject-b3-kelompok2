@@ -220,17 +220,23 @@
     Logout
 </a>
 
-<div class="flex items-center gap-3">
+<a
+    href="{{ url_for('admin_settings') }}"
+    class="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-slate-100 transition-all cursor-pointer"
+    title="Buka Pengaturan"
+>
     <div class="text-right">
         <p class="text-sm font-bold text-slate-800 leading-none">Admin Center</p>
         <p class="text-xs text-slate-500 font-medium">Super Admin</p>
     </div>
-    <img
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzz2aGqoUROei-sRR3ygRyEnAHJ9CxqhJRdbUYIHmWFUJcobrcIjBsuTgvxeBjCwZHTiO0PzJKEL_hcQdpN0OZgIPxtpYUaWjooUOhQZpR5Hp32PsaYNo3iAOdMcyf9b-Zpr-D9J53R31QQ-yaw-0VnqAGIG4v27X1HGZBQBmU2CTtcHgg4oa1b94x1H7Y84VoDLJ3a5PiROMSXTa92I6jPmn7T4yKlkeYn5lHveMIi9P55s2u5fsZd-NFh23_MNM5U4FSui5hI3o"
-        alt="Foto profil admin senior"
-        class="w-10 h-10 rounded-full border-2 border-slate-100"
-    />
-</div>
+
+<img
+    id="topbar-admin-avatar"
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzz2aGqoUROei-sRR3ygRyEnAHJ9CxqhJRdbUYIHmWFUJcobrcIjBsuTgvxeBjCwZHTiO0PzJKEL_hcQdpN0OZgIPxtpYUaWjooUOhQZpR5Hp32PsaYNo3iAOdMcyf9b-Zpr-D9J53R31QQ-yaw-0VnqAGIG4v27X1HGZBQBmU2CTtcHgg4oa1b94x1H7Y84VoDLJ3a5PiROMSXTa92I6jPmn7T4yKlkeYn5lHveMIi9P55s2u5fsZd-NFh23_MNM5U4FSui5hI3o"
+    alt="Foto profil admin senior"
+    class="w-10 h-10 rounded-full object-cover border-2 border-slate-100 hover:ring-2 hover:ring-red-600 transition-all"
+/>
+</a>
             </div>
         </div>
     </header>
@@ -319,16 +325,17 @@
                                 <tr class="bg-slate-50/50 text-slate-400 text-xs font-bold uppercase tracking-wider">
                                     <th class="px-6 py-4">Ticket ID</th>
                                     <th class="px-6 py-4">Email Pelapor</th>
+                                    <th class="px-6 py-4">Email Pelapor</th>
                                     <th class="px-6 py-4 text-center">Skor Risiko</th>
                                     <th class="px-6 py-4">Status</th>
                                     <th class="px-6 py-4 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="reports-table-body" class="divide-y divide-slate-50">
-                                <tr>
-                                    <td colspan="5" class="px-6 py-6 text-center text-slate-400">Memuat data laporan...</td>
-                                </tr>
-                            </tbody>
+    <tr>
+        <td colspan="6" class="px-6 py-6 text-center text-slate-400">Memuat data laporan...</td>
+    </tr>
+</tbody>
                         </table>
                     </div>
 
@@ -491,7 +498,219 @@
         initAdminNotification();
     });
 </script>
+<script>
+    const dashboardTranslations = {
+        id: {
+            searchPlaceholder: 'Cari Ticket ID atau Nasabah...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
 
+            navDashboard: 'Dashboard',
+            navReports: 'Laporan Masuk',
+            navReview: 'Review Kasus',
+            navTicket: 'Manajemen Tiket',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Edukasi',
+            navAnalytics: 'Analitik',
+            navSettings: 'Pengaturan',
+
+            pageTitle: 'Fraud Dashboard',
+            pageDesc: 'Real-time monitoring and threat assessment overview.',
+
+            exportReport: 'Ekspor Laporan',
+
+            totalReports: 'Total Laporan',
+            pendingReview: 'Menunggu Review',
+            highRisk: 'Risiko Tinggi',
+            safeTicket: 'Tiket Aman',
+
+            totalReportsDesc: 'Total laporan masuk',
+            pendingDesc: 'Status masih pending',
+            highRiskDesc: 'Laporan High Risk',
+            safeDesc: 'Laporan dengan status Aman',
+
+            latestReports: 'Laporan Masuk Terbaru',
+            riskPriority: 'Prioritas Risiko',
+            urgent: 'Urgent',
+
+            ticketId: 'Ticket ID',
+            reporterEmail: 'Email Pelapor',
+            sourceMessage: 'Sumber Pesan',
+            riskScore: 'Skor Risiko',
+            status: 'Status',
+            action: 'Aksi',
+
+            review: 'Review',
+            score: 'Score:',
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        },
+        en: {
+            searchPlaceholder: 'Search Ticket ID or Customer...',
+            systemOnline: 'System Online',
+            logout: 'Logout',
+
+            navDashboard: 'Dashboard',
+            navReports: 'Incoming Reports',
+            navReview: 'Case Review',
+            navTicket: 'Ticket Management',
+            navWhitelist: 'Whitelist',
+            navEducation: 'Education',
+            navAnalytics: 'Analytics',
+            navSettings: 'Settings',
+
+            pageTitle: 'Fraud Dashboard',
+            pageDesc: 'Real-time monitoring and threat assessment overview.',
+
+            exportReport: 'Export Report',
+
+            totalReports: 'Total Reports',
+            pendingReview: 'Pending Review',
+            highRisk: 'High Risk',
+            safeTicket: 'Safe Tickets',
+
+            totalReportsDesc: 'Total incoming reports',
+            pendingDesc: 'Still pending status',
+            highRiskDesc: 'High Risk reports',
+            safeDesc: 'Reports marked as Safe',
+
+            latestReports: 'Latest Incoming Reports',
+            riskPriority: 'Risk Priority',
+            urgent: 'Urgent',
+
+            ticketId: 'Ticket ID',
+            reporterEmail: 'Reporter Email',
+            sourceMessage: 'Message Source',
+            riskScore: 'Risk Score',
+            status: 'Status',
+            action: 'Action',
+
+            review: 'Review',
+            score: 'Score:',
+            systemHealth: 'SYSTEM HEALTH',
+            nodesOnline: 'Nodes Online'
+        }
+    };
+
+    function applyDashboardLanguage(lang) {
+        const t = dashboardTranslations[lang] || dashboardTranslations.id;
+
+        document.documentElement.lang = lang;
+        document.title = lang === 'en'
+            ? 'CIMB Guardian - Dashboard'
+            : 'CIMB Guardian - Dashboard';
+
+        const searchInput = document.querySelector('header input, #admin-search');
+        if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+        const navItems = document.querySelectorAll('aside nav a span:last-child');
+        if (navItems[0]) navItems[0].textContent = t.navDashboard;
+        if (navItems[1]) navItems[1].textContent = t.navReports;
+        if (navItems[2]) navItems[2].textContent = t.navReview;
+        if (navItems[3]) navItems[3].textContent = t.navTicket;
+        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
+        if (navItems[5]) navItems[5].textContent = t.navEducation;
+        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
+        if (navItems[7]) navItems[7].textContent = t.navSettings;
+
+        const systemOnline = document.querySelector('.bg-emerald-50.text-emerald-600, .bg-emerald-50');
+        if (systemOnline && systemOnline.textContent.toLowerCase().includes('system')) {
+            systemOnline.innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                ${t.systemOnline}
+            `;
+        }
+
+        const logoutLink = document.querySelector('a[href*="logout"]');
+        if (logoutLink) {
+            logoutLink.innerHTML = `
+                <span class="material-symbols-outlined text-lg">logout</span>
+                ${t.logout}
+            `;
+        }
+
+        const pageTitle = Array.from(document.querySelectorAll('h1, h2')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('fraud dashboard');
+        });
+        if (pageTitle) pageTitle.textContent = t.pageTitle;
+
+        const pageDesc = Array.from(document.querySelectorAll('p')).find(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+            return text.includes('real-time monitoring') || text.includes('threat assessment');
+        });
+        if (pageDesc) pageDesc.textContent = t.pageDesc;
+
+        const exportBtn = document.querySelector('.btn-export, a[href*="export"], button');
+        const exportButton = Array.from(document.querySelectorAll('button, a')).find(function (el) {
+            return el.textContent.trim().toLowerCase().includes('ekspor laporan') ||
+                   el.textContent.trim().toLowerCase().includes('export report');
+        });
+
+        if (exportButton) {
+            exportButton.innerHTML = `
+                <span class="material-symbols-outlined text-sm">download</span>
+                ${t.exportReport}
+            `;
+        }
+
+        Array.from(document.querySelectorAll('p, span, h3, h4, th, button, a')).forEach(function (el) {
+            const text = el.textContent.trim().toLowerCase();
+
+            if (text === 'total laporan') el.textContent = t.totalReports;
+            if (text === 'menunggu review') el.textContent = t.pendingReview;
+            if (text === 'risiko tinggi') el.textContent = t.highRisk;
+            if (text === 'tiket aman') el.textContent = t.safeTicket;
+
+            if (text === 'total laporan masuk') el.textContent = t.totalReportsDesc;
+            if (text === 'status masih pending') el.textContent = t.pendingDesc;
+            if (text === 'laporan high risk') el.textContent = t.highRiskDesc;
+            if (text === 'laporan dengan status aman') el.textContent = t.safeDesc;
+
+            if (text === 'laporan masuk terbaru') el.textContent = t.latestReports;
+            if (text === 'prioritas risiko') el.textContent = t.riskPriority;
+            if (text === 'urgent') el.textContent = t.urgent;
+
+            if (text === 'ticket id') el.textContent = t.ticketId;
+            if (text === 'email pelapor') el.textContent = t.reporterEmail;
+            if (text === 'sumber pesan') el.textContent = t.sourceMessage;
+            if (text === 'skor risiko') el.textContent = t.riskScore;
+            if (text === 'status') el.textContent = t.status;
+            if (text === 'aksi') el.textContent = t.action;
+
+            if (text === 'review') el.textContent = t.review;
+
+            if (text === 'system health') el.textContent = t.systemHealth;
+            if (text === 'nodes online') el.textContent = t.nodesOnline;
+        });
+
+        Array.from(document.querySelectorAll('p, span')).forEach(function (el) {
+            const text = el.textContent.trim();
+
+            if (text.startsWith('SCORE:')) {
+                el.textContent = text.replace('SCORE:', t.score);
+            }
+
+            if (text.startsWith('Score:')) {
+                el.textContent = text.replace('Score:', t.score);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentLang = localStorage.getItem('cimbGuardianLang') || 'id';
+        applyDashboardLanguage(currentLang);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedAvatar = localStorage.getItem('adminAvatarImage');
+        const topbarAvatar = document.getElementById('topbar-admin-avatar');
+
+        if (savedAvatar && topbarAvatar) {
+            topbarAvatar.src = savedAvatar;
+        }
+    });
+</script>
     <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>
