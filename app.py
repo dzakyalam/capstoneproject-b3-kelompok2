@@ -54,7 +54,8 @@ DB_CONFIG = {
     "cursorclass": DictCursor,
     "autocommit": True,
 }
-
+if os.getenv("DB_SSL", "").lower() in ["true", "1", "required"]:
+    DB_CONFIG["ssl"] = {}
 # =========================================================
 # LOAD MODEL NLP
 # =========================================================
