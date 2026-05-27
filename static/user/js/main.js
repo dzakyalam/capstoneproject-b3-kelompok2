@@ -721,7 +721,7 @@ tips_4_desc: "Jika Anda terlanjur memberikan data, segera hubungi call center re
 
         analyze_label: "Analisa Pesan",
         message_placeholder: "Tempelkan konten pesan di sini...",
-        email_label: "Alamat Email",
+        email_label: "Alamat Email (Opsional)",
         email_placeholder: "Masukkan email Anda",
         analyze_button: "Analisa Pesan",
         email_info: "Kami akan mengirimkan ID Tiket dan pembaruan laporan ke email ini",

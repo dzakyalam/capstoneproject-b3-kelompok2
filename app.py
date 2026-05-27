@@ -46,15 +46,14 @@ MAIL_SMTP_PORT = int(os.getenv("MAIL_SMTP_PORT", "587"))
 # =========================================================
 
 DB_CONFIG = {
-    "host": "127.0.0.1",
-    "port": 3307,
-    "user": "root",
-    "password": "",
-    "database": "cimb_guardian",
+    "host": os.getenv("DB_HOST", "127.0.0.1"),
+    "port": int(os.getenv("DB_PORT", "3307")),
+    "user": os.getenv("DB_USER", "root"),
+    "password": os.getenv("DB_PASSWORD", ""),
+    "database": os.getenv("DB_NAME", "cimb_guardian"),
     "cursorclass": DictCursor,
     "autocommit": True,
 }
-
 
 # =========================================================
 # LOAD MODEL NLP
@@ -432,12 +431,15 @@ Langkah Praktis:
 # 5. import whitelist dari CSV
 def init_db():
     # Buat database jika belum ada
+    db_name = os.getenv("DB_NAME", "cimb_guardian")
+
     with get_conn(with_db=False) as conn:
         with conn.cursor() as cur:
             cur.execute(
-                "CREATE DATABASE IF NOT EXISTS cimb_guardian "
+                f"CREATE DATABASE IF NOT EXISTS `{db_name}` "
                 "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
             )
+
 
     # Buat tabel jika belum ada
     with get_conn() as conn:
