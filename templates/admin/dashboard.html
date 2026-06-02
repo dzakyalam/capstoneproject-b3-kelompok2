@@ -693,6 +693,108 @@
         }
     });
 </script>
-    <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+
+<script>
+    function getSourceIcon(source) {
+        const text = String(source || '').toLowerCase();
+
+        if (text.includes('whatsapp')) return 'chat';
+        if (text.includes('sms') || text.includes('telepon') || text.includes('phone')) return 'sms';
+        if (text.includes('email')) return 'mail';
+        if (text.includes('sosial') || text.includes('social')) return 'public';
+
+        return 'forum';
+    }
+
+    async function loadMessageSourceAnalytics() {
+        const list = document.getElementById('message-source-list');
+        const topTitle = document.getElementById('top-source-title');
+        const topDesc = document.getElementById('top-source-desc');
+
+        if (!list) return;
+
+        try {
+            const res = await fetch('/admin/analytics/message-sources');
+
+            if (!res.ok) {
+                throw new Error('Gagal mengambil data sumber pesan');
+            }
+
+            const data = await res.json();
+
+            if (!Array.isArray(data) || data.length === 0) {
+                list.innerHTML = `
+                    <div class="text-sm text-slate-400">
+                        Belum ada data sumber pesan.
+                    </div>
+                `;
+
+                if (topTitle) topTitle.textContent = 'Belum ada data';
+                if (topDesc) topDesc.textContent = 'Sumber pesan belum tersedia di laporan.';
+                return;
+            }
+
+            const topSource = data[0];
+
+            if (topTitle) {
+                topTitle.innerHTML = `
+                    ${topSource.source}
+                    <span class="text-primary text-lg">(${topSource.percentage}%)</span>
+                `;
+            }
+
+            if (topDesc) {
+                topDesc.textContent = `Berdasarkan ${topSource.count} laporan dari database`;
+            }
+
+            list.innerHTML = data.map(item => {
+                const percentage = Number(item.percentage || 0);
+                const icon = getSourceIcon(item.source);
+
+                return `
+                    <div>
+                        <div class="flex justify-between text-sm font-medium items-center mb-1">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm text-slate-400">${icon}</span>
+                                <span>${item.source}</span>
+                            </div>
+
+                            <span class="text-primary font-bold">${percentage}%</span>
+                        </div>
+
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full">
+                            <div class="bg-primary h-full rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            ${item.count} laporan
+                        </p>
+                    </div>
+                `;
+            }).join('');
+
+        } catch (err) {
+            list.innerHTML = `
+                <div class="text-sm text-red-500">
+                    Gagal memuat distribusi sumber pesan.
+                </div>
+            `;
+
+            if (topTitle) topTitle.textContent = 'Gagal memuat';
+            if (topDesc) topDesc.textContent = 'Periksa koneksi backend atau route analytics.';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadMessageSourceAnalytics();
+
+        const refreshButton = document.getElementById('btn-refresh-analytics');
+        if (refreshButton) {
+            refreshButton.addEventListener('click', loadMessageSourceAnalytics);
+        }
+    });
+</script>
+
+<script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
 </body>
 </html>
