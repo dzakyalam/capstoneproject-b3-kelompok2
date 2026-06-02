@@ -7,11 +7,33 @@
 
 body {
     background-color: #fbf9f8;
+    overflow-x: hidden;
 }
 
-/* Sidebar offset untuk semua konten utama */
-.admin-main {
-    margin-left: 16rem; /* w-64 = 256px */
+/* Ukuran sidebar */
+:root {
+    --admin-sidebar-width: 18rem; /* 256px = w-64 */
+    --admin-topbar-height: 5rem;  /* 64px = h-16 */
+}
+
+/* Untuk konten utama biasa */
+main.admin-main {
+    margin-left: var(--admin-sidebar-width);
+    width: calc(100% - var(--admin-sidebar-width));
+}
+
+/* Untuk topbar fixed */
+header.admin-main {
+    left: var(--admin-sidebar-width);
+    right: 0;
+    width: auto;
+    margin-left: 0;
+}
+
+/* Biar isi halaman tidak terlalu mepet */
+main.admin-main > div {
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 /* Chart gradient untuk analytics */
@@ -26,3 +48,15 @@ body {
     -webkit-backdrop-filter: blur(8px);
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+    main.admin-main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    header.admin-main {
+        left: 0;
+        width: 100%;
+    }
+}

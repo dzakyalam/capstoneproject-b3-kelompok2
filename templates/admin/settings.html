@@ -39,7 +39,7 @@
             <h1 class="text-xl font-bold text-red-600 mb-2 font-h1">CIMB Guardian</h1>
             <p class="text-xs font-label-sm text-slate-400 uppercase tracking-widest">Enterprise Monitoring</p>
         </div>
-      <nav class="flex-1 space-y-1 text-sm">
+     <nav class="flex-1 space-y-1 text-sm">
     <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
         <span class="material-symbols-outlined">dashboard</span>
         <span>Dashboard</span>
@@ -55,11 +55,6 @@
         <span>Review Kasus</span>
     </a>
 
-    <a href="{{ url_for('admin_ticket_management') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
-        <span class="material-symbols-outlined">confirmation_number</span>
-        <span>Manajemen Tiket</span>
-    </a>
-
     <a href="{{ url_for('admin_whitelist') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
         <span class="material-symbols-outlined">verified_user</span>
         <span>Whitelist</span>
@@ -68,11 +63,6 @@
     <a href="{{ url_for('admin_education_cms') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
         <span class="material-symbols-outlined">school</span>
         <span>Edukasi</span>
-    </a>
-
-    <a href="{{ url_for('admin_analytics') }}" class="flex items-center gap-3 px-4 py-3 text-slate-500 font-medium hover:bg-slate-50 hover:text-red-600 transition-all text-sm">
-        <span class="material-symbols-outlined">analytics</span>
-        <span>Analitik</span>
     </a>
 
     <a href="{{ url_for('admin_settings') }}" class="flex items-center gap-3 px-4 py-3 text-red-600 bg-red-50 font-semibold border-r-4 border-red-600 text-sm">
@@ -294,10 +284,8 @@
             navDashboard: 'Dashboard',
             navReports: 'Laporan Masuk',
             navReview: 'Review Kasus',
-            navTicket: 'Manajemen Tiket',
             navWhitelist: 'Whitelist',
             navEducation: 'Edukasi',
-            navAnalytics: 'Analitik',
             navSettings: 'Pengaturan',
             savedAdmin: 'Informasi admin berhasil disimpan.',
             emptyName: 'Nama admin tidak boleh kosong.',
@@ -320,10 +308,8 @@
             navDashboard: 'Dashboard',
             navReports: 'Incoming Reports',
             navReview: 'Case Review',
-            navTicket: 'Ticket Management',
             navWhitelist: 'Whitelist',
             navEducation: 'Education',
-            navAnalytics: 'Analytics',
             navSettings: 'Settings',
             savedAdmin: 'Admin information saved successfully.',
             emptyName: 'Admin name cannot be empty.',
@@ -421,14 +407,12 @@
 
         const navItems = document.querySelectorAll('aside nav a span:last-child');
 
-        if (navItems[0]) navItems[0].textContent = t.navDashboard;
-        if (navItems[1]) navItems[1].textContent = t.navReports;
-        if (navItems[2]) navItems[2].textContent = t.navReview;
-        if (navItems[3]) navItems[3].textContent = t.navTicket;
-        if (navItems[4]) navItems[4].textContent = t.navWhitelist;
-        if (navItems[5]) navItems[5].textContent = t.navEducation;
-        if (navItems[6]) navItems[6].textContent = t.navAnalytics;
-        if (navItems[7]) navItems[7].textContent = t.navSettings;
+if (navItems[0]) navItems[0].textContent = t.navDashboard;
+if (navItems[1]) navItems[1].textContent = t.navReports;
+if (navItems[2]) navItems[2].textContent = t.navReview;
+if (navItems[3]) navItems[3].textContent = t.navWhitelist;
+if (navItems[4]) navItems[4].textContent = t.navEducation;
+if (navItems[5]) navItems[5].textContent = t.navSettings;
     }
 
     function loadSimpleSettings() {

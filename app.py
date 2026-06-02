@@ -1103,7 +1103,7 @@ def admin_dashboard():
 def admin_analytics():
     if not require_admin():
         return redirect(url_for("admin_login"))
-    return render_template("admin/analytics.html")
+    return redirect(url_for("admin_dashboard"))
 
 
 @app.route("/admin/case-review")
@@ -1143,7 +1143,7 @@ def admin_reports_queue():
 def admin_ticket_management():
     if not require_admin():
         return redirect(url_for("admin_login"))
-    return render_template("admin/ticket-management.html")
+    return redirect(url_for("admin_reports_queue"))
 
 
 @app.route("/admin/settings")
