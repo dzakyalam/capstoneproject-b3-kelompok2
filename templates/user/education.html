@@ -99,7 +99,7 @@
 </div>
 
 <!-- ====== DEMO DETAIL EDUKASI & QUIZ ====== -->
-<section class="mt-10 bg-white rounded-xl border border-slate-100 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] overflow-hidden">
+<!-- <section class="mt-10 bg-white rounded-xl border border-slate-100 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] overflow-hidden">
     <div class="grid md:grid-cols-12 gap-0">
         <div class="md:col-span-4 min-h-[260px] bg-red-50 flex items-center justify-center">
             <span class="material-symbols-outlined text-primary text-[120px]">
@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
         <section class="mt-16 bg-on-surface text-white rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="flex-1">
@@ -153,7 +153,7 @@
     Gunakan fitur Analisa Pesan kami untuk melaporkan atau memverifikasi komunikasi yang Anda terima.
 </p>
             </div>
-            <div class="flex items-center gap-6 flex-shrink-0">
+            <!-- <div class="flex items-center gap-6 flex-shrink-0">
                 <div class="flex flex-col items-center">
                     <div class="relative w-24 h-24 mb-1">
                         <svg class="w-full h-full transform -rotate-90">
@@ -173,7 +173,16 @@
 >
     Mulai Analisa Pesan
 </a>
-            </div>
+            </div> -->
+            <div class="flex items-center gap-6 flex-shrink-0">
+    <a
+        href="{{ url_for('home') }}"
+        data-i18n="education_cta_button"
+        class="bg-white text-on-surface px-8 py-4 rounded-lg text-sm font-semibold hover:bg-slate-100 transition-colors"
+    >
+        Mulai Analisa Pesan
+    </a>
+</div>
         </section>
 
     </main>

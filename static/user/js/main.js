@@ -601,6 +601,8 @@ if (officialBtn) {
 // INDEX.HTML - INTERACTIVE SECURITY SCORE
 // =====================================================
 function initSecurityScore() {
+    return;
+    
     const card = document.getElementById('security-score-card');
     const ring = document.getElementById('security-score-ring');
     const number = document.getElementById('security-score-number');
