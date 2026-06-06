@@ -99,9 +99,7 @@
                 <span class="text-[11px] font-bold text-emerald-700 tracking-wide">SYSTEM ONLINE</span>
             </div>
             <div class="flex items-center gap-1">
-    <button class="hover:bg-slate-100 rounded-full p-2 transition-colors text-slate-600">
-        <span class="material-symbols-outlined">wifi_tethering_error</span>
-    </button>
+    
 
     <!-- Notifikasi Admin -->
     <div class="relative">
@@ -182,44 +180,47 @@
 
             <!-- ====== STATS CARDS ====== -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <!-- Kotak 1: Total Tiket Aktif -->
                 <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between border-l-4 border-red-600">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="p-2 bg-red-50 text-red-600 rounded-lg"><span class="material-symbols-outlined">report</span></span>
-                        <span class="text-xs font-bold text-red-600">+12% vs last week</span>
+                        <span class="p-2 bg-red-50 text-red-600 rounded-lg"><span class="material-symbols-outlined">confirmation_number</span></span>
                     </div>
                     <div>
-                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Laporan Hari Ini</p>
-                        <h3 id="queue-total-today" class="text-3xl font-bold mt-1">0</h3>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Total Tiket Aktif</p>
+                        <h3 id="ticket-total-count" class="text-3xl font-bold mt-1">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+
+                <!-- Kotak 2: Dalam Investigasi -->
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between border-l-4 border-blue-500">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="p-2 bg-orange-50 text-orange-600 rounded-lg"><span class="material-symbols-outlined">hourglass_empty</span></span>
-                        <span class="text-xs font-bold text-slate-400">Target: &lt; 4h</span>
+                        <span class="p-2 bg-blue-50 text-blue-600 rounded-lg"><span class="material-symbols-outlined">hourglass_empty</span></span>
                     </div>
                     <div>
-                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Rata-rata Respon</p>
-                        <h3 class="text-3xl font-bold mt-1">2.4<span class="text-lg font-normal text-slate-400 ml-1">jam</span></h3>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Dalam Investigasi</p>
+                        <h3 id="ticket-investigation-count" class="text-3xl font-bold mt-1">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+
+                <!-- Kotak 3: Butuh Perhatian -->
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between border-l-4 border-orange-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="p-2 bg-orange-50 text-orange-600 rounded-lg"><span class="material-symbols-outlined">gpp_maybe</span></span>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Butuh Perhatian</p>
+                        <h3 id="ticket-attention-count" class="text-3xl font-bold text-red-600 mt-1">0</h3>
+                    </div>
+                </div>
+
+                <!-- Kotak 4: Selesai -->
+                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between border-l-4 border-emerald-500">
                     <div class="flex items-center justify-between mb-4">
                         <span class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><span class="material-symbols-outlined">verified</span></span>
-                        <span class="text-xs font-bold text-emerald-600">92% akurasi AI</span>
                     </div>
                     <div>
-                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Kasus Terverifikasi</p>
-                        <h3 id="queue-verified-count" class="text-3xl font-bold mt-1">0</h3>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="p-2 bg-slate-50 text-slate-600 rounded-lg"><span class="material-symbols-outlined">group</span></span>
-                        <span class="text-xs font-bold text-slate-400">Aktif: 8/12</span>
-                    </div>
-                    <div>
-                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Tim Investigator</p>
-                        <h3 class="text-3xl font-bold mt-1">12</h3>
+                        <p class="text-slate-500 text-xs font-bold tracking-wider uppercase">Selesai</p>
+                        <h3 id="ticket-done-count" class="text-3xl font-bold mt-1">0</h3>
                     </div>
                 </div>
             </div>
@@ -272,9 +273,7 @@
     Menampilkan 0 laporan
 </span>
                     <div class="flex items-center gap-1">
-                        <button class="p-2 border border-slate-200 bg-white rounded-md text-slate-400 cursor-not-allowed">
-                            <span class="material-symbols-outlined text-lg">chevron_left</span>
-                        </button>
+                        
                         <button class="w-8 h-8 flex items-center justify-center bg-red-600 text-white text-xs font-bold rounded-md">1</button>
                         <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-md">2</button>
                         <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-md">3</button>
@@ -287,7 +286,7 @@
                 </div>
             </div>
 <!-- ====== MANAJEMEN TIKET DIGABUNG KE LAPORAN MASUK ====== -->
-<section class="mt-10">
+<!-- <section class="mt-10">
     <div class="mb-6">
         <h3 class="text-2xl font-bold text-on-surface font-h1">
             Manajemen Tiket
@@ -295,31 +294,11 @@
         <p class="text-slate-500 text-sm mt-1">
             Pantau dan perbarui status investigasi tiket dari laporan yang masuk.
         </p>
-    </div>
+    </div> -->
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
-            <p class="text-sm font-medium text-slate-500 mb-1">Total Tiket Aktif</p>
-            <h3 id="ticket-total-count" class="text-3xl font-bold text-on-surface">0</h3>
-        </div>
+    <!-- Kotak grid 2x2 lama di sini sudah dihapus bersih -->
 
-        <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
-            <p class="text-sm font-medium text-slate-500 mb-1">Dalam Investigasi</p>
-            <h3 id="ticket-investigation-count" class="text-3xl font-bold text-on-surface">0</h3>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
-            <p class="text-sm font-medium text-slate-500 mb-1">Butuh Perhatian</p>
-            <h3 id="ticket-attention-count" class="text-3xl font-bold text-red-600">0</h3>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100">
-            <p class="text-sm font-medium text-slate-500 mb-1">Selesai</p>
-            <h3 id="ticket-done-count" class="text-3xl font-bold text-on-surface">0</h3>
-        </div>
-    </div>
-
-<div class="bg-white rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+<!-- <div class="bg-white rounded-2xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden">
     <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
         <h3 class="text-xl font-semibold font-h3">
             Antrean Tiket Investigasi
@@ -361,7 +340,7 @@
         </p>
     </div>
 </div>
-</section>
+</section> -->
             <!-- ====== BOTTOM CARDS ====== -->
             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-slate-900 text-white p-8 rounded-2xl relative overflow-hidden">
@@ -577,6 +556,7 @@ if (!filtered.length) {
     }
 
     function renderTicketManagement() {
+        return;
     const tbody = document.getElementById('ticket-management-body');
     const totalCount = document.getElementById('ticket-total-count');
     const investigationCount = document.getElementById('ticket-investigation-count');
