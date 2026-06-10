@@ -424,43 +424,70 @@
         });
     }
 
-    function normalizeQueueStatus(status) {
-        const value = String(status || 'Pending').toLowerCase();
+function normalizeQueueStatus(status) {
+    const value = String(status || 'Pending').toLowerCase();
 
-        if (value === 'fraud') return 'Investigasi';
-        if (value === 'aman') return 'Selesai';
-        if (value === 'diproses') return 'Investigasi';
-
-        return 'Pending';
+    if (['fraud', 'diproses', 'investigasi', 'investigation', 'review'].includes(value)) {
+        return 'Investigasi';
     }
 
-    function renderReportsQueue() {
-        const tbody = document.getElementById('reports-queue-body');
-        const badge = document.getElementById('queue-new-count');
-        const paginationInfo = document.getElementById('queue-pagination-info');
-        const totalToday = document.getElementById('queue-total-today');
-        const verifiedCount = document.getElementById('queue-verified-count');
+    if (['aman', 'selesai', 'completed', 'done', 'resolved', 'closed'].includes(value)) {
+        return 'Selesai';
+    }
 
-        if (!tbody) return;
+    return 'Pending';
+}
 
-        let filtered = reportsQueueData;
+function updateQueueStats() {
+    const totalCount = document.getElementById('ticket-total-count');
+    const investigationCount = document.getElementById('ticket-investigation-count');
+    const attentionCount = document.getElementById('ticket-attention-count');
+    const doneCount = document.getElementById('ticket-done-count');
 
-        if (currentQueueFilter !== 'all') {
-            filtered = reportsQueueData.filter(item => {
-                const status = normalizeQueueStatus(item.admin_status).toLowerCase();
-                return status === currentQueueFilter;
-            });
-        }
+    const total = reportsQueueData.filter(item => {
+    return normalizeQueueStatus(item.admin_status) !== 'Selesai';
+}).length;
 
-        if (badge) badge.textContent = `${reportsQueueData.length} Laporan`;
-        if (paginationInfo) paginationInfo.textContent = `Menampilkan ${filtered.length} dari ${reportsQueueData.length} laporan`;
-        if (totalToday) totalToday.textContent = reportsQueueData.length;
-        if (verifiedCount) {
-            verifiedCount.textContent = reportsQueueData.filter(item => {
-                const status = String(item.admin_status || '').toLowerCase();
-                return status === 'aman' || status === 'fraud';
-            }).length;
-        }
+    const investigation = reportsQueueData.filter(item => {
+        return normalizeQueueStatus(item.admin_status) === 'Investigasi';
+    }).length;
+
+    const done = reportsQueueData.filter(item => {
+        return normalizeQueueStatus(item.admin_status) === 'Selesai';
+    }).length;
+
+    const attention = reportsQueueData.filter(item => {
+        return Number(item.risk_score || 0) >= 70;
+    }).length;
+
+    if (totalCount) totalCount.textContent = total;
+    if (investigationCount) investigationCount.textContent = investigation;
+    if (attentionCount) attentionCount.textContent = attention;
+    if (doneCount) doneCount.textContent = done;
+}
+
+function renderReportsQueue() {
+    const tbody = document.getElementById('reports-queue-body');
+    const badge = document.getElementById('queue-new-count');
+    const paginationInfo = document.getElementById('queue-pagination-info');
+
+    if (!tbody) return;
+
+    let filtered = reportsQueueData;
+
+    if (currentQueueFilter !== 'all') {
+        filtered = reportsQueueData.filter(item => {
+            const status = normalizeQueueStatus(item.admin_status).toLowerCase();
+            return status === currentQueueFilter;
+        });
+    }
+
+    updateQueueStats();
+
+    if (badge) badge.textContent = `${reportsQueueData.length} Laporan`;
+    if (paginationInfo) {
+        paginationInfo.textContent = `Menampilkan ${filtered.length} dari ${reportsQueueData.length} laporan`;
+    }
 
 if (!filtered.length) {
     tbody.innerHTML = `
@@ -471,7 +498,6 @@ if (!filtered.length) {
         </tr>
     `;
 
-    renderTicketManagement();
     return;
 }
 
@@ -552,19 +578,16 @@ if (!filtered.length) {
                 </tr>
             `;
         }).join('');
-        renderTicketManagement();
     }
 
-    function renderTicketManagement() {
-        return;
-    const tbody = document.getElementById('ticket-management-body');
+function renderTicketManagement() {
+    // return;
+
     const totalCount = document.getElementById('ticket-total-count');
     const investigationCount = document.getElementById('ticket-investigation-count');
     const attentionCount = document.getElementById('ticket-attention-count');
     const doneCount = document.getElementById('ticket-done-count');
     const paginationInfo = document.getElementById('ticket-pagination-info');
-
-    if (!tbody) return;
 
     const tickets = reportsQueueData.map(item => {
         const riskScore = Number(item.risk_score || 0);
@@ -580,15 +603,20 @@ if (!filtered.length) {
         };
     });
 
-    const investigation = tickets.filter(item => item.status === 'Investigasi').length;
-    const done = tickets.filter(item => item.status === 'Selesai').length;
-    const attention = tickets.filter(item => item.riskScore >= 70).length;
+const activeTickets = tickets.filter(item => item.status !== 'Selesai').length;
+const investigation = tickets.filter(item => item.status === 'Investigasi').length;
+const done = tickets.filter(item => item.status === 'Selesai').length;
+const attention = tickets.filter(item => item.riskScore >= 70).length;
 
-    if (totalCount) totalCount.textContent = tickets.length;
-    if (investigationCount) investigationCount.textContent = investigation;
-    if (attentionCount) attentionCount.textContent = attention;
-    if (doneCount) doneCount.textContent = done;
+if (totalCount) totalCount.textContent = activeTickets;
+if (investigationCount) investigationCount.textContent = investigation;
+if (attentionCount) attentionCount.textContent = attention;
+if (doneCount) doneCount.textContent = done;
     if (paginationInfo) paginationInfo.textContent = `Menampilkan ${tickets.length} tiket`;
+
+    const tbody = document.getElementById('ticket-management-body');
+
+if (!tbody) return;
 
     if (!tickets.length) {
         tbody.innerHTML = `
@@ -657,8 +685,15 @@ if (!filtered.length) {
                 throw new Error(data.message || 'Gagal mengambil data laporan');
             }
 
-            reportsQueueData = Array.isArray(data) ? data : [];
-            renderReportsQueue();
+reportsQueueData = Array.isArray(data)
+    ? data
+    : Array.isArray(data.reports)
+        ? data.reports
+        : Array.isArray(data.data)
+            ? data.data
+            : [];
+
+renderReportsQueue();
 
         } catch (err) {
             if (tbody) {
