@@ -252,6 +252,7 @@
                                 <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Pelapor</th>
                                 <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Target Deteksi</th>
                                 <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Skor Risiko</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Sumber</th>
                                 <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal</th>
                                 <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
@@ -556,6 +557,11 @@ if (!filtered.length) {
                             </span>
                         </div>
                     </td>
+                    <td class="px-6 py-4">
+            <span class="inline-flex items-center px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-bold">
+                ${item.source_message || 'Lainnya'}
+            </span>
+        </td>
 
                     <td class="px-6 py-4 text-sm text-slate-600">
                         ${formatQueueDate(item.created_at)}
